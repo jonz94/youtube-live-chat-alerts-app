@@ -1,0 +1,10 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+
+  // eslint
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["typescript", "typescriptreact", "html"]
+}
