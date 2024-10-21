@@ -53,8 +53,15 @@ app.whenReady().then(async () => {
   const youtube = await Innertube.create()
 
   // IPC test
-  ipcMain.on('ping', async () => {
-    const video = await youtube.getBasicInfo('oH0qJJqEBRE')
+  ipcMain.handle('ping', async (_event, ...args: unknown[]) => {
+    console.log(args)
+    const videoId = String(args?.at(0) ?? '')
+
+    if (videoId === '') {
+      return null
+    }
+
+    const video = await youtube.getBasicInfo(videoId)
 
     const { is_live, is_upcoming, title, start_timestamp, end_timestamp, duration } = video.basic_info
 
@@ -68,6 +75,8 @@ app.whenReady().then(async () => {
     }
 
     console.log(info)
+
+    return info
   })
 
   createWindow()
