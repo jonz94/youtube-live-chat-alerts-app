@@ -12,8 +12,7 @@
     "build:win": "pnpm run build && electron-builder --win",
     "dev": "electron-vite dev",
     "format": "prettier --write .",
-    "postinstall": "pnpm run install-app-deps && pnpm run build-youtubei",
-    "install-app-deps": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "start": "electron-vite preview",
     "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
@@ -31,7 +30,7 @@
     "lucide-react": "^0.453.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "youtubei.js": "file:..\\YouTube.js\\youtubei.js-10.0.0.tgz"
+    "youtubei.js": "file:../youtubei.js-10.0.0.tgz"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-ts": "^2.0.0",

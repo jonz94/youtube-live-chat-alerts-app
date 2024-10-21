@@ -39,8 +39,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.14)
       youtubei.js:
-        specifier: file:..\YouTube.js\youtubei.js-10.0.0.tgz
-        version: file:../YouTube.js/youtubei.js-10.0.0.tgz
+        specifier: file:../youtubei.js-10.0.0.tgz
+        version: file:../youtubei.js-10.0.0.tgz
     devDependencies:
       '@electron-toolkit/eslint-config-ts':
         specifier: ^2.0.0
@@ -3425,8 +3425,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  youtubei.js@file:../YouTube.js/youtubei.js-10.0.0.tgz:
-    resolution: {integrity: sha512-K/MI5MVCfsjocj1+n/QD4AITMdxzAIlFK0vzO2BkfNEWqTWqit4PQsOUkUiq/ZMDKJ521UOBI4kg3ERyJDoJ/Q==, tarball: file:../YouTube.js/youtubei.js-10.0.0.tgz}
+  youtubei.js@file:../youtubei.js-10.0.0.tgz:
+    resolution: {integrity: sha512-wOdrH8YecY767oooznqUu1gkN9NsVd+hOYu2XuFO22OHRSiVpmubKBqk18ihzkhYlFJmk04V40ZdMnv83ksa+A==, tarball: file:../youtubei.js-10.0.0.tgz}
     version: 10.0.0
 
   zip-stream@4.1.1:
@@ -7085,7 +7085,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  youtubei.js@file:../YouTube.js/youtubei.js-10.0.0.tgz:
+  youtubei.js@file:../youtubei.js-10.0.0.tgz:
     dependencies:
       jintr: 1.2.0
       tslib: 2.8.0
