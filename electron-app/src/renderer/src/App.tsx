@@ -1,17 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import Versions from '~/renderer/components/versions'
-import { getVideoBasicInfo } from '~/renderer/query'
+import { client } from './client'
 
 export default function App() {
-  const {
-    data: info,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ['info'],
-    queryFn: getVideoBasicInfo('oH0qJJqEBRE'),
-  })
+  const { data: info, error, isLoading } = client.getVideoBasicInfo.useQuery({ videoId: 'oH0qJJqEBRE' })
 
   if (isLoading) {
     return (

@@ -8,6 +8,10 @@
 
     // preload
     "src/preload/*.d.ts",
+
+    // tipc
+    // "src/main/tipc.ts",
+    "src/main/types.d.ts",
   ],
   "compilerOptions": {
     "composite": true,

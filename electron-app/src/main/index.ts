@@ -1,8 +1,9 @@
+import { registerIpcMain } from '@egoist/tipc/main'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
-import { Innertube } from 'youtubei.js'
 import icon from '../../resources/icon.png?asset'
+import { router } from './tipc'
 
 function createWindow(): void {
   // Create the browser window.
@@ -50,34 +51,8 @@ app.whenReady().then(async () => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  const youtube = await Innertube.create()
-
-  // IPC test
-  ipcMain.handle('ping', async (_event, ...args: unknown[]) => {
-    console.log(args)
-    const videoId = String(args?.at(0) ?? '')
-
-    if (videoId === '') {
-      return null
-    }
-
-    const video = await youtube.getBasicInfo(videoId)
-
-    const { is_live, is_upcoming, title, start_timestamp, end_timestamp, duration } = video.basic_info
-
-    const info = {
-      isLive: is_live,
-      isUpcoming: is_upcoming,
-      title,
-      startTimestamp: start_timestamp?.toISOString(),
-      endTimestamp: end_timestamp?.toISOString(),
-      duration,
-    }
-
-    console.log(info)
-
-    return info
-  })
+  // Setup tipc
+  registerIpcMain(router)
 
   createWindow()
 

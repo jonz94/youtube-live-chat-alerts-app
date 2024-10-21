@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@egoist/tipc':
+        specifier: ^0.3.2
+        version: 0.3.2(electron@33.0.1)(react@18.3.1)
       '@electron-toolkit/preload':
         specifier: ^3.0.1
         version: 3.0.1(electron@33.0.1)
@@ -224,6 +227,11 @@ packages:
   '@develar/schema-utils@2.6.5':
     resolution: {integrity: sha512-0cp4PsWQ/9avqTVMCtZ+GirikIA36ikvjtHweU4/j8yLtgObI0+JUPhYFScgwlteveGB1rt3Cm8UhN04XayDig==}
     engines: {node: '>= 8.9.0'}
+
+  '@egoist/tipc@0.3.2':
+    resolution: {integrity: sha512-p8g35BhErVkYIgDqkw/HQJSli1TOsZRIUU9U7PYnYfwru6J/Ep1lwFGH2N6+sQMFi1HkqGTTUlJEISJ1DClfQw==}
+    peerDependencies:
+      electron: '>=26.0.0'
 
   '@electron-toolkit/eslint-config-ts@2.0.0':
     resolution: {integrity: sha512-NGXadMyWH9+ZsgYe/u5E0mqK2qTDq01kKKnyo7oiq/7v/dWoMoPhqSkn69NZvt7WmnFNOm57l71fv6128mAx3Q==}
@@ -3588,6 +3596,14 @@ snapshots:
     dependencies:
       ajv: 6.12.6
       ajv-keywords: 3.5.2(ajv@6.12.6)
+
+  '@egoist/tipc@0.3.2(electron@33.0.1)(react@18.3.1)':
+    dependencies:
+      electron: 33.0.1
+    optionalDependencies:
+      '@tanstack/react-query': 5.59.15(react@18.3.1)
+    transitivePeerDependencies:
+      - react
 
   '@electron-toolkit/eslint-config-ts@2.0.0(eslint@8.57.1)(typescript@5.6.3)':
     dependencies:
