@@ -1,10 +1,11 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
-import { Innertube } from 'youtubei.js'
+import { createIPCHandler } from 'trpc-electron/main'
 import icon from '../../resources/icon.png?asset'
+import { router } from './api'
 
-function createWindow(): void {
+function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -17,6 +18,8 @@ function createWindow(): void {
       sandbox: false,
     },
   })
+
+  createIPCHandler({ router, windows: [mainWindow] })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -48,35 +51,6 @@ app.whenReady().then(async () => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
-  })
-
-  const youtube = await Innertube.create()
-
-  // IPC test
-  ipcMain.handle('ping', async (_event, ...args: unknown[]) => {
-    console.log(args)
-    const videoId = String(args?.at(0) ?? '')
-
-    if (videoId === '') {
-      return null
-    }
-
-    const video = await youtube.getBasicInfo(videoId)
-
-    const { is_live, is_upcoming, title, start_timestamp, end_timestamp, duration } = video.basic_info
-
-    const info = {
-      isLive: is_live,
-      isUpcoming: is_upcoming,
-      title,
-      startTimestamp: start_timestamp?.toISOString(),
-      endTimestamp: end_timestamp?.toISOString(),
-      duration,
-    }
-
-    console.log(info)
-
-    return info
   })
 
   createWindow()
