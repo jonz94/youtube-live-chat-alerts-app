@@ -1,3 +1,4 @@
+import Debug from '~/renderer/components/debug'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import Versions from '~/renderer/components/versions'
 import { trpcReact } from '~/renderer/trpc'
@@ -39,6 +40,8 @@ export default function App() {
       </div>
 
       <ModeToggle></ModeToggle>
+
+      <Debug></Debug>
 
       <Versions></Versions>
     </div>

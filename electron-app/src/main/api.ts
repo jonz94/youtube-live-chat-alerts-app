@@ -1,4 +1,5 @@
 import { initTRPC } from '@trpc/server'
+import { join } from 'node:path'
 import { Innertube } from 'youtubei.js'
 import z from 'zod'
 
@@ -23,6 +24,16 @@ export const router = t.router({
     console.log(info)
 
     return info
+  }),
+  debug: t.procedure.query(() => {
+    const cwd = process.cwd()
+    const dirname = __dirname
+    const resources = join(__dirname, '../../resources/test')
+
+    console.log(cwd)
+    console.log(__dirname)
+
+    return { cwd, dirname, resources }
   }),
 })
 
