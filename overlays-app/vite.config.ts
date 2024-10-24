@@ -13,5 +13,6 @@ export default defineConfig({
   base: '/overlays',
   build: {
     outDir: '../electron-app/resources/overlays',
+    emptyOutDir: true,
   },
 })
