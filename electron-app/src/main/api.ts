@@ -1,3 +1,4 @@
+import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { join } from 'node:path'
 import { io } from './websocket'
@@ -5,6 +6,10 @@ import { io } from './websocket'
 const t = initTRPC.create({ isServer: true })
 
 export const router = t.router({
+  initial: t.procedure.query(() => {
+    return { isDev: is.dev }
+  }),
+
   open: t.procedure.mutation(() => {
     if (!io) {
       return { opened: false }
