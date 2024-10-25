@@ -11,6 +11,9 @@ export default defineConfig({
     },
   },
   base: '/overlays',
+  server: {
+    port: 1337,
+  },
   build: {
     outDir: '../electron-app/resources/overlays',
     emptyOutDir: true,
