@@ -1,7 +1,10 @@
 {
   "name": "overlays-app",
-  "version": "0.0.0",
   "private": true,
+  "author": {
+    "name": "jonz94",
+    "email": "jody16888@gmail.com"
+  },
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",

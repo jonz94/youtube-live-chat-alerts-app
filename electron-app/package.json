@@ -1,9 +1,10 @@
 {
-  "name": "electron-app",
-  "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "name": "youtube-overlays-app",
+  "version": "0.1.0",
+  "description": "贈訂通知小程式",
   "author": {
-    "name": "jonz94"
+    "name": "jonz94",
+    "email": "jody16888@gmail.com"
   },
   "main": "./out/main/index.js",
   "scripts": {
