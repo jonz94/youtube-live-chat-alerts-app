@@ -1,15 +1,22 @@
-import Debug from '~/renderer/components/debug'
+// import Debug from '~/renderer/components/debug'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
-import Versions from '~/renderer/components/versions'
+import { Open } from '~/renderer/components/open'
+// import Versions from '~/renderer/components/versions'
 
 export default function App() {
   return (
     <div className="min-h-screen grid place-content-center">
-      <ModeToggle></ModeToggle>
+      <div className="fixed top-4 right-4">
+        <ModeToggle></ModeToggle>
+      </div>
 
-      <Debug></Debug>
+      <div>
+        <Open></Open>
+      </div>
 
-      <Versions></Versions>
+      {/* <Debug></Debug> */}
+
+      {/* <Versions></Versions> */}
     </div>
   )
 }

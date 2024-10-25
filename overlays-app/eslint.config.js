@@ -32,6 +32,7 @@ export default tseslint.config(
       ...react.configs['jsx-runtime'].rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react-compiler/react-compiler': 'error',
+      '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
     },
   },
 )
