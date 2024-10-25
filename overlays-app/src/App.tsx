@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Button } from '~/components/ui/button'
-import catgrass from './assets/catgrass.webp'
 import { cn } from './lib/utils'
 import { socket } from './socket'
 
@@ -82,7 +81,13 @@ function App() {
           style={{ overflow: 'hidden' }}
         >
           <div className="flex flex-col justify-center items-center">
-            <img className="h-auto min-w-32" src={catgrass} alt="" height={127} width={128} />
+            <img
+              className="h-auto min-w-32"
+              src={`${import.meta.env.BASE_URL}/catgrass.png`}
+              alt=""
+              height={127}
+              width={128}
+            />
             <p className="p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
               <span>感謝</span>
               <span className="text-[#32c3a6]">ùwú</span>
