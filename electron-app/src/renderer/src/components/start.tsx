@@ -1,13 +1,12 @@
 import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '~/renderer/components/ui/button'
 import { Input } from '~/renderer/components/ui/input'
 import { parseYoutubeUrl } from '~/renderer/lib/parse-youtube-url'
-import { cn } from '~/renderer/lib/utils'
 import { trpcReact } from '~/renderer/trpc'
 
 export function Start() {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [errorMessage, setErrorMessage] = useState('')
   const [videoTitle, setVideoTitle] = useState('')
   const start = trpcReact.start.useMutation({
     onSuccess: async ({ error, data }) => {
@@ -18,6 +17,8 @@ export function Start() {
       }
 
       console.log('success', data)
+
+      toast.success('成功與直播聊天室建立連線！')
 
       setVideoTitle(data?.title ?? '')
       if (inputRef.current) {
@@ -44,12 +45,10 @@ export function Start() {
         const { type, id } = parseYoutubeUrl(value)
 
         if (type === 'clip' || type === 'channel' || id === null) {
-          setErrorMessage('此網址並非 YouTube 直播')
+          toast.error('此網址並非 YouTube 直播')
 
           return
         }
-
-        setErrorMessage('')
 
         console.log(id)
 
@@ -58,7 +57,6 @@ export function Start() {
     >
       <div>
         <Input ref={inputRef} type="text" placeholder="請輸入 YouTube 直播網址" />
-        <p className={cn('px-4 mt-1 text-red-500 min-h-6', errorMessage ? 'visible' : 'invisible')}>{errorMessage}</p>
       </div>
 
       <div>

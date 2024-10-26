@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Toaster } from 'sonner'
 import { ThemeProvider } from '~/renderer/components/theme-provider'
 import App from './App'
 import './index.css'
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <App />
+          <Toaster richColors expand />
         </ThemeProvider>
       </QueryClientProvider>
     </trpcReact.Provider>
