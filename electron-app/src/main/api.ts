@@ -1,6 +1,5 @@
 import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
-import { join } from 'node:path'
 import { type Server } from 'socket.io'
 import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
@@ -120,17 +119,6 @@ export const router = t.router({
     livechat.start()
 
     return { error: null, data: videoInfo }
-  }),
-
-  debug: t.procedure.query(() => {
-    const cwd = process.cwd()
-    const dirname = __dirname
-    const resources = join(__dirname, '../../resources/test')
-
-    console.log(cwd)
-    console.log(__dirname)
-
-    return { cwd, dirname, resources }
   }),
 })
 
