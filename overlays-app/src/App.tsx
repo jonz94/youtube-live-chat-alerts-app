@@ -6,6 +6,7 @@ import { cn } from './lib/utils'
 import { socket } from './socket'
 
 const ANIMATION_DURATION_IN_MS = 250
+const ENABLE_DEBUG_MODE = false
 
 const queue = new DeferQueue({ concurrency: 1 })
 
@@ -31,7 +32,7 @@ function App() {
   const [name, setName] = useState('測試')
   const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
-  const [debug] = useState(true)
+  const [debug] = useState(ENABLE_DEBUG_MODE)
 
   function present({ name, amount }: { name: string; amount: string }) {
     function task() {
