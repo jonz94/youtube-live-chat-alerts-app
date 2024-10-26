@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Button } from '~/components/ui/button'
-import { Livechat } from '~/livechat'
 import { cn } from './lib/utils'
 import { socket } from './socket'
 
@@ -52,8 +51,6 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      <div>{debug && isConnected ? <Livechat></Livechat> : null}</div>
-
       <div
         className={cn(
           'fixed flex flex-col gap-y-2 top-4 right-4 justify-center items-center border shadow p-4 rounded-md',
