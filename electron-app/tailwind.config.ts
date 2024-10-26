@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
+import plugin from 'tailwindcss/plugin'
 
 export default {
   darkMode: ['class'],
@@ -55,5 +56,22 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [
+    tailwindcssAnimate,
+
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.text-shadow': {
+          'text-shadow': [
+            '0px 0px 1px black',
+            '0px 0px 2px black',
+            '0px 0px 3px black',
+            '0px 0px 4px black',
+            '0px 0px 5px black',
+          ].join(', '),
+        },
+      })
+    }),
+  ],
 } satisfies Config

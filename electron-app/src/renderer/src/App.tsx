@@ -1,7 +1,7 @@
+import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
 import { Start } from '~/renderer/components/start'
-import { Card, CardContent, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
@@ -26,28 +26,11 @@ export default function App() {
         <ModeToggle></ModeToggle>
       </div>
 
-      <a
-        href={data?.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>瀏覽器顯示</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">註：可直接用滑鼠拖曳此方框、然後丟進 OBS 視窗內</p>
-          </CardContent>
-        </Card>
-      </a>
+      <Launcher isDev={!!data?.isDev}></Launcher>
 
-      <div>
-        <Start></Start>
-      </div>
+      <Start></Start>
 
-      <div>
-        <Open></Open>
-      </div>
+      <Open></Open>
     </div>
   )
 }
