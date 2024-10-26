@@ -1,5 +1,6 @@
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
+import { Start } from '~/renderer/components/start'
 import { Card, CardContent, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { trpcReact } from '~/renderer/trpc'
 
@@ -39,6 +40,10 @@ export default function App() {
           </CardContent>
         </Card>
       </a>
+
+      <div>
+        <Start></Start>
+      </div>
 
       <div>
         <Open></Open>

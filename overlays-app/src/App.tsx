@@ -1,15 +1,20 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Button } from '~/components/ui/button'
+import { Livechat } from '~/livechat'
 import { cn } from './lib/utils'
 import { socket } from './socket'
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
+  const [name, setName] = useState('測試')
+  const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(true)
 
-  function present() {
+  function present({ name, amount }: { name: string; amount: string }) {
+    setName(name)
+    setAmount(amount)
     setIsOpen(true)
 
     setTimeout(() => {
@@ -26,12 +31,12 @@ function App() {
       setIsConnected(false)
     }
 
-    function onOpen() {
+    function onOpen({ name, amount }: { name: string; amount: string }) {
       if (isOpen) {
         return
       }
 
-      present()
+      present({ name, amount })
     }
 
     socket.on('connect', onConnect)
@@ -47,7 +52,7 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      {/* {isConnected ? <Livechat></Livechat> : null} */}
+      <div>{debug && isConnected ? <Livechat></Livechat> : null}</div>
 
       <div
         className={cn(
@@ -70,7 +75,8 @@ function App() {
         </div>
 
         <p className={debug ? '' : 'hidden'}>連線狀態：{isConnected ? '成功連線' : '連線失敗'}</p>
-        <Button onClick={() => setIsOpen(!isOpen)}>贈訂測試（{isOpen ? '已經顯示' : '點此顯示'}）</Button>
+        <Button onClick={() => present({ name: '測試', amount: '87' })}>贈訂測試</Button>
+        <Button onClick={() => setIsOpen(!isOpen)}>DEBUG: {isOpen ? '已經顯示' : '點此顯示'}</Button>
       </div>
 
       <div className="flex justify-center items-center p-4">
@@ -90,9 +96,9 @@ function App() {
             />
             <p className="p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
               <span>感謝</span>
-              <span className="text-[#32c3a6]">ùwú</span>
+              <span className="text-[#32c3a6]">{name}</span>
               <span>種了</span>
-              <span className="text-[#32c3a6]">20</span>
+              <span className="text-[#32c3a6]">{amount}</span>
               <span>個貓草</span>
             </p>
           </div>

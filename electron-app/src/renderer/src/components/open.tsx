@@ -6,8 +6,8 @@ export function Open() {
 
   return (
     <>
-      <Button className="p-8" onClick={() => mutate()} disabled={isPending}>
-        <span className="text-2xl">贈訂測試</span>
+      <Button variant="secondary" onClick={() => mutate()} disabled={isPending}>
+        贈訂測試
       </Button>
 
       {error ? (
