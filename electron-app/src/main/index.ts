@@ -7,10 +7,20 @@ import { router } from './api'
 import { startWebServer } from './server'
 
 function createWindow() {
+  const { width, height } = is.dev
+    ? {
+        width: 1600,
+        height: 900,
+      }
+    : {
+        width: 1024,
+        height: 768,
+      }
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
+    width,
+    height,
     show: false,
     autoHideMenuBar: true,
     icon,
