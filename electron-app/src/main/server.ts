@@ -4,7 +4,7 @@ import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { type Server as HttpServer } from 'node:http'
-import { io, startLivechat, startWebsocket } from './websocket'
+import { startWebsocket } from './websocket'
 
 export function startWebServer(port = 21829) {
   const app = new Hono()
@@ -31,18 +31,6 @@ export function startWebServer(port = 21829) {
 
   app.get('/healthz', (c) => {
     return c.text('OK')
-  })
-
-  app.get('/api/live-chat/:videoId', (c) => {
-    const { videoId } = c.req.param()
-
-    if (!io || !videoId) {
-      return c.json({ error: 'no websocker connection' }, 400)
-    }
-
-    startLivechat(videoId)
-
-    return c.json({ videoId })
   })
 
   console.log(`Server is running on port ${port}`)
