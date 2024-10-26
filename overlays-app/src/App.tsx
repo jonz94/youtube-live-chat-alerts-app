@@ -1,8 +1,30 @@
+import { DeferQueue } from '@poppinss/defer'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Button } from '~/components/ui/button'
 import { cn } from './lib/utils'
 import { socket } from './socket'
+
+const ANIMATION_DURATION_IN_MS = 250
+
+const queue = new DeferQueue({ concurrency: 1 })
+
+queue.onError = function (error, task) {
+  console.log(`${task.name} task failed with the following error`)
+  console.log(error)
+}
+
+queue.taskAdded = function (task) {
+  console.log(`${task.name} added. ${String(queue.size())} tasks left`)
+}
+
+queue.taskCompleted = function (task) {
+  console.log(`${task.name} completed. ${String(queue.size())} tasks left`)
+}
+
+queue.drained = function () {
+  console.log('Processed last task in the queue')
+}
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
@@ -12,13 +34,21 @@ function App() {
   const [debug] = useState(true)
 
   function present({ name, amount }: { name: string; amount: string }) {
-    setName(name)
-    setAmount(amount)
-    setIsOpen(true)
+    function task() {
+      return new Promise((resolve) => {
+        setName(name)
+        setAmount(amount)
+        setIsOpen(true)
 
-    setTimeout(() => {
-      setIsOpen(false)
-    }, 5000)
+        setTimeout(() => {
+          setIsOpen(false)
+
+          setTimeout(() => resolve(undefined), ANIMATION_DURATION_IN_MS)
+        }, 5000)
+      })
+    }
+
+    queue.push(task)
   }
 
   useEffect(() => {
@@ -31,10 +61,6 @@ function App() {
     }
 
     function onOpen({ name, amount }: { name: string; amount: string }) {
-      if (isOpen) {
-        return
-      }
-
       present({ name, amount })
     }
 
@@ -80,7 +106,7 @@ function App() {
         <motion.div
           initial={{ height: 0 }}
           animate={isOpen ? { height: 'auto' } : { height: 0 }}
-          transition={{ duration: 0.25, ease: 'easeInOut' }}
+          transition={{ duration: ANIMATION_DURATION_IN_MS / 1000, ease: 'easeInOut' }}
           style={{ overflow: 'hidden' }}
         >
           <div className="flex flex-col justify-center items-center">

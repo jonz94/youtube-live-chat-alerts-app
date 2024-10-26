@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@poppinss/defer':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@radix-ui/react-slot':
         specifier: ^1.1.0
         version: 1.1.0(@types/react@18.3.12)(react@18.3.1)
@@ -429,6 +432,10 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+
+  '@poppinss/defer@1.1.0':
+    resolution: {integrity: sha512-+hkwxhKdxbmfTNo9MJrY2Rz7GrMokgx71zSSnEv6/pftaCQ8+bF5vQkE7KCBIKUn+kCth1cI1d8LWDMvPUIRMw==}
+    engines: {node: '>=20.6.0'}
 
   '@radix-ui/react-compose-refs@1.1.0':
     resolution: {integrity: sha512-b4inOtiaOnYf9KWyO3jAeeCG6FeyfY6ldiEPanbUjWd+xIk5wZeHa8yVwmrJ2vderhu/BQvzCrJI0lHd+wIiqw==}
@@ -2235,6 +2242,10 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
+
+  '@poppinss/defer@1.1.0':
+    dependencies:
+      fastq: 1.17.1
 
   '@radix-ui/react-compose-refs@1.1.0(@types/react@18.3.12)(react@18.3.1)':
     dependencies:

@@ -88,6 +88,12 @@ export const router = t.router({
         })(primaryText)
 
         io.emit('open', { name, amount })
+        // NOTE: uncomment these lines below to simulate a delayed queue event for testing purposes
+        // console.log('open', { name, amount })
+        // setTimeout(() => {
+        //   io.emit('open', { name: `${name} (delay)`, amount })
+        //   console.log('open delay', { name: `${name} (delay)`, amount })
+        // }, 1000)
       }
     }
 
