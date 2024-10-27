@@ -66,8 +66,8 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(@trpc/client@11.0.0-rc.593(@trpc/server@11.0.0-rc.593))(@trpc/server@11.0.0-rc.593)(electron@33.0.2)
       youtubei.js:
-        specifier: file:..\youtubei.js-10.0.0.tgz
-        version: file:../youtubei.js-10.0.0.tgz
+        specifier: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@a56c3e3
+        version: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@a56c3e3
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -239,6 +239,9 @@ packages:
   '@babel/types@7.26.0':
     resolution: {integrity: sha512-Z/yiTPj+lDVnF7lWeKCIJzaIkI0vYO87dMpZ4bg4TDrFe4XXLFWL1TbXU27gBP3QccxV9mZICCrnjnYlJjXHOA==}
     engines: {node: '>=6.9.0'}
+
+  '@bufbuild/protobuf@2.2.0':
+    resolution: {integrity: sha512-+imAQkHf7U/Rwvu0wk1XWgsP3WnpCWmK7B48f0XqSNzgk64+grljTKC7pnO/xBiEMUziF7vKRfbBnOQhg126qQ==}
 
   '@develar/schema-utils@2.6.5':
     resolution: {integrity: sha512-0cp4PsWQ/9avqTVMCtZ+GirikIA36ikvjtHweU4/j8yLtgObI0+JUPhYFScgwlteveGB1rt3Cm8UhN04XayDig==}
@@ -2351,8 +2354,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  jintr@1.2.0:
-    resolution: {integrity: sha512-OYPVJPlDih+G7LXjnLR5Brsz8ClxkXYn0ZmWyJVIUmFI6lySQu/dzpGRK/ujBLAYCvuJu/VqXzf84C1edowbLg==}
+  jintr@2.1.1:
+    resolution: {integrity: sha512-89cwX4ouogeDGOBsEVsVYsnWWvWjchmwXBB4kiBhmjOKw19FiOKhNhMhpxhTlK2ctl7DS+d/ethfmuBpzoNNgA==}
 
   jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
@@ -3518,9 +3521,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  youtubei.js@file:../youtubei.js-10.0.0.tgz:
-    resolution: {integrity: sha512-wOdrH8YecY767oooznqUu1gkN9NsVd+hOYu2XuFO22OHRSiVpmubKBqk18ihzkhYlFJmk04V40ZdMnv83ksa+A==, tarball: file:../youtubei.js-10.0.0.tgz}
-    version: 10.0.0
+  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@a56c3e3:
+    resolution: {tarball: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@a56c3e3}
+    version: 10.5.0
 
   zip-stream@4.1.1:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
@@ -3654,6 +3657,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@bufbuild/protobuf@2.2.0': {}
 
   '@develar/schema-utils@2.6.5':
     dependencies:
@@ -6010,7 +6015,7 @@ snapshots:
       filelist: 1.0.4
       minimatch: 3.1.2
 
-  jintr@1.2.0:
+  jintr@2.1.1:
     dependencies:
       acorn: 8.13.0
 
@@ -7246,9 +7251,10 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  youtubei.js@file:../youtubei.js-10.0.0.tgz:
+  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@a56c3e3:
     dependencies:
-      jintr: 1.2.0
+      '@bufbuild/protobuf': 2.2.0
+      jintr: 2.1.1
       tslib: 2.8.0
       undici: 5.28.4
 
