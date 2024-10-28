@@ -15,7 +15,7 @@ export default defineConfig({
     port: 1337,
   },
   build: {
-    outDir: '../electron-app/resources/overlays',
+    outDir: '../youtube-overlays-app/resources/overlays',
     emptyOutDir: true,
   },
 })
