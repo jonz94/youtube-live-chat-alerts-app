@@ -9,16 +9,7 @@ const t = initTRPC.create({ isServer: true })
 
 export const router = t.router({
   initial: t.procedure.query(() => {
-    const cwd = process.cwd()
-    const windir = process.env['windir'] ?? 'os is not windows'
-
-    // FIXME: hotfix for a bug
-    // when electron app is first installed and opened
-    // `process.cwd()` will be `C:\Windows\System32`
-    // which cause the hono `serveStatic` function to not work as expected
-    const pleaseReopen = cwd.toLowerCase().startsWith(windir.toLowerCase())
-
-    return { isDev: is.dev, pleaseReopen }
+    return { isDev: is.dev }
   }),
 
   open: t.procedure.mutation(() => {

@@ -1,7 +1,6 @@
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
-import { PleaseReopen } from '~/renderer/components/please-reopen'
 import { Start } from '~/renderer/components/start'
 import { trpcReact } from '~/renderer/trpc'
 
@@ -27,15 +26,9 @@ export default function App() {
         <ModeToggle></ModeToggle>
       </div>
 
-      {data?.pleaseReopen ? (
-        <PleaseReopen></PleaseReopen>
-      ) : (
-        <>
-          <Launcher isDev={!!data?.isDev}></Launcher>
-          <Start></Start>
-          <Open></Open>
-        </>
-      )}
+      <Launcher isDev={!!data?.isDev}></Launcher>
+      <Start></Start>
+      <Open></Open>
     </div>
   )
 }
