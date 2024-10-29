@@ -1,4 +1,5 @@
 {
+  "name": "youtube-overlays-app-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
