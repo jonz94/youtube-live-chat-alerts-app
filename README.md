@@ -15,4 +15,5 @@ An Electron app that displays customizable alerts from YouTube live chat during 
 - This project is heavily inspired by [payment app (綠界小程式/直播小工具)](https://gitlab.com/thesixleafs/setup/-/wikis/home) created by 楔六葉 ([@sixleafs](https://x.com/sixleafs))
 
 [^YouTube]: https://www.youtube.com/@KuromuOno
+
 [^Twitter]: https://x.com/@KuromuOno
