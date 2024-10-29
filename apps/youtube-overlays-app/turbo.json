@@ -1,17 +1,17 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
   "ui": "stream",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["overlays#build"]
+    },
+    "bundle:win": {
+      "dependsOn": ["build"]
     },
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "bundle:win": {},
-    "fmt": {},
-    "lint": {},
-    "prettier": {}
+    }
   }
 }

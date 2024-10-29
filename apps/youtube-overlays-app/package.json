@@ -39,7 +39,6 @@
     "electron-updater": "^6.3.9",
     "hono": "^4.6.7",
     "lucide-react": "^0.454.0",
-    "overlays": "workspace:*",
     "socket.io": "^4.8.1",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.4",
