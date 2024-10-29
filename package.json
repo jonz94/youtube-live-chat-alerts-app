@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "bundle:mac": "turbo run bundle:mac",
     "bundle:win": "turbo run bundle:win",
     "dev": "turbo dev",
     "fmt": "turbo fmt",

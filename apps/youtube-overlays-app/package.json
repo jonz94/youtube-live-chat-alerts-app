@@ -13,6 +13,7 @@
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:unpack": "pnpm run build && electron-builder --dir",
     "build:win": "pnpm run build && electron-builder --win",
+    "bundle:mac": "electron-builder --mac",
     "bundle:win": "gsudo pnpm exec electron-builder --win",
     "dev": "electron-vite dev",
     "fmt": "pnpm run prettier && pnpm run lint",

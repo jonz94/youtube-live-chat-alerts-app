@@ -9,6 +9,7 @@
       "cache": false,
       "persistent": true
     },
+    "bundle:mac": {},
     "bundle:win": {},
     "fmt": {},
     "lint": {},
