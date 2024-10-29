@@ -9,7 +9,9 @@
       "cache": false,
       "persistent": true
     },
+    "bundle:linux": {},
     "bundle:mac": {},
+    "bundle:unpack": {},
     "bundle:win": {},
     "fmt": {},
     "lint": {},

@@ -6,7 +6,13 @@
     "build": {
       "dependsOn": ["overlays#build"]
     },
+    "bundle:linux": {
+      "dependsOn": ["build"]
+    },
     "bundle:mac": {
+      "dependsOn": ["build"]
+    },
+    "bundle:unpack": {
       "dependsOn": ["build"]
     },
     "bundle:win": {

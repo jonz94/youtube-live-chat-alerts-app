@@ -2,18 +2,18 @@
   "name": "youtube-overlays-app",
   "version": "0.1.1",
   "description": "贈訂通知小程式",
+  "homepage": "https://github.com/jonz94/youtube-live-chat-alerts-app",
   "author": {
     "name": "jonz94",
     "email": "jody16888@gmail.com"
   },
   "main": "./out/main/index.js",
   "scripts": {
-    "build": "pnpm run typecheck && electron-vite build",
-    "build:linux": "electron-vite build && electron-builder --linux",
-    "build:mac": "electron-vite build && electron-builder --mac",
-    "build:unpack": "pnpm run build && electron-builder --dir",
-    "build:win": "pnpm run build && electron-builder --win",
+    "build": "pnpm run type-check && pnpm run build-only",
+    "build-only": "electron-vite build",
+    "bundle:linux": "electron-builder --linux",
     "bundle:mac": "electron-builder --mac",
+    "bundle:unpack": "electron-builder --dir",
     "bundle:win": "gsudo pnpm exec electron-builder --win",
     "dev": "electron-vite dev",
     "fmt": "pnpm run prettier && pnpm run lint",
@@ -21,9 +21,9 @@
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "prettier": "prettier --write .",
     "start": "electron-vite preview",
-    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
-    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false"
+    "type-check": "pnpm run type-check:node && pnpm run type-check:web",
+    "type-check:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "type-check:web": "tsc --noEmit -p tsconfig.web.json --composite false"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",

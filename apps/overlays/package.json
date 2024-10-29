@@ -7,12 +7,14 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "pnpm run type-check && pnpm run build-only",
+    "build-only": "vite build",
     "dev": "vite",
     "fmt": "pnpm run prettier && pnpm run lint",
     "lint": "eslint . --fix",
     "prettier": "prettier --write .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "type-check": "tsc --build"
   },
   "dependencies": {
     "@poppinss/defer": "^1.1.0",
