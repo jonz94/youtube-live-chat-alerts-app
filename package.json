@@ -10,7 +10,7 @@
     "dev": "turbo dev",
     "fmt": "turbo fmt",
     "lint": "turbo lint",
-    "prettier": "turbo prettier"
+    "prettier": "prettier --write . \"!apps\" && turbo prettier"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

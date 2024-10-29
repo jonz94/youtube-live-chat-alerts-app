@@ -16,7 +16,6 @@
     "bundle:unpack": "electron-builder --dir",
     "bundle:win": "gsudo pnpm exec electron-builder --win",
     "dev": "electron-vite dev",
-    "fmt": "pnpm run prettier && pnpm run lint",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "prettier": "prettier --write .",
