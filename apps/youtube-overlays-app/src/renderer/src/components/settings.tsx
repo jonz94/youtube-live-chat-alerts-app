@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { Input } from '~/renderer/components/ui/input'
@@ -18,12 +18,6 @@ export function Settings() {
       console.log('error', error)
     },
   })
-
-  useEffect(() => {
-    if (inputRef.current && settings) {
-      inputRef.current.value = String(settings.animationTimeInMilliseconds)
-    }
-  }, [])
 
   if (isLoading) {
     return <>載入中</>
