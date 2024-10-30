@@ -3,6 +3,7 @@ import { initTRPC } from '@trpc/server'
 import { type Server } from 'socket.io'
 import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
+import { getSettings, updateAnimationTimeInMillisecondsSetting } from './settings'
 import { io } from './websocket'
 
 const t = initTRPC.create({ isServer: true })
@@ -17,9 +18,19 @@ export const router = t.router({
       return { opened: false }
     }
 
-    const value = io.emit('open', { name: '測試', amount: '87' })
+    const { animationTimeInMilliseconds } = getSettings()
+
+    const value = io.emit('open', { name: '測試', amount: '87', animationTimeInMilliseconds })
 
     return { opened: value }
+  }),
+
+  settings: t.procedure.query(() => {
+    return getSettings()
+  }),
+
+  updateAnimationTimeSetting: t.procedure.input(z.number().gte(1)).mutation(({ input }) => {
+    updateAnimationTimeInMillisecondsSetting(input)
   }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
@@ -86,12 +97,14 @@ export const router = t.router({
           return text.split(' ').at(1)
         })(primaryText)
 
-        io.emit('open', { name, amount })
+        const { animationTimeInMilliseconds } = getSettings()
+
+        io.emit('open', { name, amount, animationTimeInMilliseconds })
         // NOTE: uncomment these lines below to simulate a delayed queue event for testing purposes
-        // console.log('open', { name, amount })
+        // console.log('open', { name, amount, animationTimeInMilliseconds })
         // setTimeout(() => {
-        //   io.emit('open', { name: `${name} (delay)`, amount })
-        //   console.log('open delay', { name: `${name} (delay)`, amount })
+        //   io.emit('open', { name: `${name} (delay)`, amount, animationTimeInMilliseconds })
+        //   console.log('open delay', { name: `${name} (delay)`, amount, animationTimeInMilliseconds })
         // }, 1000)
       }
     }

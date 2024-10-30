@@ -1,6 +1,7 @@
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
+import { Settings } from '~/renderer/components/settings'
 import { Start } from '~/renderer/components/start'
 import { trpcReact } from '~/renderer/trpc'
 
@@ -28,6 +29,7 @@ export default function App() {
 
       <Launcher isDev={!!data?.isDev}></Launcher>
       <Start></Start>
+      <Settings></Settings>
       <Open></Open>
     </div>
   )

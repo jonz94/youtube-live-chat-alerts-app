@@ -5,6 +5,7 @@ import { createIPCHandler } from 'trpc-electron/main'
 import icon from '../../resources/icon.png?asset'
 import { router } from './api'
 import { startWebServer } from './server'
+import { initializeSettings } from './settings'
 
 function createWindow() {
   const { width, height } = is.dev
@@ -54,6 +55,8 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
+  initializeSettings()
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 

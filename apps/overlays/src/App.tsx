@@ -5,6 +5,12 @@ import { Button } from '~/components/ui/button'
 import { cn } from './lib/utils'
 import { socket } from './socket'
 
+interface PresentOptions {
+  name: string
+  amount: string
+  animationTimeInMilliseconds: number
+}
+
 const ANIMATION_DURATION_IN_MS = 250
 const ENABLE_DEBUG_MODE = false
 
@@ -34,7 +40,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(ENABLE_DEBUG_MODE)
 
-  function present({ name, amount }: { name: string; amount: string }) {
+  function present({ name, amount, animationTimeInMilliseconds }: PresentOptions) {
     function task() {
       return new Promise((resolve) => {
         setName(name)
@@ -45,7 +51,7 @@ function App() {
           setIsOpen(false)
 
           setTimeout(() => resolve(undefined), ANIMATION_DURATION_IN_MS)
-        }, 5000)
+        }, animationTimeInMilliseconds)
       })
     }
 
@@ -61,8 +67,8 @@ function App() {
       setIsConnected(false)
     }
 
-    function onOpen({ name, amount }: { name: string; amount: string }) {
-      present({ name, amount })
+    function onOpen({ name, amount, animationTimeInMilliseconds }: PresentOptions) {
+      present({ name, amount, animationTimeInMilliseconds })
     }
 
     socket.on('connect', onConnect)
@@ -99,7 +105,9 @@ function App() {
         </div>
 
         <p className={debug ? '' : 'hidden'}>連線狀態：{isConnected ? '成功連線' : '連線失敗'}</p>
-        <Button onClick={() => present({ name: '測試', amount: '87' })}>贈訂測試</Button>
+        <Button onClick={() => present({ name: '測試', amount: '87', animationTimeInMilliseconds: 5000 })}>
+          贈訂測試
+        </Button>
         <Button onClick={() => setIsOpen(!isOpen)}>DEBUG: {isOpen ? '已經顯示' : '點此顯示'}</Button>
       </div>
 

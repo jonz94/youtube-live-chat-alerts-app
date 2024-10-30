@@ -9,9 +9,12 @@
     // preload
     "src/preload/*.d.ts",
 
-    // trpc
-    "src/main/api.ts",
-    "src/main/websocket.ts",
+    // main
+    "src/main/**/*",
+  ],
+  "exclude": [
+    // ignore electron
+    "src/main/index.ts",
   ],
   "compilerOptions": {
     "composite": true,
