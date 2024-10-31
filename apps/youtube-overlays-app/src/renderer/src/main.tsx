@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <App />
-          <Toaster richColors expand />
+          <Toaster richColors expand closeButton />
         </ThemeProvider>
       </QueryClientProvider>
     </trpcReact.Provider>
