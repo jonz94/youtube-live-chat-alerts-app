@@ -1,6 +1,6 @@
 import { is } from '@electron-toolkit/utils'
 import { app } from 'electron'
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { z } from 'zod'
 
@@ -117,6 +117,9 @@ export function updateImage(newImagePath: string) {
   }
 
   const imagePath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
+
+  rmSync(imagePath, { force: true })
+
   copyFileSync(newImagePath, imagePath)
 
   return { error: '', newImagePath }
@@ -125,20 +128,20 @@ export function updateImage(newImagePath: string) {
 export function resetImage() {
   const imagePath = resolve(getSettingsDir(), 'assets', 'image.gif')
 
-  if (!existsSync(imagePath)) {
-    if (is.dev) {
-      copyFileSync(
-        // default image
-        resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
-        imagePath,
-      )
-    } else {
-      copyFileSync(
-        // default image
-        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
-        imagePath,
-      )
-    }
+  rmSync(imagePath, { force: true })
+
+  if (is.dev) {
+    copyFileSync(
+      // default image
+      resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
+      imagePath,
+    )
+  } else {
+    copyFileSync(
+      // default image
+      resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
+      imagePath,
+    )
   }
 }
 
@@ -148,6 +151,9 @@ export function updateSoundEffect(newSoundEffectPath: string) {
   }
 
   const soundEffectPath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
+
+  rmSync(soundEffectPath, { force: true })
+
   copyFileSync(newSoundEffectPath, soundEffectPath)
 
   return { error: '', newSoundFilePath: newSoundEffectPath }
@@ -155,6 +161,8 @@ export function updateSoundEffect(newSoundEffectPath: string) {
 
 export function resetSoundEffect() {
   const soundEffectPath = resolve(getSettingsDir(), 'assets', 'sound.mp3')
+
+  rmSync(soundEffectPath, { force: true })
 
   if (is.dev) {
     copyFileSync(
