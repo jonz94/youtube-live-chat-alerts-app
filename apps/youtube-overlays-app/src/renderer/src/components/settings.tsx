@@ -208,6 +208,10 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
                 updateImage.mutate({ newImagePath })
               }
+
+              if (imageInputRef.current) {
+                imageInputRef.current.value = ''
+              }
             }}
           />
         </div>
@@ -321,6 +325,10 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                 console.log({ newSoundEffectPath })
 
                 updateSoundEffect.mutate({ newSoundEffectPath })
+              }
+
+              if (audioInputRef.current) {
+                audioInputRef.current.value = ''
               }
             }}
           />
