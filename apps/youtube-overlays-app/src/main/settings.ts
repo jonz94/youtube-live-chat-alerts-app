@@ -150,7 +150,7 @@ export function updateSoundEffect(newSoundEffectPath: string) {
     return { error: '找不到此檔案', newSoundFilePath: newSoundEffectPath }
   }
 
-  const soundEffectPath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
+  const soundEffectPath = resolve(getSettingsDir(), 'assets', 'sound.mp3')
 
   rmSync(soundEffectPath, { force: true })
 
