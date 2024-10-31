@@ -121,7 +121,7 @@ function App() {
           <div className="flex flex-col justify-center items-center">
             <img
               className="h-auto min-w-32"
-              src={`${import.meta.env.BASE_URL}/catgrass.png`}
+              src={`${import.meta.env.BASE_URL}/icon.png`}
               alt=""
               height={127}
               width={128}
