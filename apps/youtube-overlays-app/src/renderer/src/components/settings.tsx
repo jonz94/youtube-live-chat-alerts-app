@@ -40,7 +40,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
     onSuccess: (input) => {
       utils.settings.invalidate()
 
-      toast.success(`儲存成功：【顯示持續時間】已成功更新為 ${input / 1000} 秒`)
+      toast.success(`儲存成功：【持續時間】已成功更新為 ${input / 1000} 秒`)
     },
     onError: (error) => {
       console.log('error', error)
@@ -192,7 +192,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
           }}
         >
           <Label htmlFor="animationTimeInMilliseconds" className="px-3">
-            顯示持續時間 (秒)
+            持續時間 (秒)
           </Label>
           <Input
             id="animationTimeInMilliseconds"
