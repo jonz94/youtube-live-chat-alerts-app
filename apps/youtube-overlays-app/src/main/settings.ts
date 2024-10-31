@@ -1,29 +1,38 @@
 import { is } from '@electron-toolkit/utils'
 import { app } from 'electron'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { z } from 'zod'
 
+const DEFAULT_ANIMATION_TIME_IN_MILLISECONDS = 10_000
+const DEFAULT_VOLUME = 50
+
 const settingsSchema = z.object({
-  animationTimeInMilliseconds: z.number(),
+  animationTimeInMilliseconds: z.number().default(DEFAULT_ANIMATION_TIME_IN_MILLISECONDS),
+  volume: z.number().default(DEFAULT_VOLUME),
 })
 
 export type SettingsSchema = z.infer<typeof settingsSchema>
 
 let settings: SettingsSchema = {
-  animationTimeInMilliseconds: 10000,
+  animationTimeInMilliseconds: DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
+  volume: DEFAULT_VOLUME,
+}
+
+export function getSettingsDir() {
+  if (is.dev) {
+    const monorepoProjectRoot = resolve(import.meta.dirname, '..', '..', '..', '..')
+
+    return resolve(monorepoProjectRoot, 'tmp')
+  }
+
+  return resolve(app.getPath('appData'), app.getName())
 }
 
 function getSettingsPath() {
   const fileName = 'settings.json'
 
-  if (is.dev) {
-    const monorepoProjectRoot = resolve(import.meta.dirname, '..', '..', '..', '..')
-
-    return resolve(monorepoProjectRoot, 'tmp', fileName)
-  }
-
-  return resolve(app.getPath('appData'), app.getName(), fileName)
+  return resolve(getSettingsDir(), fileName)
 }
 
 export function initializeSettings() {
@@ -36,8 +45,48 @@ export function initializeSettings() {
     }
 
     writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+  }
 
-    return
+  const assetsDir = resolve(settingsDir, 'assets')
+
+  if (!existsSync(assetsDir)) {
+    mkdirSync(assetsDir, { recursive: true })
+  }
+
+  const soundEffectPath = resolve(assetsDir, 'sound.mp3')
+
+  if (!existsSync(soundEffectPath)) {
+    if (is.dev) {
+      copyFileSync(
+        // default sound effect
+        resolve(import.meta.dirname, '..', '..', 'resources', 'sound.ogg'),
+        soundEffectPath,
+      )
+    } else {
+      copyFileSync(
+        // default sound effect
+        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.ogg'),
+        soundEffectPath,
+      )
+    }
+  }
+
+  const imagePath = resolve(assetsDir, 'image.gif')
+
+  if (!existsSync(imagePath)) {
+    if (is.dev) {
+      copyFileSync(
+        // default image
+        resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
+        imagePath,
+      )
+    } else {
+      copyFileSync(
+        // default image
+        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
+        imagePath,
+      )
+    }
   }
 
   const settingsContent = readFileSync(settingsPath, 'utf-8')
@@ -45,6 +94,8 @@ export function initializeSettings() {
   settings = settingsSchema.parse(JSON.parse(settingsContent))
 
   console.log({ settings })
+
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 }
 
 export function getSettings() {
@@ -56,4 +107,44 @@ export function updateAnimationTimeInMillisecondsSetting(input: number) {
 
   const settingsPath = getSettingsPath()
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return input
+}
+
+export function updateSoundEffect(newSoundEffectPath: string) {
+  if (!existsSync(newSoundEffectPath)) {
+    return { error: '找不到此檔案', newSoundFilePath: newSoundEffectPath }
+  }
+
+  const soundEffectPath = resolve(getSettingsPath(), '..', 'assets', 'sound.mp3')
+  copyFileSync(newSoundEffectPath, soundEffectPath)
+
+  return { error: '', newSoundFilePath: newSoundEffectPath }
+}
+
+export function resetSoundEffect() {
+  const soundEffectPath = resolve(getSettingsDir(), 'assets', 'sound.mp3')
+
+  if (is.dev) {
+    copyFileSync(
+      // default sound effect
+      resolve(import.meta.dirname, '..', '..', 'resources', 'sound.ogg'),
+      soundEffectPath,
+    )
+  } else {
+    copyFileSync(
+      // default sound effect
+      resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.ogg'),
+      soundEffectPath,
+    )
+  }
+}
+
+export function updateVolumeSetting(input: number) {
+  settings.volume = input
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return input
 }

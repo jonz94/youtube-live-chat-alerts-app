@@ -3,7 +3,13 @@ import { initTRPC } from '@trpc/server'
 import { type Server } from 'socket.io'
 import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
-import { getSettings, updateAnimationTimeInMillisecondsSetting } from './settings'
+import {
+  getSettings,
+  resetSoundEffect,
+  updateAnimationTimeInMillisecondsSetting,
+  updateSoundEffect,
+  updateVolumeSetting,
+} from './settings'
 import { io } from './websocket'
 
 const t = initTRPC.create({ isServer: true })
@@ -30,7 +36,17 @@ export const router = t.router({
   }),
 
   updateAnimationTimeSetting: t.procedure.input(z.number().gte(1)).mutation(({ input }) => {
-    updateAnimationTimeInMillisecondsSetting(input)
+    return updateAnimationTimeInMillisecondsSetting(input)
+  }),
+
+  updateSoundEffect: t.procedure.input(z.object({ newSoundEffectPath: z.string() })).mutation(({ input }) => {
+    return updateSoundEffect(input.newSoundEffectPath)
+  }),
+
+  resetSoundEffect: t.procedure.mutation(() => resetSoundEffect()),
+
+  updateVolumeSetting: t.procedure.input(z.object({ volume: z.number().gte(0).lte(100) })).mutation(({ input }) => {
+    return updateVolumeSetting(input.volume)
   }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {

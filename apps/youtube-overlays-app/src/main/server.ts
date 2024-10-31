@@ -6,6 +6,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { type Server as HttpServer } from 'node:http'
 import { relative, resolve } from 'node:path'
+import { getSettingsDir } from './settings'
 import { startWebsocket } from './websocket'
 
 export function startWebServer(port = 21829) {
@@ -34,6 +35,23 @@ export function startWebServer(port = 21829) {
       }),
     )
   }
+
+  app.use(
+    '/assets/*',
+    serveStatic({
+      root: relative(process.cwd(), resolve(getSettingsDir(), 'assets')).replaceAll('\\', '/'),
+      rewriteRequestPath: (path) => path.replace(/^\/assets/, ''),
+      onFound(path) {
+        console.log('found')
+        console.log(path)
+      },
+      onNotFound(path, c) {
+        console.log('not found')
+        console.log(path)
+        c.text(`${path} not found`)
+      },
+    }),
+  )
 
   app.get('/healthz', (c) => {
     return c.text('OK')
