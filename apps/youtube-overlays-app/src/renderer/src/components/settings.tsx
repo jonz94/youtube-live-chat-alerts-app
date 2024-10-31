@@ -1,11 +1,24 @@
 import { useAtom } from 'jotai'
+import { FileImage, FileMusic, Music, Save, Timer, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import ElasticSlider from '~/renderer/components/elastic-slider'
-import { Button } from '~/renderer/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/renderer/components/ui/alert-dialog'
+import { Button, buttonVariants } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { Input } from '~/renderer/components/ui/input'
 import { Label } from '~/renderer/components/ui/label'
+import { cn } from '~/renderer/lib/utils'
 import { cacheTimestampAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 
@@ -128,7 +141,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
   return (
     <Card>
       <CardHeader>
-        <CardTitle>設定</CardTitle>
+        <CardTitle>贈訂通知設定</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-y-6">
         <div className="grid w-full max-w-sm items-center gap-4">
@@ -150,17 +163,37 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                 imageInputRef.current?.click()
               }}
             >
-              使用自訂圖片 (可使用動圖)
+              <FileImage />
+              自訂圖片或動圖
             </Button>
-            <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault()
-                resetImage.mutate()
-              }}
-            >
-              使用預設圖片
-            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button type="button" variant="destructive">
+                  <Trash2 />
+                  還原預設
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>確定要還原為預設圖片嗎？</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    此操作將會移除目前的自訂圖片，並將圖片還原為系統預設圖片。
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-x-2">
+                  <AlertDialogCancel>取消</AlertDialogCancel>
+                  <AlertDialogAction
+                    className={cn(buttonVariants({ variant: 'destructive' }))}
+                    onClick={() => {
+                      resetImage.mutate()
+                    }}
+                  >
+                    還原
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           <input
@@ -184,7 +217,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
         <hr className="-mx-6" />
 
         <form
-          className="grid w-full max-w-sm items-center gap-1.5"
+          className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4"
           onSubmit={(e) => {
             e.preventDefault()
 
@@ -197,47 +230,87 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
             updateAnimationTime.mutate(Number(value) * 1000)
           }}
         >
-          <Label htmlFor="animationTimeInMilliseconds" className="px-3">
-            持續時間 (秒)
-          </Label>
-          <Input
-            id="animationTimeInMilliseconds"
-            ref={inputRef}
-            type="number"
-            defaultValue={Math.round(settings.animationTimeInMilliseconds / 1000)}
-          />
+          <div className="flex items-center gap-x-2">
+            <Label htmlFor="animationTimeInMilliseconds" className="min-w-fit inline-flex items-center gap-x-1">
+              <Timer />
+              持續時間
+            </Label>
 
-          <div>
-            <Button type="submit">更新</Button>
+            <Input
+              id="animationTimeInMilliseconds"
+              ref={inputRef}
+              type="number"
+              defaultValue={Math.round(settings.animationTimeInMilliseconds / 1000)}
+            />
+
+            <span className="min-w-fit">秒</span>
+          </div>
+
+          <div className="w-full flex">
+            <Button type="submit" className="w-full">
+              <Save />
+              儲存設定
+            </Button>
           </div>
         </form>
 
         <hr className="-mx-6" />
 
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="sound" className="px-3">
-            音效檔
-          </Label>
+        <div className="grid w-full max-w-sm items-center gap-4">
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              audioInputRef.current?.click()
+            }}
+          >
+            <FileMusic />
+            自訂音效
+          </Button>
 
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
               type="button"
-              onClick={(e) => {
-                e.preventDefault()
-                audioInputRef.current?.click()
+              variant="secondary"
+              onClick={() => {
+                if (!audioRef.current) {
+                  return
+                }
+
+                audioRef.current.play()
               }}
             >
-              使用自訂音效檔
+              <Music />
+              試播音效
             </Button>
-            <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault()
-                resetSoundEffect.mutate()
-              }}
-            >
-              使用預設音效檔
-            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button type="button" variant="destructive">
+                  <Trash2 />
+                  還原預設
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>確定要還原為預設音效嗎？</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    此操作將會移除目前的自訂音效，並將音效還原為系統預設音效。
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="gap-x-2">
+                  <AlertDialogCancel>取消</AlertDialogCancel>
+                  <AlertDialogAction
+                    className={cn(buttonVariants({ variant: 'destructive' }))}
+                    onClick={() => {
+                      resetSoundEffect.mutate()
+                    }}
+                  >
+                    還原
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           <input
@@ -251,6 +324,8 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
               if (file) {
                 const newSoundEffectPath = window.api.getPathForFile(file)
+
+                console.log({ newSoundEffectPath })
 
                 updateSoundEffect.mutate({ newSoundEffectPath })
               }
@@ -281,6 +356,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
               type="button"
+              variant="secondary"
               onClick={(e) => {
                 e.preventDefault()
 
@@ -291,9 +367,14 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                 audioRef.current.play()
               }}
             >
-              播放音效檔
+              <Music />
+              試播音效
             </Button>
-            <Button type="submit">儲存音量設定</Button>
+
+            <Button type="submit">
+              <Save />
+              儲存設定
+            </Button>
           </div>
         </form>
       </CardContent>
