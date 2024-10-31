@@ -128,11 +128,9 @@ function App() {
         >
           <div className="flex flex-col justify-center items-center">
             <img
-              className="h-auto min-w-32"
+              className="h-auto w-[400px]"
               src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`}
               alt=""
-              height={127}
-              width={128}
             />
             <p className="p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
               <span>感謝</span>

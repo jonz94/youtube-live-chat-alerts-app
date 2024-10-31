@@ -131,10 +131,16 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
         <CardTitle>設定</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-y-6">
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+        <div className="grid w-full max-w-sm items-center gap-4">
           <hr className="-mx-6" />
 
-          <img src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`} alt="" />
+          <div className="rounded-md overflow-hidden mt-2">
+            <img
+              className="h-auto w-[400px]"
+              src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`}
+              alt=""
+            />
+          </div>
 
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
