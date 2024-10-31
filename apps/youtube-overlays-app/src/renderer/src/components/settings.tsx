@@ -157,9 +157,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault()
+              onClick={() => {
                 imageInputRef.current?.click()
               }}
             >
@@ -169,7 +167,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" variant="destructive">
+                <Button variant="destructive">
                   <Trash2 />
                   還原預設
                 </Button>
@@ -216,20 +214,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
         <hr className="-mx-6" />
 
-        <form
-          className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4"
-          onSubmit={(e) => {
-            e.preventDefault()
-
-            const value = inputRef.current?.value
-
-            if (!value) {
-              return
-            }
-
-            updateAnimationTime.mutate(Number(value) * 1000)
-          }}
-        >
+        <div className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4">
           <div className="flex items-center gap-x-2">
             <Label htmlFor="animationTimeInMilliseconds" className="min-w-fit inline-flex items-center gap-x-1">
               <Timer />
@@ -247,20 +232,29 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
           </div>
 
           <div className="w-full flex">
-            <Button type="submit" className="w-full">
+            <Button
+              className="w-full"
+              onClick={() => {
+                const value = inputRef.current?.value
+
+                if (!value) {
+                  return
+                }
+
+                updateAnimationTime.mutate(Number(value) * 1000)
+              }}
+            >
               <Save />
               儲存設定
             </Button>
           </div>
-        </form>
+        </div>
 
         <hr className="-mx-6" />
 
         <div className="grid w-full max-w-sm items-center gap-4">
           <Button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
+            onClick={() => {
               audioInputRef.current?.click()
             }}
           >
@@ -270,7 +264,6 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
-              type="button"
               variant="secondary"
               onClick={() => {
                 if (!audioRef.current) {
@@ -286,7 +279,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" variant="destructive">
+                <Button variant="destructive">
                   <Trash2 />
                   還原預設
                 </Button>
@@ -335,16 +328,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
         <hr className="-mx-6" />
 
-        <form
-          className="grid w-full max-w-sm items-center gap-1.5"
-          onSubmit={(e) => {
-            e.preventDefault()
-
-            console.log({ volume })
-
-            updateVolume.mutate({ volume })
-          }}
-        >
+        <div className="grid w-full max-w-sm items-center gap-1.5">
           <audio ref={audioRef} src={`http://localhost:21829/assets/sound.mp3?t=${cacheTimestamp}`}></audio>
 
           <div className="min-h-16 flex items-center">
@@ -355,11 +339,8 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
           <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
             <Button
-              type="button"
               variant="secondary"
-              onClick={(e) => {
-                e.preventDefault()
-
+              onClick={() => {
                 if (!audioRef.current) {
                   return
                 }
@@ -371,12 +352,18 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
               試播音效
             </Button>
 
-            <Button type="submit">
+            <Button
+              onClick={() => {
+                console.log({ volume })
+
+                updateVolume.mutate({ volume })
+              }}
+            >
               <Save />
               儲存設定
             </Button>
           </div>
-        </form>
+        </div>
       </CardContent>
     </Card>
   )

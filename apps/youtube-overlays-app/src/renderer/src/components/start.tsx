@@ -32,53 +32,51 @@ export function Start() {
   })
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
+    <Card>
+      <CardHeader>
+        <CardTitle>與聊天室建立連線</CardTitle>
+        <CardDescription>輸入直播網址並按下開始，讓小程式可以讀取到聊天室訊息</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Input
+          className={videoTitle ? 'hidden' : ''}
+          ref={inputRef}
+          type="text"
+          placeholder="請輸入 YouTube 直播網址"
+        />
 
-        const value = inputRef.current?.value
+        <div className={videoTitle ? '' : 'hidden'}>
+          <p className="text-green-500">成功與直播聊天室建立連線！</p>
+          <ul>
+            <li>{videoTitle}</li>
+          </ul>
+        </div>
+      </CardContent>
+      <CardFooter className={videoTitle ? 'hidden' : ''}>
+        <Button
+          onClick={() => {
+            const value = inputRef.current?.value
 
-        if (!value) {
-          return
-        }
+            if (!value) {
+              return
+            }
 
-        const { type, id } = parseYoutubeUrl(value)
+            const { type, id } = parseYoutubeUrl(value)
 
-        if (type === 'clip' || type === 'channel' || id === null) {
-          toast.error('此網址並非 YouTube 直播')
+            if (type === 'clip' || type === 'channel' || id === null) {
+              toast.error('此網址並非 YouTube 直播')
 
-          return
-        }
+              return
+            }
 
-        console.log(id)
+            console.log(id)
 
-        start.mutate({ videoId: id })
-      }}
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle>與聊天室建立連線</CardTitle>
-          <CardDescription>輸入直播網址並按下開始，讓小程式可以讀取到聊天室訊息</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Input
-            className={videoTitle ? 'hidden' : ''}
-            ref={inputRef}
-            type="text"
-            placeholder="請輸入 YouTube 直播網址"
-          />
-
-          <div className={videoTitle ? '' : 'hidden'}>
-            <p className="text-green-500">成功與直播聊天室建立連線！</p>
-            <ul>
-              <li>{videoTitle}</li>
-            </ul>
-          </div>
-        </CardContent>
-        <CardFooter className={videoTitle ? 'hidden' : ''}>
-          <Button type="submit">🚀 開始</Button>
-        </CardFooter>
-      </Card>
-    </form>
+            start.mutate({ videoId: id })
+          }}
+        >
+          🚀 開始
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
