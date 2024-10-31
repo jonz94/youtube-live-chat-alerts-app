@@ -28,6 +28,7 @@ export function Settings() {
 
 function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: number; volume: number } }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const imageInputRef = useRef<HTMLInputElement | null>(null)
   const audioInputRef = useRef<HTMLInputElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [volume, setVolume] = useState(settings.volume)
@@ -40,6 +41,36 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
       utils.settings.invalidate()
 
       toast.success(`儲存成功：【顯示持續時間】已成功更新為 ${input / 1000} 秒`)
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  const updateImage = trpcReact.updateImage.useMutation({
+    onSuccess: (input) => {
+      if (input.error) {
+        toast.error(input.error)
+        return
+      }
+
+      console.log('success')
+      utils.settings.invalidate()
+      setCacheTimestamp(String(Date.now()))
+
+      toast.success(`儲存成功：【圖片檔】已經成功更新為\n${input.newImagePath}`)
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  const resetImage = trpcReact.resetImage.useMutation({
+    onSuccess: () => {
+      utils.settings.invalidate()
+      setCacheTimestamp(String(Date.now()))
+
+      toast.success(`儲存成功：【圖片檔】已經成功重置為預設圖片`)
     },
     onError: (error) => {
       console.log('error', error)
@@ -100,6 +131,50 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
         <CardTitle>設定</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-y-6">
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <hr className="-mx-6" />
+
+          <img src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`} alt="" />
+
+          <div className="grid grid-cols-1 gap-4 xs:grid-cols-2">
+            <Button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                imageInputRef.current?.click()
+              }}
+            >
+              使用自訂圖片 (可使用動圖)
+            </Button>
+            <Button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                resetImage.mutate()
+              }}
+            >
+              使用預設圖片
+            </Button>
+          </div>
+
+          <input
+            ref={imageInputRef}
+            className="hidden"
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.item(0)
+
+              if (file) {
+                const newImagePath = window.api.getPathForFile(file)
+
+                updateImage.mutate({ newImagePath })
+              }
+            }}
+          />
+        </div>
+
         <hr className="-mx-6" />
 
         <form

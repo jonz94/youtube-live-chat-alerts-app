@@ -39,6 +39,7 @@ function App() {
   const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(ENABLE_DEBUG_MODE)
+  const [cacheTimestamp, setCacheTimestamp] = useState(String(Date.now()))
 
   function present({ name, amount, animationTimeInMilliseconds }: PresentOptions) {
     function task() {
@@ -71,13 +72,20 @@ function App() {
       present({ name, amount, animationTimeInMilliseconds })
     }
 
+    function onUpdate() {
+      console.log('update')
+      setCacheTimestamp(String(Date.now()))
+    }
+
     socket.on('connect', onConnect)
     socket.on('open', onOpen)
+    socket.on('update', onUpdate)
     socket.on('disconnect', onDisconnect)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('open', onOpen)
+      socket.off('update', onUpdate)
       socket.off('disconnect', onDisconnect)
     }
   }, [isOpen])
@@ -121,7 +129,7 @@ function App() {
           <div className="flex flex-col justify-center items-center">
             <img
               className="h-auto min-w-32"
-              src={`${import.meta.env.BASE_URL}/icon.png`}
+              src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`}
               alt=""
               height={127}
               width={128}

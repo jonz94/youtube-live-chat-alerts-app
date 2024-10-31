@@ -111,12 +111,43 @@ export function updateAnimationTimeInMillisecondsSetting(input: number) {
   return input
 }
 
+export function updateImage(newImagePath: string) {
+  if (!existsSync(newImagePath)) {
+    return { error: '找不到此檔案', newImagePath }
+  }
+
+  const imagePath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
+  copyFileSync(newImagePath, imagePath)
+
+  return { error: '', newImagePath }
+}
+
+export function resetImage() {
+  const imagePath = resolve(getSettingsDir(), 'assets', 'image.gif')
+
+  if (!existsSync(imagePath)) {
+    if (is.dev) {
+      copyFileSync(
+        // default image
+        resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
+        imagePath,
+      )
+    } else {
+      copyFileSync(
+        // default image
+        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
+        imagePath,
+      )
+    }
+  }
+}
+
 export function updateSoundEffect(newSoundEffectPath: string) {
   if (!existsSync(newSoundEffectPath)) {
     return { error: '找不到此檔案', newSoundFilePath: newSoundEffectPath }
   }
 
-  const soundEffectPath = resolve(getSettingsPath(), '..', 'assets', 'sound.mp3')
+  const soundEffectPath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
   copyFileSync(newSoundEffectPath, soundEffectPath)
 
   return { error: '', newSoundFilePath: newSoundEffectPath }

@@ -5,8 +5,10 @@ import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
 import {
   getSettings,
+  resetImage,
   resetSoundEffect,
   updateAnimationTimeInMillisecondsSetting,
+  updateImage,
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
@@ -37,6 +39,20 @@ export const router = t.router({
 
   updateAnimationTimeSetting: t.procedure.input(z.number().gte(1)).mutation(({ input }) => {
     return updateAnimationTimeInMillisecondsSetting(input)
+  }),
+
+  updateImage: t.procedure.input(z.object({ newImagePath: z.string() })).mutation(({ input }) => {
+    const result = updateImage(input.newImagePath)
+
+    io?.emit('update')
+
+    return result
+  }),
+
+  resetImage: t.procedure.mutation(() => {
+    resetImage()
+
+    io?.emit('update')
   }),
 
   updateSoundEffect: t.procedure.input(z.object({ newSoundEffectPath: z.string() })).mutation(({ input }) => {
