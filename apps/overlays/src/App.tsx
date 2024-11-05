@@ -33,9 +33,41 @@ queue.drained = function () {
   console.log('Processed last task in the queue')
 }
 
+function TextEffect({ children, className }: { children: string; className?: string }) {
+  let spaceCount = 0
+
+  return children.split('').map((char, index) => {
+    if (char === ' ') {
+      spaceCount++
+    }
+
+    const delay = (index - spaceCount) / 10
+
+    return (
+      <motion.span
+        key={index}
+        className={cn('inline-block whitespace-pre', className)}
+        animate={{
+          y: [0, -4, 0, 4, 0],
+        }}
+        transition={{
+          duration: 1,
+          ease: 'linear',
+          times: [0, 0.25, 0.5, 0.75, 1],
+          repeat: Infinity,
+          repeatDelay: 0,
+          delay,
+        }}
+      >
+        {char}
+      </motion.span>
+    )
+  })
+}
+
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const [name, setName] = useState('測試')
+  const [name, setName] = useState('幽浮 UFo K.')
   const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(ENABLE_DEBUG_MODE)
@@ -119,7 +151,7 @@ function App() {
         <Button onClick={() => setIsOpen(!isOpen)}>DEBUG: {isOpen ? '已經顯示' : '點此顯示'}</Button>
       </div>
 
-      <div className="flex justify-center items-center p-4">
+      <div className="flex flex-col justify-center items-center p-4">
         <motion.div
           initial={{ height: 0 }}
           animate={isOpen ? { height: 'auto' } : { height: 0 }}
@@ -132,13 +164,18 @@ function App() {
               src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`}
               alt=""
             />
-            <p className="p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
-              <span>感謝</span>
-              <span className="text-[#32c3a6]">{name}</span>
-              <span>種了</span>
-              <span className="text-[#32c3a6]">{amount}</span>
-              <span>個貓草</span>
-            </p>
+
+            <div className="flex p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
+              <div>感謝</div>
+              <div className="text-[#32c3a6] flex">
+                <TextEffect>{name}</TextEffect>
+              </div>
+              <div>種了</div>
+              <div className="text-[#32c3a6] flex">
+                <TextEffect>{amount}</TextEffect>
+              </div>
+              <div>個貓草</div>
+            </div>
           </div>
         </motion.div>
       </div>
