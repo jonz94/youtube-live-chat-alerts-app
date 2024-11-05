@@ -10,6 +10,9 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()],
   },
   renderer: {
+    build: {
+      chunkSizeWarningLimit: Infinity,
+    },
     resolve: {
       alias: {
         '~/renderer': resolve(import.meta.dirname, './src/renderer/src'),
