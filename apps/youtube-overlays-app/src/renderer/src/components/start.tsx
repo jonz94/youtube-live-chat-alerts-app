@@ -47,9 +47,7 @@ export function Start() {
 
         <div className={videoTitle ? '' : 'hidden'}>
           <p className="text-green-500">成功與直播聊天室建立連線！</p>
-          <ul>
-            <li>{videoTitle}</li>
-          </ul>
+          <p className="truncate max-w-sm">{videoTitle}</p>
         </div>
       </CardContent>
       <CardFooter className={videoTitle ? 'hidden' : ''}>
