@@ -15,6 +15,7 @@
     "bundle:mac": "electron-builder --mac",
     "bundle:unpack": "electron-builder --dir",
     "bundle:win": "gsudo pnpm exec electron-builder --win",
+    "clean": "git clean -xdf .turbo dist node_modules out",
     "dev": "electron-vite dev",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint . --fix",

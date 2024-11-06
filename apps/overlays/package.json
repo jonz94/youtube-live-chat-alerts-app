@@ -9,6 +9,7 @@
   "scripts": {
     "build": "pnpm run type-check && pnpm run build-only",
     "build-only": "vite build",
+    "clean": "git clean -xdf .turbo node_modules ../youtube-overlays-app/resources/overlays",
     "dev": "vite",
     "lint": "eslint . --fix",
     "prettier": "prettier --write .",

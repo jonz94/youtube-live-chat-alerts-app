@@ -15,6 +15,12 @@
     "bundle:win": {},
     "fmt": {},
     "lint": {},
-    "prettier": {}
+    "prettier": {},
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    }
   }
 }

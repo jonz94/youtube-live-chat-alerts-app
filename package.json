@@ -7,6 +7,8 @@
     "bundle:mac": "turbo run bundle:mac",
     "bundle:unpack": "turbo run bundle:unpack",
     "bundle:win": "turbo run bundle:win",
+    "clean": "git clean -xdf .turbo node_modules",
+    "clean:workspaces": "turbo run clean",
     "dev": "turbo dev",
     "fmt": "turbo fmt",
     "lint": "turbo lint",
