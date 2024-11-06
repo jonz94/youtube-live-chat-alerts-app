@@ -66,6 +66,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@-repo/tailwind-config':
+        specifier: workspace:*
+        version: link:../../tooling/tailwind
       '@eslint/js':
         specifier: ^9.13.0
         version: 9.13.0
@@ -196,6 +199,9 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
+      '@-repo/tailwind-config':
+        specifier: workspace:*
+        version: link:../../tooling/tailwind
       '@electron-toolkit/eslint-config-ts':
         specifier: ^2.0.0
         version: 2.0.0(eslint@8.57.1)(typescript@5.6.3)
@@ -253,6 +259,18 @@ importers:
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@20.17.3)
+
+  tooling/tailwind:
+    dependencies:
+      postcss:
+        specifier: ^8.4.47
+        version: 8.4.47
+      tailwindcss:
+        specifier: ^3.4.14
+        version: 3.4.14
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.14)
 
 packages:
 
