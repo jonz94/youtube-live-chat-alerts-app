@@ -218,17 +218,21 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
         <hr className="-mx-6" />
 
-        <div className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4">
+        <form
+          className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="flex items-center gap-x-2">
-            <Label htmlFor="animationTimeInMilliseconds" className="min-w-fit inline-flex items-center gap-x-1">
+            <Label htmlFor="animationTimeInSeconds" className="min-w-fit inline-flex items-center gap-x-1">
               <Timer />
               持續時間
             </Label>
 
             <Input
-              id="animationTimeInMilliseconds"
+              id="animationTimeInSeconds"
               ref={inputRef}
               type="number"
+              min={1}
               defaultValue={Math.round(settings.animationTimeInMilliseconds / 1000)}
             />
 
@@ -237,6 +241,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
           <div className="w-full flex">
             <Button
+              type="submit"
               className="w-full"
               onClick={() => {
                 const value = inputRef.current?.value
@@ -252,7 +257,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
               儲存設定
             </Button>
           </div>
-        </div>
+        </form>
 
         <hr className="-mx-6" />
 
