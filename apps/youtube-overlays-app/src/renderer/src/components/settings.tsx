@@ -51,7 +51,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
   const updateAnimationTime = trpcReact.updateAnimationTimeSetting.useMutation({
     onSuccess: (input) => {
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
 
       toast.success(`儲存成功：【持續時間】已成功更新為 ${input / 1000} 秒`)
     },
@@ -68,7 +68,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
       }
 
       console.log('success')
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
       setCacheTimestamp(String(Date.now()))
 
       toast.success(`儲存成功：【圖片檔】已經成功更新為\n${input.newImagePath}`)
@@ -80,7 +80,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
   const resetImage = trpcReact.resetImage.useMutation({
     onSuccess: () => {
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
       setCacheTimestamp(String(Date.now()))
 
       toast.success(`儲存成功：【圖片檔】已經成功重置為預設圖片`)
@@ -98,7 +98,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
       }
 
       console.log('success')
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
       setCacheTimestamp(String(Date.now()))
 
       toast.success(`儲存成功：【音效檔】已經成功更新為\n${input.newSoundFilePath}`)
@@ -110,7 +110,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
 
   const resetSoundEffect = trpcReact.resetSoundEffect.useMutation({
     onSuccess: () => {
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
       setCacheTimestamp(String(Date.now()))
 
       toast.success(`儲存成功：【音效檔】已經成功重置為預設音效`)
@@ -123,7 +123,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
   const updateVolume = trpcReact.updateVolumeSetting.useMutation({
     onSuccess: (input) => {
       console.log('success')
-      utils.settings.invalidate()
+      void utils.settings.invalidate()
 
       toast.success(`儲存成功：【音效音量】已經成功更新為 ${input}%`)
     },
@@ -274,7 +274,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                   return
                 }
 
-                audioRef.current.play()
+                void audioRef.current.play()
               }}
             >
               <Music />
@@ -353,7 +353,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                   return
                 }
 
-                audioRef.current.play()
+                void audioRef.current.play()
               }}
             >
               <Music />

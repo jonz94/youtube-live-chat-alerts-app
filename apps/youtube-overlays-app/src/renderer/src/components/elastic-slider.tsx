@@ -38,7 +38,7 @@ export default function ElasticSlider({ volume, setVolume }: ElasticSliderProps)
   useMotionValueEvent(clientX, 'change', (latest) => {
     if (ref.current) {
       const { left, right } = ref.current.getBoundingClientRect()
-      let newValue
+      let newValue: number
 
       if (latest < left) {
         setRegion('left')

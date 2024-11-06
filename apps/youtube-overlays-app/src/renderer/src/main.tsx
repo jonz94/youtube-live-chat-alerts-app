@@ -1,14 +1,15 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '~/renderer/components/theme-provider'
 import App from './App'
-import './index.css'
 import { queryClient, trpcClient, trpcReact } from './trpc'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+import './index.css'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -17,5 +18,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </ThemeProvider>
       </QueryClientProvider>
     </trpcReact.Provider>
-  </React.StrictMode>,
+  </StrictMode>,
 )

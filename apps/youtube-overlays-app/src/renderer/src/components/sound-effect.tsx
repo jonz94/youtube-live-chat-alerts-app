@@ -18,7 +18,7 @@ export function SoundEffect({ volume }: { volume: number }) {
       console.log('open')
 
       if (audioRef.current) {
-        audioRef.current.play()
+        void audioRef.current.play()
       }
     }
 

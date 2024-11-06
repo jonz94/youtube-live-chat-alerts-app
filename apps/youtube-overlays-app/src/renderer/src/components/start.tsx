@@ -10,7 +10,7 @@ export function Start() {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [videoTitle, setVideoTitle] = useState('')
   const start = trpcReact.start.useMutation({
-    onSuccess: async ({ error, data }) => {
+    onSuccess: ({ error, data }) => {
       if (error) {
         console.log('error', error)
 

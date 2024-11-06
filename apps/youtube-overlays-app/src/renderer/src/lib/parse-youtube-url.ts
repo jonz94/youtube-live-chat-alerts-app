@@ -12,7 +12,7 @@ export function parseYoutubeUrl(originalUrl: string): ParsedYoutubeUrlData {
   const parsedUrl = (function parseUrl() {
     try {
       return new URL(originalUrl)
-    } catch (error) {
+    } catch {
       return null
     }
   })()

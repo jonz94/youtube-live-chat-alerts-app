@@ -5,7 +5,7 @@ import { exposeElectronTRPC } from 'trpc-electron/main'
 exposeElectronTRPC()
 
 const api = {
-  getPathForFile: webUtils.getPathForFile,
+  getPathForFile: void webUtils.getPathForFile,
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -19,8 +19,8 @@ if (process.contextIsolated) {
     console.error(error)
   }
 } else {
-  // @ts-ignore (define in dts)
+  // @ts-expect-error (define in dts)
   window.electron = electronAPI
-  // @ts-ignore (define in dts)
+  // @ts-expect-error (define in dts)
   window.api = api
 }

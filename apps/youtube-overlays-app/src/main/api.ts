@@ -141,7 +141,7 @@ export const router = t.router({
       }
     }
 
-    livechat.on('chat-update', async (chatAction) => {
+    livechat.on('chat-update', (chatAction) => {
       if (!io) {
         return
       }
