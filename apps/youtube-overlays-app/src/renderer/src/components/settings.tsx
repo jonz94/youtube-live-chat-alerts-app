@@ -176,7 +176,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                 <AlertDialogHeader>
                   <AlertDialogTitle>確定要還原為預設圖片嗎？</AlertDialogTitle>
                   <AlertDialogDescription>
-                    此操作將會移除目前的自訂圖片，並將圖片還原為系統預設圖片。
+                    此操作將會移除目前的自訂圖片，並將圖片還原為初始的預設圖片。
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="gap-x-2">
@@ -297,7 +297,7 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
                 <AlertDialogHeader>
                   <AlertDialogTitle>確定要還原為預設音效嗎？</AlertDialogTitle>
                   <AlertDialogDescription>
-                    此操作將會移除目前的自訂音效，並將音效還原為系統預設音效。
+                    此操作將會移除目前的自訂音效，並將音效還原為初始的預設音效。
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="gap-x-2">
