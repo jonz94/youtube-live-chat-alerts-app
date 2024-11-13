@@ -9,7 +9,8 @@
     "bundle:win": "turbo run bundle:win",
     "clean": "git clean -xdf .turbo node_modules",
     "clean:workspaces": "turbo run clean",
-    "dev": "turbo dev",
+    "dev": "pnpm --parallel --filter \"./apps/**\" run dev",
+    "dev:turbo": "turbo dev",
     "fmt": "turbo fmt",
     "lint": "turbo lint",
     "prettier": "prettier --write . \"!apps\" && turbo prettier"
