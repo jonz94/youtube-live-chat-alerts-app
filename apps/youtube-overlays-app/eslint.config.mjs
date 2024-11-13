@@ -11,6 +11,8 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: 2020,
       parserOptions: {
+        /** @see https://typescript-eslint.io/getting-started/typed-linting */
+        projectService: true,
         project: ['./tsconfig.node.json', './tsconfig.web.json'],
         tsconfigRootDir: import.meta.dirname,
       },
