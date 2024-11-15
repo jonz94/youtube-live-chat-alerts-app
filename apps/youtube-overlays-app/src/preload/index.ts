@@ -5,7 +5,8 @@ import { exposeElectronTRPC } from 'trpc-electron/main'
 exposeElectronTRPC()
 
 const api = {
-  getPathForFile: void webUtils.getPathForFile,
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  getPathForFile: webUtils.getPathForFile,
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
