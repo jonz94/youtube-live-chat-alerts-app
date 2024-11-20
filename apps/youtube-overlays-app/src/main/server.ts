@@ -6,7 +6,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { type Server as HttpServer } from 'node:http'
 import { relative, resolve } from 'node:path'
-import { getSettingsDir } from './settings'
+import { getSettings, getSettingsDir } from './settings'
 import { startWebsocket } from './websocket'
 
 export function startWebServer(port = 21829) {
@@ -55,6 +55,10 @@ export function startWebServer(port = 21829) {
 
   app.get('/healthz', (c) => {
     return c.text('OK')
+  })
+
+  app.get('/api/settings', (c) => {
+    return c.json(getSettings())
   })
 
   console.log(`Server is running on port ${port}`)

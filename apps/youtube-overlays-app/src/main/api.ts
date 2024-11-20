@@ -3,12 +3,14 @@ import { initTRPC } from '@trpc/server'
 import { type Server } from 'socket.io'
 import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
+import { templateSchema } from './schema'
 import {
   getSettings,
   resetImage,
   resetSoundEffect,
   updateAnimationTimeInMillisecondsSetting,
   updateImage,
+  updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting,
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
@@ -28,7 +30,7 @@ export const router = t.router({
 
     const { animationTimeInMilliseconds } = getSettings()
 
-    const value = io.emit('open', { name: '測試', amount: '87', animationTimeInMilliseconds })
+    const value = io.emit('open', { name: '測試貓草', amount: '87', animationTimeInMilliseconds })
 
     return { opened: value }
   }),
@@ -64,6 +66,27 @@ export const router = t.router({
   updateVolumeSetting: t.procedure.input(z.object({ volume: z.number().gte(0).lte(100) })).mutation(({ input }) => {
     return updateVolumeSetting(input.volume)
   }),
+
+  updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting: t.procedure
+    .input(templateSchema)
+    .mutation(({ input }) => {
+      const trimedInput = input.map((item) => {
+        if (item.type === 'variable') {
+          return item
+        }
+
+        return {
+          ...item,
+          text: item.text.trim(),
+        }
+      })
+
+      const template = updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting(trimedInput)
+
+      io?.emit('template-updated')
+
+      return template
+    }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
     const { videoId } = input

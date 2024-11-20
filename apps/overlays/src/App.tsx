@@ -1,8 +1,11 @@
 import { DeferQueue } from '@poppinss/defer'
+import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { TextEffect } from '~/components/text-effect'
 import { Button } from '~/components/ui/button'
-import { cn } from './lib/utils'
+import { cn } from '~/lib/utils'
+import { fetchSettings } from '~/query'
 import { socket } from './socket'
 
 interface PresentOptions {
@@ -13,6 +16,14 @@ interface PresentOptions {
 
 const ANIMATION_DURATION_IN_MS = 250
 const ENABLE_DEBUG_MODE = false
+
+function convertToDisplayName(id: string | null, lookupTable: { name: string; amount: string }) {
+  if (id !== 'name' && id !== 'amount') {
+    return null
+  }
+
+  return lookupTable[id]
+}
 
 const queue = new DeferQueue({ concurrency: 1 })
 
@@ -33,45 +44,19 @@ queue.drained = function () {
   console.log('Processed last task in the queue')
 }
 
-function TextEffect({ children, className }: { children: string; className?: string }) {
-  let spaceCount = 0
-
-  return children.split('').map((char, index) => {
-    if (char === ' ') {
-      spaceCount++
-    }
-
-    const delay = (index - spaceCount) / 10
-
-    return (
-      <motion.span
-        key={index}
-        className={cn('inline-block whitespace-pre', className)}
-        animate={{
-          y: [0, -4, 0, 4, 0],
-        }}
-        transition={{
-          duration: 1,
-          ease: 'linear',
-          times: [0, 0.25, 0.5, 0.75, 1],
-          repeat: Infinity,
-          repeatDelay: 0,
-          delay,
-        }}
-      >
-        {char}
-      </motion.span>
-    )
-  })
-}
-
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const [name, setName] = useState('幽浮 UFo K.')
+  const [name, setName] = useState('測試貓草')
   const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(ENABLE_DEBUG_MODE)
   const [cacheTimestamp, setCacheTimestamp] = useState(String(Date.now()))
+  const {
+    data: settings,
+    error,
+    isLoading,
+    refetch: refetchSettings,
+  } = useQuery({ queryKey: ['settings'], queryFn: fetchSettings })
 
   function present({ name, amount, animationTimeInMilliseconds }: PresentOptions) {
     function task() {
@@ -109,18 +94,43 @@ function App() {
       setCacheTimestamp(String(Date.now()))
     }
 
+    function onTemplateUpdated() {
+      console.log('update')
+      void refetchSettings()
+    }
+
     socket.on('connect', onConnect)
     socket.on('open', onOpen)
     socket.on('update', onUpdate)
+    socket.on('template-updated', onTemplateUpdated)
     socket.on('disconnect', onDisconnect)
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('open', onOpen)
       socket.off('update', onUpdate)
+      socket.off('template-updated', onTemplateUpdated)
       socket.off('disconnect', onDisconnect)
     }
-  }, [isOpen])
+  }, [isOpen, refetchSettings])
+
+  if (isLoading) {
+    return <>設定載入中...</>
+  }
+
+  if (error) {
+    return (
+      <>
+        <p>載入設定時發生錯誤！</p>
+        <p>詳細錯誤訊息如下：</p>
+        <pre>{JSON.stringify(error, null, 2)}</pre>
+      </>
+    )
+  }
+
+  if (!settings) {
+    return <>載入設定時發生錯誤：設定資料空空如也</>
+  }
 
   return (
     <div className="min-h-screen">
@@ -166,15 +176,19 @@ function App() {
             />
 
             <div className="flex p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
-              <div>感謝</div>
-              <div className="text-[#32c3a6] flex">
-                <TextEffect>{name}</TextEffect>
-              </div>
-              <div>種了</div>
-              <div className="text-[#32c3a6] flex">
-                <TextEffect>{amount}</TextEffect>
-              </div>
-              <div>個貓草</div>
+              {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
+                if (item.type === 'text') {
+                  return <div key={`block-${index}`}>{item.text}</div>
+                }
+
+                return (
+                  <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                    <TextEffect animate="bounce">
+                      {convertToDisplayName(item.attrs.id, { name, amount }) ?? 'null'}
+                    </TextEffect>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </motion.div>

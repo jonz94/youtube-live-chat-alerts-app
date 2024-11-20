@@ -63,8 +63,6 @@ export default {
   },
   plugins: [
     tailwindcssAnimate,
-
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     plugin(({ addUtilities }) => {
       addUtilities({
         '.text-shadow': {

@@ -2,21 +2,20 @@ import { is } from '@electron-toolkit/utils'
 import { app } from 'electron'
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { z } from 'zod'
-
-const DEFAULT_ANIMATION_TIME_IN_MILLISECONDS = 10_000
-const DEFAULT_VOLUME = 50
-
-const settingsSchema = z.object({
-  animationTimeInMilliseconds: z.number().default(DEFAULT_ANIMATION_TIME_IN_MILLISECONDS),
-  volume: z.number().default(DEFAULT_VOLUME),
-})
-
-export type SettingsSchema = z.infer<typeof settingsSchema>
+import {
+  DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
+  DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
+  DEFAULT_VOLUME,
+  settingsSchema,
+  SettingsSchema,
+  type Template,
+} from './schema'
 
 let settings: SettingsSchema = {
   animationTimeInMilliseconds: DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
   volume: DEFAULT_VOLUME,
+  liveChatSponsorshipsGiftPurchaseAnnouncementTemplate:
+    DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
 }
 
 export function getSettingsDir() {
@@ -93,7 +92,7 @@ export function initializeSettings() {
 
   settings = settingsSchema.parse(JSON.parse(settingsContent))
 
-  console.log({ settings })
+  console.dir({ settings }, { depth: Infinity })
 
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 }
@@ -186,4 +185,13 @@ export function updateVolumeSetting(input: number) {
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 
   return input
+}
+
+export function updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting(template: Template) {
+  settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate = template
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return template
 }

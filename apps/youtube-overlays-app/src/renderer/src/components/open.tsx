@@ -1,50 +1,48 @@
-import { motion } from 'framer-motion'
 import { FlaskConical } from 'lucide-react'
 import { toast } from 'sonner'
+import { TextEffect } from '~/renderer/components/text-effect'
 import { Button } from '~/renderer/components/ui/button'
-import { cn } from '~/renderer/lib/utils'
 import { trpcReact } from '~/renderer/trpc'
 
-function TextEffect({ children, className }: { children: string; className?: string }) {
-  let spaceCount = 0
+function convertToDisplayName(id: string | null) {
+  if (!id) {
+    return null
+  }
 
-  return children.split('').map((char, index) => {
-    if (char === ' ') {
-      spaceCount++
-    }
+  const lookupTable = {
+    name: '測試貓草',
+    amount: '87',
+  } as const
 
-    const delay = (index - spaceCount) / 10
-
-    return (
-      <motion.span
-        key={index}
-        className={cn('inline-block whitespace-pre', className)}
-        animate={{
-          y: [0, -4, 0, 4, 0],
-        }}
-        transition={{
-          duration: 1,
-          ease: 'linear',
-          times: [0, 0.25, 0.5, 0.75, 1],
-          repeat: Infinity,
-          repeatDelay: 0,
-          delay,
-        }}
-      >
-        {char}
-      </motion.span>
-    )
-  })
+  return (lookupTable[id] as string) ?? null
 }
 
 export function Open() {
-  const { error, mutate, isPending } = trpcReact.open.useMutation({
+  const { data: settings, error, isLoading } = trpcReact.settings.useQuery()
+
+  const {
+    error: sendError,
+    mutate,
+    isPending,
+  } = trpcReact.open.useMutation({
     onSuccess: ({ opened }) => {
       if (opened) {
         toast.success('已成功送出贈訂測試訊息')
       }
     },
   })
+
+  if (isLoading) {
+    return <>載入中</>
+  }
+
+  if (error) {
+    return <>發生錯誤</>
+  }
+
+  if (!settings) {
+    return <>發生錯誤</>
+  }
 
   return (
     <div>
@@ -55,22 +53,24 @@ export function Open() {
         </Button>
 
         <div className="flex p-4 space-x-1 text-xl font-bold text-[#d48e26] text-shadow">
-          <div>感謝</div>
-          <div className="text-[#32c3a6] flex">
-            <TextEffect>測試</TextEffect>
-          </div>
-          <div>種了</div>
-          <div className="text-[#32c3a6] flex">
-            <TextEffect>87</TextEffect>
-          </div>
-          <div>個貓草</div>
+          {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
+            if (item.type === 'text') {
+              return <div key={`block-${index}`}>{item.text}</div>
+            }
+
+            return (
+              <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                <TextEffect animate="bounce">{convertToDisplayName(item.attrs.id) ?? 'null'}</TextEffect>
+              </div>
+            )
+          })}
         </div>
       </div>
 
       {error ? (
         <div className="text-center">
           <p>發生錯誤：</p>
-          <pre>{JSON.stringify(error, null, 2)}</pre>
+          <pre>{JSON.stringify(sendError, null, 2)}</pre>
         </div>
       ) : null}
     </div>

@@ -1,8 +1,12 @@
 import { useAtom } from 'jotai'
-import { FileImage, FileMusic, Music, Save, Timer, Trash2 } from 'lucide-react'
+import { FileImage, FileMusic, MessageSquareText, Music, Save, Timer, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { useOneLineEditor } from '~/renderer/components/editor/core'
+import { Tiptap } from '~/renderer/components/editor/Tiptap'
+import { convertToDisplayName } from '~/renderer/components/editor/utils'
 import ElasticSlider from '~/renderer/components/elastic-slider'
+import { TextEffect } from '~/renderer/components/text-effect'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,9 +25,11 @@ import { Label } from '~/renderer/components/ui/label'
 import { cn } from '~/renderer/lib/utils'
 import { cacheTimestampAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
+import { SettingsSchema, Template, templateSchema } from '../../../main/schema'
 
 export function Settings() {
   const { data: settings, error, isLoading } = trpcReact.settings.useQuery()
+
   if (isLoading) {
     return <>載入中</>
   }
@@ -39,13 +45,14 @@ export function Settings() {
   return <SettingsCard settings={settings}></SettingsCard>
 }
 
-function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: number; volume: number } }) {
+function SettingsCard({ settings }: { settings: SettingsSchema }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const imageInputRef = useRef<HTMLInputElement | null>(null)
   const audioInputRef = useRef<HTMLInputElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [volume, setVolume] = useState(settings.volume)
   const [cacheTimestamp, setCacheTimestamp] = useAtom(cacheTimestampAtom)
+  const editor = useOneLineEditor(settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate)
 
   const utils = trpcReact.useUtils()
 
@@ -131,6 +138,19 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
       console.log('error', error)
     },
   })
+
+  const updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplate =
+    trpcReact.updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting.useMutation({
+      onSuccess: () => {
+        console.log('success')
+        void utils.settings.invalidate()
+
+        toast.success(`儲存成功：【通知訊息文字】已經成功更新`)
+      },
+      onError: (error) => {
+        console.log('error', error)
+      },
+    })
 
   useEffect(() => {
     if (audioRef.current) {
@@ -376,6 +396,47 @@ function SettingsCard({ settings }: { settings: { animationTimeInMilliseconds: n
               儲存設定
             </Button>
           </div>
+        </div>
+
+        <hr className="-mx-6" />
+
+        <div className="flex flex-col gap-4">
+          <label className="flex items-center gap-2">
+            <MessageSquareText />
+            自訂通知訊息文字
+          </label>
+
+          <div className="flex space-x-1 text-xl font-bold text-[#d48e26] text-shadow min-h-7">
+            {editor &&
+              templateSchema.safeParse(editor.getJSON().content!.at(0)!.content)?.data?.map((item, index) => {
+                if (item.type === 'text') {
+                  return <div key={`block-${index}`}>{item.text}</div>
+                }
+
+                return (
+                  <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                    <TextEffect animate="bounce">{convertToDisplayName(item.attrs.id) ?? 'null'}</TextEffect>
+                  </div>
+                )
+              })}
+          </div>
+
+          {editor && <Tiptap editor={editor}></Tiptap>}
+
+          <Button
+            onClick={() => {
+              if (!editor) {
+                return
+              }
+
+              const template = editor.getJSON().content!.at(0)!.content as Template
+
+              updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplate.mutate(template)
+            }}
+          >
+            <Save />
+            儲存設定
+          </Button>
         </div>
       </CardContent>
     </Card>
