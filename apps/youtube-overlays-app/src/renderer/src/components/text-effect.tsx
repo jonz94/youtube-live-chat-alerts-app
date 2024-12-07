@@ -12,7 +12,10 @@ export function Bounce({
 }) {
   return (
     <span
-      className={cn('inline-block whitespace-pre animate-bounce duration-1000 repeat-infinite', className)}
+      className={cn(
+        'inline-block whitespace-pre animate-bounce duration-1000 repeat-infinite relative top-1',
+        className,
+      )}
       style={{
         animationDelay: `${delayInSeconds}s`,
       }}
