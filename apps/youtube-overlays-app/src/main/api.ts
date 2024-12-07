@@ -23,14 +23,14 @@ export const router = t.router({
     return { isDev: is.dev }
   }),
 
-  open: t.procedure.mutation(() => {
+  open: t.procedure.input(z.object({ amount: z.string() })).mutation(({ input }) => {
     if (!io) {
       return { opened: false }
     }
 
     const { animationTimeInMilliseconds } = getSettings()
 
-    const value = io.emit('open', { name: '測試貓草', amount: '87', animationTimeInMilliseconds })
+    const value = io.emit('open', { name: '測試貓草', amount: input.amount, animationTimeInMilliseconds })
 
     return { opened: value }
   }),

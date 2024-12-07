@@ -25,9 +25,9 @@ export function Open() {
     mutate,
     isPending,
   } = trpcReact.open.useMutation({
-    onSuccess: ({ opened }) => {
+    onSuccess: ({ opened }, { amount }) => {
       if (opened) {
-        toast.success('已成功送出贈訂測試訊息')
+        toast.success(`已成功送出贈訂測試訊息【數量: ${amount}】`)
       }
     },
   })
@@ -45,9 +45,9 @@ export function Open() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-4">
       <div className="flex gap-x-4 items-center">
-        <Button variant="secondary" onClick={() => mutate()} disabled={isPending}>
+        <Button variant="secondary" onClick={() => mutate({ amount: '87' })} disabled={isPending}>
           <FlaskConical />
           贈訂測試
         </Button>
@@ -65,6 +65,15 @@ export function Open() {
             )
           })}
         </div>
+      </div>
+
+      <div className="flex gap-x-4 items-center">
+        {['50', '20', '10', '5', '1'].map((amount) => (
+          <Button key={amount} variant="secondary" onClick={() => mutate({ amount })} disabled={isPending}>
+            <FlaskConical />
+            {amount}
+          </Button>
+        ))}
       </div>
 
       {error ? (
