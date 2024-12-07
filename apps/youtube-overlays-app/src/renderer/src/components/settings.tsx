@@ -398,9 +398,15 @@ function AudioInput({ item }: { item: { amount: number } }) {
   )
 }
 
-function AudioPlay({ amount }: { amount: number }) {
+function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
   const [cacheTimestamp] = useAtom(cacheTimestampAtom)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100
+    }
+  }, [volume])
 
   return (
     <>
@@ -569,7 +575,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
               <div className="flex gap-2">
                 <AudioInput item={item}></AudioInput>
 
-                <AudioPlay amount={item.amount}></AudioPlay>
+                <AudioPlay amount={item.amount} volume={settings.volume}></AudioPlay>
 
                 <AlertDialog>
                   <TooltipProvider delayDuration={250}>
