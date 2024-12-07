@@ -62,20 +62,40 @@ export function initializeSettings() {
     mkdirSync(assetsDir, { recursive: true })
   }
 
+  const legacySoundEffectPath = resolve(assetsDir, 'sound.mp3')
+  const hasLegacySoundEffect = existsSync(legacySoundEffectPath)
   const soundEffectPaths = AMOUNT.map((item) => resolve(assetsDir, `sound${item}.mp3`))
 
   for (const soundEffectPath of soundEffectPaths) {
     if (!existsSync(soundEffectPath)) {
-      copyFileSync(DEFAULT_SOUND_EFFECT_PATH, soundEffectPath)
+      if (hasLegacySoundEffect) {
+        copyFileSync(legacySoundEffectPath, soundEffectPath)
+      } else {
+        copyFileSync(DEFAULT_SOUND_EFFECT_PATH, soundEffectPath)
+      }
     }
   }
 
+  if (hasLegacySoundEffect) {
+    rmSync(legacySoundEffectPath, { force: true })
+  }
+
+  const legacyImagePath = resolve(assetsDir, 'image.gif')
+  const hasLegacyImage = existsSync(legacyImagePath)
   const imagesPaths = AMOUNT.map((item) => resolve(assetsDir, `image${item}.gif`))
 
   for (const imagePath of imagesPaths) {
     if (!existsSync(imagePath)) {
-      copyFileSync(DEFAULT_IMAGE_PATH, imagePath)
+      if (hasLegacyImage) {
+        copyFileSync(legacyImagePath, imagePath)
+      } else {
+        copyFileSync(DEFAULT_IMAGE_PATH, imagePath)
+      }
     }
+  }
+
+  if (hasLegacyImage) {
+    rmSync(legacyImagePath, { force: true })
   }
 
   const settingsContent = readFileSync(settingsPath, 'utf-8')
