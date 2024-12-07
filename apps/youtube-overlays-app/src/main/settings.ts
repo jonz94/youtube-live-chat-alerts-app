@@ -18,6 +18,16 @@ let settings: SettingsSchema = {
     DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
 }
 
+const DEFAULT_SOUND_EFFECT_PATH = is.dev
+  ? resolve(import.meta.dirname, '..', '..', 'resources', 'sound.m4a')
+  : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.m4a')
+
+const DEFAULT_IMAGE_PATH = is.dev
+  ? resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png')
+  : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png')
+
+const AMOUNT = ['1', '5', '10', '20', '50'] as const
+
 export function getSettingsDir() {
   if (is.dev) {
     const monorepoProjectRoot = resolve(import.meta.dirname, '..', '..', '..', '..')
@@ -52,39 +62,19 @@ export function initializeSettings() {
     mkdirSync(assetsDir, { recursive: true })
   }
 
-  const soundEffectPath = resolve(assetsDir, 'sound.mp3')
+  const soundEffectPaths = AMOUNT.map((item) => resolve(assetsDir, `sound${item}.mp3`))
 
-  if (!existsSync(soundEffectPath)) {
-    if (is.dev) {
-      copyFileSync(
-        // default sound effect
-        resolve(import.meta.dirname, '..', '..', 'resources', 'sound.ogg'),
-        soundEffectPath,
-      )
-    } else {
-      copyFileSync(
-        // default sound effect
-        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.ogg'),
-        soundEffectPath,
-      )
+  for (const soundEffectPath of soundEffectPaths) {
+    if (!existsSync(soundEffectPath)) {
+      copyFileSync(DEFAULT_SOUND_EFFECT_PATH, soundEffectPath)
     }
   }
 
-  const imagePath = resolve(assetsDir, 'image.gif')
+  const imagesPaths = AMOUNT.map((item) => resolve(assetsDir, `image${item}.gif`))
 
-  if (!existsSync(imagePath)) {
-    if (is.dev) {
-      copyFileSync(
-        // default image
-        resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
-        imagePath,
-      )
-    } else {
-      copyFileSync(
-        // default image
-        resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
-        imagePath,
-      )
+  for (const imagePath of imagesPaths) {
+    if (!existsSync(imagePath)) {
+      copyFileSync(DEFAULT_IMAGE_PATH, imagePath)
     }
   }
 
@@ -110,72 +100,52 @@ export function updateAnimationTimeInMillisecondsSetting(input: number) {
   return input
 }
 
-export function updateImage(newImagePath: string) {
+export function updateImage(newImagePath: string, amount: number) {
   if (!existsSync(newImagePath)) {
-    return { error: '找不到此檔案', newImagePath }
+    return { error: '找不到此檔案', newImagePath, amount }
   }
 
-  const imagePath = resolve(getSettingsPath(), '..', 'assets', 'image.gif')
+  const imagePath = resolve(getSettingsPath(), '..', 'assets', `image${amount}.gif`)
 
   rmSync(imagePath, { force: true })
 
   copyFileSync(newImagePath, imagePath)
 
-  return { error: '', newImagePath }
+  return { error: '', newImagePath, amount }
 }
 
-export function resetImage() {
-  const imagePath = resolve(getSettingsDir(), 'assets', 'image.gif')
+export function resetImage(amount: number) {
+  const imagePath = resolve(getSettingsDir(), 'assets', `image${amount}.gif`)
 
   rmSync(imagePath, { force: true })
 
-  if (is.dev) {
-    copyFileSync(
-      // default image
-      resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png'),
-      imagePath,
-    )
-  } else {
-    copyFileSync(
-      // default image
-      resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png'),
-      imagePath,
-    )
-  }
+  copyFileSync(DEFAULT_IMAGE_PATH, imagePath)
+
+  return { amount }
 }
 
-export function updateSoundEffect(newSoundEffectPath: string) {
+export function updateSoundEffect(newSoundEffectPath: string, amount: number) {
   if (!existsSync(newSoundEffectPath)) {
-    return { error: '找不到此檔案', newSoundFilePath: newSoundEffectPath }
+    return { error: '找不到此檔案', newSoundFilePath: newSoundEffectPath, amount }
   }
 
-  const soundEffectPath = resolve(getSettingsDir(), 'assets', 'sound.mp3')
+  const soundEffectPath = resolve(getSettingsDir(), 'assets', `sound${amount}.mp3`)
 
   rmSync(soundEffectPath, { force: true })
 
   copyFileSync(newSoundEffectPath, soundEffectPath)
 
-  return { error: '', newSoundFilePath: newSoundEffectPath }
+  return { error: '', newSoundFilePath: newSoundEffectPath, amount }
 }
 
-export function resetSoundEffect() {
-  const soundEffectPath = resolve(getSettingsDir(), 'assets', 'sound.mp3')
+export function resetSoundEffect(amount: number) {
+  const soundEffectPath = resolve(getSettingsDir(), 'assets', `sound${amount}.mp3`)
 
   rmSync(soundEffectPath, { force: true })
 
-  if (is.dev) {
-    copyFileSync(
-      // default sound effect
-      resolve(import.meta.dirname, '..', '..', 'resources', 'sound.ogg'),
-      soundEffectPath,
-    )
-  } else {
-    copyFileSync(
-      // default sound effect
-      resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.ogg'),
-      soundEffectPath,
-    )
-  }
+  copyFileSync(DEFAULT_SOUND_EFFECT_PATH, soundEffectPath)
+
+  return { amount }
 }
 
 export function updateVolumeSetting(input: number) {

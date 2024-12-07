@@ -43,25 +43,39 @@ export const router = t.router({
     return updateAnimationTimeInMillisecondsSetting(input)
   }),
 
-  updateImage: t.procedure.input(z.object({ newImagePath: z.string() })).mutation(({ input }) => {
-    const result = updateImage(input.newImagePath)
+  updateImage: t.procedure.input(z.object({ newImagePath: z.string(), amount: z.number() })).mutation(({ input }) => {
+    const result = updateImage(input.newImagePath, input.amount)
 
     io?.emit('update')
 
     return result
   }),
 
-  resetImage: t.procedure.mutation(() => {
-    resetImage()
+  resetImage: t.procedure.input(z.object({ amount: z.number() })).mutation(({ input }) => {
+    const result = resetImage(input.amount)
 
     io?.emit('update')
+
+    return result
   }),
 
-  updateSoundEffect: t.procedure.input(z.object({ newSoundEffectPath: z.string() })).mutation(({ input }) => {
-    return updateSoundEffect(input.newSoundEffectPath)
-  }),
+  updateSoundEffect: t.procedure
+    .input(z.object({ newSoundEffectPath: z.string(), amount: z.number() }))
+    .mutation(({ input }) => {
+      const result = updateSoundEffect(input.newSoundEffectPath, input.amount)
 
-  resetSoundEffect: t.procedure.mutation(() => resetSoundEffect()),
+      io?.emit('update')
+
+      return result
+    }),
+
+  resetSoundEffect: t.procedure.input(z.object({ amount: z.number() })).mutation(({ input }) => {
+    const result = resetSoundEffect(input.amount)
+
+    io?.emit('update')
+
+    return result
+  }),
 
   updateVolumeSetting: t.procedure.input(z.object({ volume: z.number().gte(0).lte(100) })).mutation(({ input }) => {
     return updateVolumeSetting(input.volume)

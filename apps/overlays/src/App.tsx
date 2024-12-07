@@ -171,7 +171,7 @@ function App() {
           <div className="flex flex-col justify-center items-center">
             <img
               className="h-auto w-[400px]"
-              src={`http://localhost:21829/assets/image.gif?t=${cacheTimestamp}`}
+              src={`http://localhost:21829/assets/image${amount === '87' ? '1' : amount}.gif?t=${cacheTimestamp}`}
               alt=""
             />
 
