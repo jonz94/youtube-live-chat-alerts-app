@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import { Eye, FileImage, FileMusic, MessageSquareText, Music, Save, Timer, Trash2 } from 'lucide-react'
+import { Eye, FileImage, MessageSquareText, Music, Play, Save, Timer, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useOneLineEditor } from '~/renderer/components/editor/core'
@@ -362,7 +362,7 @@ function AudioInput({ item }: { item: { amount: number } }) {
                 audioInputRef.current?.click()
               }}
             >
-              <FileMusic />
+              <Music />
             </Button>
           </TooltipTrigger>
 
@@ -426,7 +426,7 @@ function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
                 void audioRef.current.play()
               }}
             >
-              <Music />
+              <Play />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
