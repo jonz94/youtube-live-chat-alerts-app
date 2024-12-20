@@ -31,6 +31,21 @@ export function Start() {
     },
   })
 
+  const getLiveOrUpcomingStreams = trpcReact.getLiveOrUpcomingStreams.useMutation({
+    onSuccess: ({ error, data }) => {
+      if (error) {
+        console.log('error', error)
+
+        return
+      }
+
+      console.log('success', data)
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
   return (
     <Card>
       <CardHeader>
@@ -42,7 +57,7 @@ export function Start() {
           className={videoTitle ? 'hidden' : ''}
           ref={inputRef}
           type="text"
-          placeholder="請輸入 YouTube 直播網址"
+          placeholder="請輸入 YouTube 頻道或直播網址"
         />
 
         <div className={videoTitle ? '' : 'hidden'}>
@@ -61,13 +76,21 @@ export function Start() {
 
             const { type, id } = parseYoutubeUrl(value)
 
-            if (type === 'clip' || type === 'channel' || id === null) {
-              toast.error('此網址並非 YouTube 直播')
+            if (type === 'clip' || id === null) {
+              toast.error('此網址並非 YouTube 頻道或直播網址')
 
               return
             }
 
-            console.log(id)
+            if (type === 'channel' || type === 'channelHandler') {
+              console.log(id)
+
+              getLiveOrUpcomingStreams.mutate({ channelIdOrHandler: id })
+
+              return
+            }
+
+            console.log(type, id)
 
             start.mutate({ videoId: id })
           }}

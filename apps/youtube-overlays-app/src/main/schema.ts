@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const DEFAULT_ANIMATION_TIME_IN_MILLISECONDS = 10_000
 export const DEFAULT_VOLUME = 50
+export const DEFAULT_CHANNEL_URL = 'https://www.youtube.com/@KuromuOno'
 export const DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE = [
   {
     type: 'text',
@@ -50,6 +51,7 @@ export type Template = z.infer<typeof templateSchema>
 export const settingsSchema = z.object({
   animationTimeInMilliseconds: z.number().default(DEFAULT_ANIMATION_TIME_IN_MILLISECONDS),
   volume: z.number().default(DEFAULT_VOLUME),
+  channelUrl: z.string().url().nullable().default(null),
   liveChatSponsorshipsGiftPurchaseAnnouncementTemplate: templateSchema.default(
     DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
   ),

@@ -1,4 +1,4 @@
-export type YouTubeMediaType = 'video' | 'clip' | 'channel'
+export type YouTubeMediaType = 'video' | 'clip' | 'channel' | 'channelHandler'
 
 export interface ParsedYoutubeUrlData {
   type: YouTubeMediaType
@@ -25,10 +25,18 @@ export function parseYoutubeUrl(originalUrl: string): ParsedYoutubeUrlData {
     return EMPTY_PARSED_YOUTUBE_URL_DATA
   }
 
-  if (parsedUrl.pathname.startsWith('/channel/') || parsedUrl.pathname.startsWith('/@')) {
+  if (parsedUrl.pathname.startsWith('/channel/')) {
     return {
       type: 'channel',
-      id: parsedUrl.pathname,
+      id: parsedUrl.pathname.substring('/channel/'.length),
+      timestamp: null,
+    }
+  }
+
+  if (parsedUrl.pathname.startsWith('/@')) {
+    return {
+      type: 'channelHandler',
+      id: parsedUrl.pathname.substring('/'.length),
       timestamp: null,
     }
   }

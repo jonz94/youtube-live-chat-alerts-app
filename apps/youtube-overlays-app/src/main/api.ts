@@ -1,6 +1,5 @@
 import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
-import { type Server } from 'socket.io'
 import { Innertube, YTNodes } from 'youtubei.js'
 import { z } from 'zod'
 import { templateSchema } from './schema'
@@ -14,6 +13,7 @@ import {
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
+import { getLiveOrUpcomingStreams, parseAddChatItemActionItem } from './utils'
 import { io } from './websocket'
 
 const t = initTRPC.create({ isServer: true })
@@ -102,6 +102,16 @@ export const router = t.router({
       return template
     }),
 
+  getLiveOrUpcomingStreams: t.procedure
+    .input(z.object({ channelIdOrHandler: z.string() }))
+    .mutation(async ({ input }) => {
+      console.log({ input })
+
+      const data = await getLiveOrUpcomingStreams(input.channelIdOrHandler)
+
+      return { error: null, data }
+    }),
+
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
     const { videoId } = input
 
@@ -149,34 +159,6 @@ export const router = t.router({
       console.log('This live stream has ended.')
       livechat.stop()
     })
-
-    function parseAddChatItemActionItem(io: Server, item: YTNodes.AddChatItemAction['item']) {
-      if (item.is(YTNodes.LiveChatSponsorshipsGiftPurchaseAnnouncement)) {
-        io.emit('live-chat-debug', { type: YTNodes.LiveChatSponsorshipsGiftPurchaseAnnouncement.type, item })
-
-        const header = item.header
-
-        if (!header) {
-          return
-        }
-
-        const name = header.author_name.toString()
-        const primaryText = header.primary_text.toString()
-        const amount = (function getAmount(text: string) {
-          return text.split(' ').at(1)
-        })(primaryText)
-
-        const { animationTimeInMilliseconds } = getSettings()
-
-        io.emit('open', { name, amount, animationTimeInMilliseconds })
-        // NOTE: uncomment these lines below to simulate a delayed queue event for testing purposes
-        // console.log('open', { name, amount, animationTimeInMilliseconds })
-        // setTimeout(() => {
-        //   io.emit('open', { name: `${name} (delay)`, amount, animationTimeInMilliseconds })
-        //   console.log('open delay', { name: `${name} (delay)`, amount, animationTimeInMilliseconds })
-        // }, 1000)
-      }
-    }
 
     livechat.on('chat-update', (chatAction) => {
       if (!io) {

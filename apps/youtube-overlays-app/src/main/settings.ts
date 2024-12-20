@@ -14,6 +14,7 @@ import {
 let settings: SettingsSchema = {
   animationTimeInMilliseconds: DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
   volume: DEFAULT_VOLUME,
+  channelUrl: null,
   liveChatSponsorshipsGiftPurchaseAnnouncementTemplate:
     DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
 }
