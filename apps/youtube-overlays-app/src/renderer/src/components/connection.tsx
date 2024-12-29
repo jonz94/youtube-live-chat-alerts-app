@@ -555,6 +555,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
                       <img
                         className="h-auto w-[400px]"
                         width={400}
+                        height={225}
                         src={`https://i.ytimg.com/vi/${liveOrUpcomingStream.id}/maxresdefault.jpg`}
                         alt=""
                       />
