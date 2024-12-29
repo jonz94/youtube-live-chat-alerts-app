@@ -470,7 +470,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
       </div>
 
       {liveOrUpcomingStreams.length > 0 && (
-        <div className="-mx-6 pt-4">
+        <div className="-mx-6 mt-4 border-t">
           <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams}></ListTable>
         </div>
       )}
@@ -524,7 +524,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
 
   return (
     <Table>
-      <TableHeader className="sticky top-0 bottom-8 bg-background border-t">
+      <TableHeader className="sticky top-0 bottom-8 bg-background">
         <TableRow>
           <TableHead className="text-foreground">直播或待機室標題</TableHead>
           <TableHead className="text-foreground text-center">建立連線</TableHead>
