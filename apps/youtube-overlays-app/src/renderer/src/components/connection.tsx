@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import { Info, Radio, RotateCw, Trash2, UserRound } from 'lucide-react'
+import { CircleCheck, Info, Radio, RotateCw, Trash2, UserRound } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -29,7 +29,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/rend
 import { parseYoutubeUrl } from '~/renderer/lib/parse-youtube-url'
 import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
-import { videoTitleAtom } from '~/renderer/store'
+import { connectionVideoInfoAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 import { ChannelInfo, SettingsSchema, VideoInfo } from '../../../main/schema'
 
@@ -72,7 +72,7 @@ export function Connection() {
 function ConnectionCard({ settings }: { settings: SettingsSchema }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
-  const [videoTitle, setVideoTitle] = useAtom(videoTitleAtom)
+  const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
   const [enableAutoConnection, setEnableAutoConnection] = useState(false)
 
   const getChannelInfoAndThenUpdateChannelInfoSettings =
@@ -130,7 +130,8 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
 
       toast.success('成功與直播聊天室建立連線！')
 
-      setVideoTitle(data?.title ?? '')
+      setConnectionVideoInfo(data)
+
       if (inputRef.current) {
         inputRef.current.value = ''
       }
@@ -144,13 +145,13 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
     <Card>
       <CardHeader>
         <CardTitle>與聊天室建立連線</CardTitle>
-        <CardDescription className={cn('max-w-sm', channelInfo && 'hidden')}>
+        <CardDescription className={cn('max-w-sm', channelInfo && 'hidden', connectionVideoInfo && 'hidden')}>
           輸入 YouTube 頻道或直播網址，並按下開始，讓小程式可以讀取到聊天室訊息
         </CardDescription>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-6">
-        {channelInfo && (
+        {channelInfo && !connectionVideoInfo && (
           <>
             <Card className="rounded-md">
               <CardHeader>
@@ -346,7 +347,13 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
           </>
         )}
 
-        <div className={cn('rounded-md border border-border px-4 py-3', !channelInfo && 'hidden')}>
+        <div
+          className={cn(
+            'rounded-md border border-border px-4 py-3',
+            !channelInfo && 'hidden',
+            connectionVideoInfo && 'hidden',
+          )}
+        >
           <div className="flex items-center text-sm">
             <Info className="-mt-0.5 me-3 inline-flex text-blue-500" aria-hidden="true" />
 
@@ -358,19 +365,86 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
         </div>
 
         <Input
-          className={videoTitle ? 'hidden' : ''}
+          className={connectionVideoInfo ? 'hidden' : ''}
           ref={inputRef}
           type="text"
           placeholder="請輸入 YouTube 頻道或直播網址"
         />
 
-        <div className={videoTitle ? '' : 'hidden'}>
-          <p className="text-green-500">成功與直播聊天室建立連線！</p>
-          <p className="truncate max-w-sm">{videoTitle}</p>
-        </div>
+        {connectionVideoInfo && (
+          <div className="flex flex-col gap-y-2">
+            <div className="rounded-lg border border-green-500/50 px-4 py-3 text-green-500">
+              <p>
+                <CircleCheck className="-mt-0.5 me-3 inline-flex" aria-hidden="true" />
+                <span>成功與直播聊天室建立連線！</span>
+              </p>
+            </div>
+
+            <div className="flex font-medium text-lg max-w-sm">
+              <Popover>
+                <TooltipProvider delayDuration={250}>
+                  <Tooltip>
+                    <PopoverTrigger asChild>
+                      <TooltipTrigger asChild>
+                        <p className="line-clamp-2 cursor-pointer hover:bg-muted py-1 px-2 rounded-md">
+                          {connectionVideoInfo.title}
+                        </p>
+                      </TooltipTrigger>
+                    </PopoverTrigger>
+                    <TooltipContent>點擊查看詳細資訊</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <PopoverContent className="flex flex-col gap-2 w-[432px]">
+                  <div className="flex">
+                    <img
+                      className="h-auto w-[400px]"
+                      width={400}
+                      height={225}
+                      src={`https://i.ytimg.com/vi/${connectionVideoInfo.id}/maxresdefault.jpg`}
+                      alt=""
+                    />
+                  </div>
+
+                  <DataList orientation="vertical" className="gap-4">
+                    <DataListItem>
+                      <DataListLabel>標題</DataListLabel>
+                      <DataListValue className="break-all">{connectionVideoInfo.title}</DataListValue>
+                    </DataListItem>
+
+                    <DataListItem>
+                      <DataListLabel>狀態</DataListLabel>
+                      <DataListValue>
+                        {connectionVideoInfo.isLive && (
+                          <Badge variant="outline" className="gap-1.5">
+                            <Radio className="text-red-500" aria-hidden="true" />
+                            <span className="text-red-500">正在直播</span>
+                          </Badge>
+                        )}
+
+                        {connectionVideoInfo.isUpcoming && (
+                          <Badge variant="secondary" className="gap-1.5">
+                            即將直播
+                          </Badge>
+                        )}
+                      </DataListValue>
+                    </DataListItem>
+
+                    <DataListItem>
+                      <DataListLabel>{connectionVideoInfo.isLive ? '開始時間' : '預定開始時間'}</DataListLabel>
+                      <DataListValue className="break-all">
+                        {new Date(connectionVideoInfo.startTimestamp).toLocaleString('zh-Hant-TW')}
+                      </DataListValue>
+                    </DataListItem>
+                  </DataList>
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        )}
       </CardContent>
 
-      <CardFooter className={cn('flex justify-end', videoTitle && 'hidden')}>
+      <CardFooter className={cn('flex justify-end', connectionVideoInfo && 'hidden')}>
         <Button
           onClick={() => {
             const value = inputRef.current?.value
@@ -501,7 +575,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
 }
 
 function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo[] }) {
-  const [, setVideoTitle] = useAtom(videoTitleAtom)
+  const [, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
 
   const start = trpcReact.start.useMutation({
     onSuccess: ({ error, data }) => {
@@ -515,7 +589,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
 
       toast.success('成功與直播聊天室建立連線！')
 
-      setVideoTitle(data?.title ?? '')
+      setConnectionVideoInfo(data)
     },
     onError: (error) => {
       console.log('error', error)

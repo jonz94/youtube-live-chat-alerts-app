@@ -3,7 +3,7 @@ import { initTRPC } from '@trpc/server'
 import { YTNodes } from 'youtubei.js'
 import { z } from 'zod'
 import { getInnertubeClient } from './innertube'
-import { templateSchema } from './schema'
+import { templateSchema, VideoInfo } from './schema'
 import {
   getSettings,
   removeChannelInfoSetting,
@@ -150,29 +150,21 @@ export const router = t.router({
 
     const video = await youtube.getInfo(videoId)
 
-    const {
-      is_live: isLive,
-      is_upcoming: isUpcoming,
-      title,
-      start_timestamp: startTimestamp,
-      end_timestamp: endTimestamp,
-      duration,
-    } = video.basic_info
+    const { basic_info: basicInfo } = await youtube.getInfo(videoId)
 
-    const videoInfo = {
-      isLive,
-      isUpcoming,
-      title,
-      startTimestamp,
-      endTimestamp,
-      duration,
+    const videoInfo: VideoInfo = {
+      id: videoId,
+      isLive: !!basicInfo.is_live,
+      isUpcoming: !!basicInfo.is_upcoming,
+      title: basicInfo.title ?? '',
+      startTimestamp: basicInfo.start_timestamp?.valueOf() ?? 0,
     }
 
     console.log(`🚀 start observing live chat data from the video: (${videoUrl})`)
     console.log(JSON.stringify(videoInfo, null, 2))
     console.log()
 
-    if (!isLive && !isUpcoming) {
+    if (!videoInfo.isLive && !videoInfo.isUpcoming) {
       console.log(`🚧 only ongoing/upcoming live streams need this feature...`)
 
       // return { error: 'only ongoing/upcoming live streams need this feature...', data: null }
