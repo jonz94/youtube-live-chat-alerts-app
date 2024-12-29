@@ -1,5 +1,3 @@
-'use client'
-
 import { type Editor, EditorContent } from '@tiptap/react'
 import { Plus } from 'lucide-react'
 import { convertToDisplayName } from '~/renderer/components/editor/utils'
