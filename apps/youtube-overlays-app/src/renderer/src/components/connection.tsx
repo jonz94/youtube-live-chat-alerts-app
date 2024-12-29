@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import { Radio, RotateCw, Trash2, UserRound } from 'lucide-react'
+import { Info, Radio, RotateCw, Trash2, UserRound } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -7,6 +7,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -16,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '~/renderer/components/ui/av
 import { Badge } from '~/renderer/components/ui/badge'
 import { Button, buttonVariants } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/renderer/components/ui/card'
+import { CircleHelpIcon } from '~/renderer/components/ui/circle-help'
 import { DataList, DataListItem, DataListLabel, DataListValue } from '~/renderer/components/ui/data-list'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '~/renderer/components/ui/hover-card'
 import { Input } from '~/renderer/components/ui/input'
@@ -142,7 +144,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
     <Card>
       <CardHeader>
         <CardTitle>與聊天室建立連線</CardTitle>
-        <CardDescription className="max-w-sm">
+        <CardDescription className={cn('max-w-sm', channelInfo && 'hidden')}>
           輸入 YouTube 頻道或直播網址，並按下開始，讓小程式可以讀取到聊天室訊息
         </CardDescription>
       </CardHeader>
@@ -150,13 +152,27 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
       <CardContent className="flex flex-col gap-6">
         {channelInfo && (
           <>
-            <Card>
+            <Card className="rounded-md">
               <CardHeader>
-                <CardTitle>已設定 YouTube 頻道</CardTitle>
-                <CardDescription className="max-w-xs hidden">
-                  直接設定 YouTube 頻道，小程式便可以根據 YouTube
-                  頻道設定，自動取得所有「當下正在進行的直播」以及「直播待機室」的網址列表，往後就不需要再每次手動輸入直播網址了～
-                </CardDescription>
+                <CardTitle className="flex gap-x-2 items-center">
+                  <span>已設定 YouTube 頻道</span>
+
+                  <TooltipProvider delayDuration={250}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <CircleHelpIcon className="p-0 mt-1 size-6 hover:bg-inherit cursor-help" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent asChild>
+                        <div className="max-w-xs text-base font-normal">
+                          設定 YouTube
+                          頻道後，小程式就可以自動獲取所有「當下正在進行的直播」以及「直播待機室」的網址列表，往後就不需要再每次手動輸入直播網址了～
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </CardTitle>
               </CardHeader>
 
               <CardContent className="flex flex-col gap-y-4">
@@ -212,9 +228,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                                   </a>
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>
-                                <p>查看 YouTube 頻道</p>
-                              </TooltipContent>
+                              <TooltipContent>查看 YouTube 頻道</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
 
@@ -222,7 +236,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button
-                                  variant="outline"
+                                  variant="secondary"
                                   size="icon"
                                   onClick={() => {
                                     getChannelInfoAndThenUpdateChannelInfoSettings.mutate({
@@ -233,9 +247,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                                   <RotateCw />
                                 </Button>
                               </TooltipTrigger>
-                              <TooltipContent>
-                                <p>重新讀取 YouTube 頻道資料</p>
-                              </TooltipContent>
+                              <TooltipContent>重新讀取 YouTube 頻道資料</TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
                         </div>
@@ -267,17 +279,15 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                                 </Button>
                               </TooltipTrigger>
                             </AlertDialogTrigger>
-                            <TooltipContent>
-                              <p>刪除頻道設定</p>
-                            </TooltipContent>
+                            <TooltipContent>刪除頻道設定</TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>確定要刪除目前的 YouTube 頻道設定嗎？</AlertDialogTitle>
-                            {/* <AlertDialogDescription>
-                        此操作將會刪除目前的 YouTube 頻道設定。
-                      </AlertDialogDescription> */}
+                            <AlertDialogDescription className="sr-only">
+                              此操作將會刪除目前的 YouTube 頻道設定。
+                            </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter className="gap-x-2">
                             <AlertDialogCancel>取消</AlertDialogCancel>
@@ -336,6 +346,17 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
           </>
         )}
 
+        <div className={cn('rounded-md border border-border px-4 py-3', !channelInfo && 'hidden')}>
+          <div className="flex items-center text-sm">
+            <Info className="-mt-0.5 me-3 inline-flex text-blue-500" aria-hidden="true" />
+
+            <div>
+              <p className="max-w-sm">直播沒有出現在上面的列表嗎？</p>
+              <p className="max-w-sm">可以在下方貼上直播網址進行手動連線喔！</p>
+            </div>
+          </div>
+        </div>
+
         <Input
           className={videoTitle ? 'hidden' : ''}
           ref={inputRef}
@@ -348,7 +369,8 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
           <p className="truncate max-w-sm">{videoTitle}</p>
         </div>
       </CardContent>
-      <CardFooter className={videoTitle ? 'hidden' : ''}>
+
+      <CardFooter className={cn('flex justify-end', videoTitle && 'hidden')}>
         <Button
           onClick={() => {
             const value = inputRef.current?.value
@@ -433,6 +455,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                variant="secondary"
                 size="icon"
                 onClick={() => {
                   getLiveOrUpcomingStreams.mutate({ channelIdOrHandle: channelInfo.id })
@@ -441,9 +464,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
                 <RotateCw />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p>重新讀取資料</p>
-            </TooltipContent>
+            <TooltipContent>重新整理列表</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </div>
@@ -467,7 +488,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
             >
               右上角
               <RotateCw className="ml-1" size={18} />
-              「重新讀取資料」按鈕
+              「重新整理列表」按鈕
             </span>
             <span>看看</span>
           </p>
@@ -503,9 +524,9 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
 
   return (
     <Table>
-      <TableHeader className="sticky top-0 bottom-8 bg-background">
+      <TableHeader className="sticky top-0 bottom-8 bg-background border-t">
         <TableRow>
-          <TableHead className="text-foreground text-center">直播或待機室標題</TableHead>
+          <TableHead className="text-foreground">直播或待機室標題</TableHead>
           <TableHead className="text-foreground text-center">建立連線</TableHead>
         </TableRow>
       </TableHeader>
@@ -520,14 +541,12 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
                     <Tooltip>
                       <PopoverTrigger asChild>
                         <TooltipTrigger asChild>
-                          <p className="truncate cursor-pointer hover:bg-muted py-1 pl-3 rounded-lg">
+                          <p className="line-clamp-2 cursor-pointer hover:bg-muted py-1 px-2 rounded-md">
                             {liveOrUpcomingStream.title}
                           </p>
                         </TooltipTrigger>
                       </PopoverTrigger>
-                      <TooltipContent>
-                        <p>點擊查看詳細資訊</p>
-                      </TooltipContent>
+                      <TooltipContent>點擊查看詳細資訊</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
 
@@ -591,9 +610,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
                         🚀
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <p>建立連線</p>
-                    </TooltipContent>
+                    <TooltipContent>建立連線</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </div>
