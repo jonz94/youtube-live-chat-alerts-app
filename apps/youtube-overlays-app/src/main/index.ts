@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { createIPCHandler } from 'trpc-electron/main'
 import icon from '../../resources/icon.png?asset'
 import { router } from './api'
+import { getInnertubeClient } from './innertube'
 import { startWebServer } from './server'
 import { initializeSettings } from './settings'
 
@@ -68,6 +69,9 @@ void app.whenReady().then(() => {
   createWindow()
 
   startWebServer()
+
+  // NOTE: just for creating global innertube client
+  void getInnertubeClient()
 
   initializeSettings()
 

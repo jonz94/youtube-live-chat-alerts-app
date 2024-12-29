@@ -3,6 +3,7 @@ import { app } from 'electron'
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
+  ChannelInfo,
   DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
   DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
   DEFAULT_VOLUME,
@@ -14,6 +15,7 @@ import {
 let settings: SettingsSchema = {
   animationTimeInMilliseconds: DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
   volume: DEFAULT_VOLUME,
+  channelInfo: null,
   liveChatSponsorshipsGiftPurchaseAnnouncementTemplate:
     DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
 }
@@ -175,6 +177,22 @@ export function updateVolumeSetting(input: number) {
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 
   return input
+}
+
+export function updateChannelInfoSetting(input: ChannelInfo) {
+  settings.channelInfo = input
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return input
+}
+
+export function removeChannelInfoSetting() {
+  settings.channelInfo = null
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 }
 
 export function updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting(template: Template) {

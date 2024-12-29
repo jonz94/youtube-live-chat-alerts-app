@@ -1,4 +1,4 @@
-import { AnimationProps, motion } from 'framer-motion'
+import { AnimationProps, motion } from 'motion/react'
 import { cn } from '~/renderer/lib/utils'
 
 export function Bounce({

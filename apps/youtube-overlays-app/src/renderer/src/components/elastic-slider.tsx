@@ -1,6 +1,6 @@
 import * as RadixSlider from '@radix-ui/react-slider'
-import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from 'framer-motion'
 import { Volume1, Volume2, VolumeX } from 'lucide-react'
+import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from 'motion/react'
 import { type Dispatch, type SetStateAction, ElementRef, useRef, useState } from 'react'
 import { Label } from '~/renderer/components/ui/label'
 

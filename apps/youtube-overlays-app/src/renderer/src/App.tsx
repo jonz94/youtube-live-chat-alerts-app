@@ -1,9 +1,9 @@
+import { Connection } from '~/renderer/components/connection'
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
 import { Settings } from '~/renderer/components/settings'
 import { SoundEffect } from '~/renderer/components/sound-effect'
-import { Start } from '~/renderer/components/start'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
@@ -33,7 +33,7 @@ export default function App() {
       </div>
 
       <Launcher isDev={data.isDev}></Launcher>
-      <Start></Start>
+      <Connection></Connection>
       <Settings></Settings>
       <Open></Open>
 
