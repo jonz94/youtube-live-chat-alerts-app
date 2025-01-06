@@ -29,10 +29,6 @@ export default function App() {
 
   return (
     <FullscreenScrollArea className="h-screen w-screen">
-      <div className="fixed top-4 right-4">
-        <ModeToggle></ModeToggle>
-      </div>
-
       <div className="max-w-lg min-h-screen grid gap-y-4 py-8 px-4 place-content-center mx-auto">
         <Launcher isDev={data.isDev}></Launcher>
         <Connection></Connection>
@@ -40,6 +36,10 @@ export default function App() {
         <Open></Open>
 
         <AppWithSettings></AppWithSettings>
+      </div>
+
+      <div className="fixed top-4 right-4">
+        <ModeToggle></ModeToggle>
       </div>
     </FullscreenScrollArea>
   )
