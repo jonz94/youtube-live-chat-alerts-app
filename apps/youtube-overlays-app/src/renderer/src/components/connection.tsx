@@ -544,7 +544,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
       </div>
 
       {liveOrUpcomingStreams.length > 0 && (
-        <div className="-mx-6 mt-4 border-t">
+        <div className="-mx-6 pt-4">
           <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams}></ListTable>
         </div>
       )}
@@ -568,8 +568,6 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
           </p>
         </div>
       )}
-
-      <hr className="-mx-6" />
     </div>
   )
 }
@@ -597,18 +595,20 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
   })
 
   return (
-    <Table>
-      <TableHeader className="sticky top-0 bottom-8 bg-background">
+    <Table className="border-separate border-spacing-0">
+      <TableHeader className="sticky -top-px bottom-8 bg-background">
         <TableRow>
-          <TableHead className="text-foreground">直播或待機室標題</TableHead>
-          <TableHead className="text-foreground text-center">建立連線</TableHead>
+          <TableHead className="border-y text-foreground">直播或待機室標題</TableHead>
+          <TableHead className="border-y text-foreground text-center">建立連線</TableHead>
         </TableRow>
+
+        {/* <div className="absolute w-full h-px bg-border bottom-0"></div> */}
       </TableHeader>
 
       <TableBody>
         {liveOrUpcomingStreams.map((liveOrUpcomingStream) => (
           <TableRow key={liveOrUpcomingStream.id}>
-            <TableCell>
+            <TableCell className="border-b">
               <div className="flex font-medium text-lg max-w-[19rem]">
                 <Popover>
                   <TooltipProvider delayDuration={250}>
@@ -671,7 +671,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
               </div>
             </TableCell>
 
-            <TableCell>
+            <TableCell className="border-b">
               <div className="flex gap-2 justify-center">
                 <TooltipProvider delayDuration={250}>
                   <Tooltip>

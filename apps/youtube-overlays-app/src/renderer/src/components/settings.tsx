@@ -106,13 +106,9 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
       </CardHeader>
       <CardContent className="flex flex-col gap-y-6">
         <div className="grid w-full max-w-sm items-center">
-          <hr className="-mx-6" />
-
           <div className="-mx-6">
             <EffectSettingsTable settings={settings}></EffectSettingsTable>
           </div>
-
-          <hr className="-mx-6" />
         </div>
 
         <form
@@ -468,21 +464,21 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
   })
 
   return (
-    <Table className="text-center">
+    <Table className="border-separate border-spacing-0 text-center">
       <TableHeader className="sticky top-0 bottom-8 bg-background">
         <TableRow>
-          <TableHead className="text-foreground text-center">贈訂數量</TableHead>
-          <TableHead className="text-foreground text-center">自訂圖片或動圖</TableHead>
-          <TableHead className="text-foreground text-center">自訂音效</TableHead>
+          <TableHead className="border-y text-foreground text-center">贈訂數量</TableHead>
+          <TableHead className="border-y text-foreground text-center">自訂圖片或動圖</TableHead>
+          <TableHead className="border-y text-foreground text-center">自訂音效</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {items.map((item) => (
           <TableRow key={item.amount}>
-            <TableCell className="font-medium text-lg">{item.amount}</TableCell>
+            <TableCell className="border-b font-medium text-lg">{item.amount}</TableCell>
 
-            <TableCell>
+            <TableCell className="border-b">
               <div className="flex gap-2">
                 <ImageInput item={item}></ImageInput>
 
@@ -571,7 +567,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
               </div>
             </TableCell>
 
-            <TableCell>
+            <TableCell className="border-b">
               <div className="flex gap-2">
                 <AudioInput item={item}></AudioInput>
 
