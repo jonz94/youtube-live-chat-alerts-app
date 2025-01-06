@@ -4,6 +4,7 @@ import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
 import { Settings } from '~/renderer/components/settings'
 import { SoundEffect } from '~/renderer/components/sound-effect'
+import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
@@ -27,18 +28,20 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen grid gap-y-4 py-8 px-4 place-content-center">
+    <FullscreenScrollArea className="h-screen w-screen">
       <div className="fixed top-4 right-4">
         <ModeToggle></ModeToggle>
       </div>
 
-      <Launcher isDev={data.isDev}></Launcher>
-      <Connection></Connection>
-      <Settings></Settings>
-      <Open></Open>
+      <div className="max-w-lg min-h-screen grid gap-y-4 py-8 px-4 place-content-center mx-auto">
+        <Launcher isDev={data.isDev}></Launcher>
+        <Connection></Connection>
+        <Settings></Settings>
+        <Open></Open>
 
-      <AppWithSettings></AppWithSettings>
-    </div>
+        <AppWithSettings></AppWithSettings>
+      </div>
+    </FullscreenScrollArea>
   )
 }
 
