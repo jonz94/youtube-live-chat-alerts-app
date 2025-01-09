@@ -175,21 +175,27 @@ function App() {
               alt=""
             />
 
-            <div className="flex p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
-              {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
-                if (item.type === 'text') {
-                  return <div key={`block-${index}`}>{item.text}</div>
-                }
+            {/*
+              NOTE: the `isOpen` check ensures the element is only rendered when active,
+              allowing CSS animations to reset properly by removing it from the DOM when closed
+            */}
+            {isOpen && (
+              <div className="flex p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
+                {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
+                  if (item.type === 'text') {
+                    return <div key={`block-${index}`}>{item.text}</div>
+                  }
 
-                return (
-                  <div key={`block-${index}`} className="text-[#32c3a6] flex">
-                    <TextEffect animate="bounce">
-                      {convertToDisplayName(item.attrs.id, { name, amount }) ?? 'null'}
-                    </TextEffect>
-                  </div>
-                )
-              })}
-            </div>
+                  return (
+                    <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                      <TextEffect animate="bounce">
+                        {convertToDisplayName(item.attrs.id, { name, amount }) ?? 'null'}
+                      </TextEffect>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
