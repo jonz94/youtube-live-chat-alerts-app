@@ -3,13 +3,21 @@ import { cn } from '~/renderer/lib/utils'
 
 export function Bounce({
   children,
-  delayInSeconds,
+  delayInMilliseconds,
   className,
 }: {
   children: string
-  delayInSeconds: number
+  delayInMilliseconds: number
   className?: string
 }) {
+  const DURATION_IN_MILLISECONDS = 1_000
+
+  // NOTE: the value of `animationDelayInMilliseconds` will be negative
+  // a negative value indicates the animation should start as if it has already been playing
+  // for the specified duration. this is useful for creating staggered animations where
+  // multiple elements use the same animation but start at different points in time.
+  const animationDelayInMilliseconds = (delayInMilliseconds % DURATION_IN_MILLISECONDS) - DURATION_IN_MILLISECONDS
+
   return (
     <span
       className={cn(
@@ -17,7 +25,7 @@ export function Bounce({
         className,
       )}
       style={{
-        animationDelay: `${delayInSeconds}s`,
+        animationDelay: `${animationDelayInMilliseconds}ms`,
       }}
     >
       {children}
@@ -44,10 +52,11 @@ export function TextEffect({
     }
 
     const delayInSeconds = (index - spaceCount) / 16
+    const delayInMilliseconds = delayInSeconds * 1_000
 
     if (animate === 'bounce' || animate === undefined) {
       return (
-        <Bounce key={`char-${index}`} delayInSeconds={delayInSeconds}>
+        <Bounce key={`char-${index}`} delayInMilliseconds={delayInMilliseconds}>
           {char}
         </Bounce>
       )
