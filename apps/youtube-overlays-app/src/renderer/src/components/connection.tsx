@@ -599,7 +599,9 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
     <Table className="border-separate border-spacing-0">
       <TableHeader className="sticky -top-px bottom-8 bg-background">
         <TableRow>
-          <TableHead className="border-y text-foreground">直播或待機室標題</TableHead>
+          <TableHead className="border-y text-foreground">
+            <p className="pl-4">直播或待機室標題</p>
+          </TableHead>
           <TableHead className="border-y text-foreground text-center">建立連線</TableHead>
         </TableRow>
 
