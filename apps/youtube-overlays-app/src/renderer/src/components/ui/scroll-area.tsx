@@ -26,7 +26,7 @@ const FullscreenScrollArea = React.forwardRef<
     <ScrollAreaPrimitive.Corner />
   </ScrollAreaPrimitive.Root>
 ))
-FullscreenScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
+FullscreenScrollArea.displayName = `Fullscreen${ScrollAreaPrimitive.Root.displayName}`
 
 const ScrollBar = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
