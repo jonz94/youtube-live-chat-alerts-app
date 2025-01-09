@@ -26,6 +26,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/renderer/components/u
 import { Switch } from '~/renderer/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/renderer/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/renderer/components/ui/tooltip'
+import { format } from '~/renderer/lib/date-time-format'
 import { parseYoutubeUrl } from '~/renderer/lib/parse-youtube-url'
 import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
@@ -662,7 +663,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
                       <DataListItem>
                         <DataListLabel>{liveOrUpcomingStream.isLive ? '開始時間' : '預定開始時間'}</DataListLabel>
                         <DataListValue className="break-all">
-                          {new Date(liveOrUpcomingStream.startTimestamp).toLocaleString('zh-Hant-TW')}
+                          {format(liveOrUpcomingStream.startTimestamp)}
                         </DataListValue>
                       </DataListItem>
                     </DataList>
