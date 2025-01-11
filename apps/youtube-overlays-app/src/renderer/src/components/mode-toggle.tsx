@@ -10,8 +10,8 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/renderer/components/ui/tooltip'
 
 const THEME_DISPLAY_NAME_LOOKUP_TABLE = {
-  light: '亮色主題',
-  dark: '暗色主題',
+  light: '淺色模式',
+  dark: '深色模式',
   system: '系統預設',
 } as const satisfies Record<Theme, string>
 
@@ -36,7 +36,7 @@ export function ModeToggle() {
 
           <TooltipContent>
             <div className="flex flex-col justify-center items-center gap-y-1">
-              <p>切換亮色主題 / 暗色主題</p>
+              <p>切換淺色模式 / 深色模式</p>
               <p>目前設定：{THEME_DISPLAY_NAME_LOOKUP_TABLE[currentTheme]}</p>
             </div>
           </TooltipContent>
