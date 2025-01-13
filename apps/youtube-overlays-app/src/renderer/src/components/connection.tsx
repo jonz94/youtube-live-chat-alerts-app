@@ -71,7 +71,7 @@ export function Connection() {
 }
 
 function ConnectionCard({ settings }: { settings: SettingsSchema }) {
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
   const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
   const [enableAutoConnection, setEnableAutoConnection] = useState(false)

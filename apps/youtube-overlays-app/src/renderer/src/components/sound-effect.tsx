@@ -10,11 +10,11 @@ interface PresentOptions {
 }
 
 export function SoundEffect({ volume }: { volume: number }) {
-  const audio1Ref = useRef<HTMLAudioElement | null>(null)
-  const audio5Ref = useRef<HTMLAudioElement | null>(null)
-  const audio10Ref = useRef<HTMLAudioElement | null>(null)
-  const audio20Ref = useRef<HTMLAudioElement | null>(null)
-  const audio50Ref = useRef<HTMLAudioElement | null>(null)
+  const audio1Ref = useRef<HTMLAudioElement>(null)
+  const audio5Ref = useRef<HTMLAudioElement>(null)
+  const audio10Ref = useRef<HTMLAudioElement>(null)
+  const audio20Ref = useRef<HTMLAudioElement>(null)
+  const audio50Ref = useRef<HTMLAudioElement>(null)
   const [cacheTimestamp] = useAtom(cacheTimestampAtom)
 
   useEffect(() => {

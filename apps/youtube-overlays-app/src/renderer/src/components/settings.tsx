@@ -49,8 +49,8 @@ export function Settings() {
 }
 
 function SettingsCard({ settings }: { settings: SettingsSchema }) {
-  const inputRef = useRef<HTMLInputElement | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const [volume, setVolume] = useState(settings.volume)
   const [cacheTimestamp] = useAtom(cacheTimestampAtom)
   const editor = useOneLineEditor(settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate)
@@ -256,7 +256,7 @@ const items = [
 
 function ImageInput({ item }: { item: { amount: number } }) {
   const [, setCacheTimestamp] = useAtom(cacheTimestampAtom)
-  const imageInputRef = useRef<HTMLInputElement | null>(null)
+  const imageInputRef = useRef<HTMLInputElement>(null)
 
   const utils = trpcReact.useUtils()
 
@@ -325,7 +325,7 @@ function ImageInput({ item }: { item: { amount: number } }) {
 
 function AudioInput({ item }: { item: { amount: number } }) {
   const [, setCacheTimestamp] = useAtom(cacheTimestampAtom)
-  const audioInputRef = useRef<HTMLInputElement | null>(null)
+  const audioInputRef = useRef<HTMLInputElement>(null)
 
   const utils = trpcReact.useUtils()
 
@@ -396,7 +396,7 @@ function AudioInput({ item }: { item: { amount: number } }) {
 
 function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
   const [cacheTimestamp] = useAtom(cacheTimestampAtom)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     if (audioRef.current) {
