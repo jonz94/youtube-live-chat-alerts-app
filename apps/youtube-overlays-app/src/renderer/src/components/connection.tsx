@@ -382,10 +382,10 @@ function ConnectionCard({
 
         {connectionVideoInfo && (
           <div className="flex flex-col gap-y-2">
-            <div className="rounded-lg border border-green-500/50 px-4 py-3 text-green-500">
+            <div className="rounded-lg border-2 border-green-500 px-4 py-3 text-green-500">
               <p>
                 <CircleCheck className="-mt-0.5 me-3 inline-flex" aria-hidden="true" />
-                <span>成功與直播聊天室建立連線！</span>
+                <span className="font-semibold tracking-tight">成功與直播聊天室建立連線！</span>
               </p>
             </div>
 
