@@ -16,10 +16,12 @@ ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
 const FullscreenScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & {
+    viewportRef: React.RefObject<HTMLDivElement>
+  }
+>(({ className, children, viewportRef, ...props }, ref) => (
   <ScrollAreaPrimitive.Root ref={ref} className={cn('relative overflow-hidden', className)} {...props}>
-    <ScrollAreaPrimitive.Viewport className="h-screen w-screen rounded-[inherit]">
+    <ScrollAreaPrimitive.Viewport ref={viewportRef} className="h-screen w-screen rounded-[inherit]">
       {children}
     </ScrollAreaPrimitive.Viewport>
     <ScrollBar />

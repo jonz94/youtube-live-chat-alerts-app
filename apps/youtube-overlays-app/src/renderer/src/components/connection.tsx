@@ -34,7 +34,7 @@ import { connectionVideoInfoAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 import { ChannelInfo, SettingsSchema, VideoInfo } from '../../../main/schema'
 
-export function Connection() {
+export function Connection({ viewportRef }: { viewportRef: React.RefObject<HTMLDivElement> }) {
   const { data: settings, error, isLoading, refetch } = trpcReact.settings.useQuery()
 
   useEffect(() => {
@@ -67,10 +67,16 @@ export function Connection() {
     return <p>載入設定檔失敗...</p>
   }
 
-  return <ConnectionCard settings={settings}></ConnectionCard>
+  return <ConnectionCard settings={settings} viewportRef={viewportRef}></ConnectionCard>
 }
 
-function ConnectionCard({ settings }: { settings: SettingsSchema }) {
+function ConnectionCard({
+  settings,
+  viewportRef,
+}: {
+  settings: SettingsSchema
+  viewportRef: React.RefObject<HTMLDivElement>
+}) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
   const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
@@ -136,6 +142,8 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
       if (inputRef.current) {
         inputRef.current.value = ''
       }
+
+      viewportRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     },
     onError: (error) => {
       console.log('error', error)
@@ -344,7 +352,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
               </CardContent>
             </Card>
 
-            <LiveOrUpcomingStreams channelInfo={channelInfo}></LiveOrUpcomingStreams>
+            <LiveOrUpcomingStreams channelInfo={channelInfo} viewportRef={viewportRef}></LiveOrUpcomingStreams>
           </>
         )}
 
@@ -484,7 +492,13 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
   )
 }
 
-function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
+function LiveOrUpcomingStreams({
+  channelInfo,
+  viewportRef,
+}: {
+  channelInfo: ChannelInfo
+  viewportRef: React.RefObject<HTMLDivElement>
+}) {
   const isInitialized = useRef(false)
   const [liveOrUpcomingStreams, setLiveOrUpcomingStreams] = useState<VideoInfo[]>([])
 
@@ -546,7 +560,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
 
       {liveOrUpcomingStreams.length > 0 && (
         <div className="-mx-6 pt-4">
-          <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams}></ListTable>
+          <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams} viewportRef={viewportRef}></ListTable>
         </div>
       )}
 
@@ -573,7 +587,13 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
   )
 }
 
-function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo[] }) {
+function ListTable({
+  liveOrUpcomingStreams,
+  viewportRef,
+}: {
+  liveOrUpcomingStreams: VideoInfo[]
+  viewportRef: React.RefObject<HTMLDivElement>
+}) {
   const [, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
 
   const start = trpcReact.start.useMutation({
@@ -589,6 +609,8 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
       toast.success('成功與直播聊天室建立連線！')
 
       setConnectionVideoInfo(data)
+
+      viewportRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     },
     onError: (error) => {
       console.log('error', error)

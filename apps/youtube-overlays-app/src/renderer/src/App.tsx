@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Connection } from '~/renderer/components/connection'
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
@@ -8,6 +9,7 @@ import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
+  const viewportRef = useRef<HTMLDivElement>(null)
   const { data, error, isLoading } = trpcReact.initial.useQuery()
 
   if (isLoading) {
@@ -28,10 +30,10 @@ export default function App() {
   }
 
   return (
-    <FullscreenScrollArea className="h-screen w-screen">
+    <FullscreenScrollArea viewportRef={viewportRef} className="h-screen w-screen">
       <div className="max-w-lg min-h-screen grid gap-y-4 py-8 px-4 place-content-center mx-auto">
         <Launcher isDev={data.isDev}></Launcher>
-        <Connection></Connection>
+        <Connection viewportRef={viewportRef}></Connection>
         <Settings></Settings>
         <Open></Open>
 
