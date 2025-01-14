@@ -51,7 +51,7 @@ export default function App() {
         <AppWithSettings></AppWithSettings>
       </div>
 
-      <div className="fixed top-4 right-4">
+      <div className="fixed top-6 right-6">
         <ModeToggle></ModeToggle>
       </div>
     </FullscreenScrollArea>
