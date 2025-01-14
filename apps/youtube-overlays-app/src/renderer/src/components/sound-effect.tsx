@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useEffect, useRef } from 'react'
 import { socket } from '~/renderer/socket'
 import { cacheTimestampAtom } from '~/renderer/store'
@@ -15,7 +15,7 @@ export function SoundEffect({ volume }: { volume: number }) {
   const audio10Ref = useRef<HTMLAudioElement>(null)
   const audio20Ref = useRef<HTMLAudioElement>(null)
   const audio50Ref = useRef<HTMLAudioElement>(null)
-  const [cacheTimestamp] = useAtom(cacheTimestampAtom)
+  const cacheTimestamp = useAtomValue(cacheTimestampAtom)
 
   useEffect(() => {
     if (audio1Ref.current) {

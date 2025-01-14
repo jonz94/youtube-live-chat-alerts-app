@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { Connection } from '~/renderer/components/connection'
 import { Launcher } from '~/renderer/components/launcher'
@@ -11,7 +11,7 @@ import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
-  const [, setViewportRef] = useAtom(viewportRefAtom)
+  const setViewportRef = useSetAtom(viewportRefAtom)
   const { data, error, isLoading } = trpcReact.initial.useQuery()
 
   const callbackRef = useCallback<React.RefCallback<HTMLDivElement>>(

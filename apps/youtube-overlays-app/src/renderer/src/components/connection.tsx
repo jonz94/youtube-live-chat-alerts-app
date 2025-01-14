@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { CircleCheck, Info, Radio, RotateCw, Trash2, UserRound } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -74,7 +74,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
   const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
-  const [viewportRef] = useAtom(viewportRefAtom)
+  const viewportRef = useAtomValue(viewportRefAtom)
   const [enableAutoConnection, setEnableAutoConnection] = useState(false)
 
   const getChannelInfoAndThenUpdateChannelInfoSettings =
@@ -577,8 +577,8 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
 }
 
 function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo[] }) {
-  const [viewportRef] = useAtom(viewportRefAtom)
-  const [, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
+  const viewportRef = useAtomValue(viewportRefAtom)
+  const setConnectionVideoInfo = useSetAtom(connectionVideoInfoAtom)
 
   const start = trpcReact.start.useMutation({
     onSuccess: ({ error, data }) => {

@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Eye, FileImage, MessageSquareText, Music, Play, Save, Timer, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -52,7 +52,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [volume, setVolume] = useState(settings.volume)
-  const [cacheTimestamp] = useAtom(cacheTimestampAtom)
+  const cacheTimestamp = useAtomValue(cacheTimestampAtom)
   const editor = useOneLineEditor(settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate)
 
   const utils = trpcReact.useUtils()
@@ -255,7 +255,7 @@ const items = [
 ]
 
 function ImageInput({ item }: { item: { amount: number } }) {
-  const [, setCacheTimestamp] = useAtom(cacheTimestampAtom)
+  const setCacheTimestamp = useSetAtom(cacheTimestampAtom)
   const imageInputRef = useRef<HTMLInputElement>(null)
 
   const utils = trpcReact.useUtils()
@@ -324,7 +324,7 @@ function ImageInput({ item }: { item: { amount: number } }) {
 }
 
 function AudioInput({ item }: { item: { amount: number } }) {
-  const [, setCacheTimestamp] = useAtom(cacheTimestampAtom)
+  const setCacheTimestamp = useSetAtom(cacheTimestampAtom)
   const audioInputRef = useRef<HTMLInputElement>(null)
 
   const utils = trpcReact.useUtils()
@@ -395,7 +395,7 @@ function AudioInput({ item }: { item: { amount: number } }) {
 }
 
 function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
-  const [cacheTimestamp] = useAtom(cacheTimestampAtom)
+  const cacheTimestamp = useAtomValue(cacheTimestampAtom)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
