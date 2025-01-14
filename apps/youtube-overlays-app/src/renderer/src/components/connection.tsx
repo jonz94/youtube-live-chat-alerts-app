@@ -30,11 +30,11 @@ import { format } from '~/renderer/lib/date-time-format'
 import { parseYoutubeUrl } from '~/renderer/lib/parse-youtube-url'
 import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
-import { connectionVideoInfoAtom } from '~/renderer/store'
+import { connectionVideoInfoAtom, viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 import { ChannelInfo, SettingsSchema, VideoInfo } from '../../../main/schema'
 
-export function Connection({ viewportRef }: { viewportRef: React.RefObject<HTMLDivElement> }) {
+export function Connection() {
   const { data: settings, error, isLoading, refetch } = trpcReact.settings.useQuery()
 
   useEffect(() => {
@@ -67,19 +67,14 @@ export function Connection({ viewportRef }: { viewportRef: React.RefObject<HTMLD
     return <p>載入設定檔失敗...</p>
   }
 
-  return <ConnectionCard settings={settings} viewportRef={viewportRef}></ConnectionCard>
+  return <ConnectionCard settings={settings}></ConnectionCard>
 }
 
-function ConnectionCard({
-  settings,
-  viewportRef,
-}: {
-  settings: SettingsSchema
-  viewportRef: React.RefObject<HTMLDivElement>
-}) {
+function ConnectionCard({ settings }: { settings: SettingsSchema }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
   const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
+  const [viewportRef] = useAtom(viewportRefAtom)
   const [enableAutoConnection, setEnableAutoConnection] = useState(false)
 
   const getChannelInfoAndThenUpdateChannelInfoSettings =
@@ -143,7 +138,7 @@ function ConnectionCard({
         inputRef.current.value = ''
       }
 
-      viewportRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+      viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
     },
     onError: (error) => {
       console.log('error', error)
@@ -352,7 +347,7 @@ function ConnectionCard({
               </CardContent>
             </Card>
 
-            <LiveOrUpcomingStreams channelInfo={channelInfo} viewportRef={viewportRef}></LiveOrUpcomingStreams>
+            <LiveOrUpcomingStreams channelInfo={channelInfo}></LiveOrUpcomingStreams>
           </>
         )}
 
@@ -492,13 +487,7 @@ function ConnectionCard({
   )
 }
 
-function LiveOrUpcomingStreams({
-  channelInfo,
-  viewportRef,
-}: {
-  channelInfo: ChannelInfo
-  viewportRef: React.RefObject<HTMLDivElement>
-}) {
+function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
   const isInitialized = useRef(false)
   const [liveOrUpcomingStreams, setLiveOrUpcomingStreams] = useState<VideoInfo[]>([])
 
@@ -560,7 +549,7 @@ function LiveOrUpcomingStreams({
 
       {liveOrUpcomingStreams.length > 0 && (
         <div className="-mx-6 pt-4">
-          <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams} viewportRef={viewportRef}></ListTable>
+          <ListTable liveOrUpcomingStreams={liveOrUpcomingStreams}></ListTable>
         </div>
       )}
 
@@ -587,13 +576,8 @@ function LiveOrUpcomingStreams({
   )
 }
 
-function ListTable({
-  liveOrUpcomingStreams,
-  viewportRef,
-}: {
-  liveOrUpcomingStreams: VideoInfo[]
-  viewportRef: React.RefObject<HTMLDivElement>
-}) {
+function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo[] }) {
+  const [viewportRef] = useAtom(viewportRefAtom)
   const [, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
 
   const start = trpcReact.start.useMutation({
@@ -610,7 +594,7 @@ function ListTable({
 
       setConnectionVideoInfo(data)
 
-      viewportRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+      viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
     },
     onError: (error) => {
       console.log('error', error)

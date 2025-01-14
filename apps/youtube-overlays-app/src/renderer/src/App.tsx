@@ -1,4 +1,5 @@
-import { useRef } from 'react'
+import { useAtom } from 'jotai'
+import { useCallback } from 'react'
 import { Connection } from '~/renderer/components/connection'
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
@@ -6,11 +7,21 @@ import { Open } from '~/renderer/components/open'
 import { Settings } from '~/renderer/components/settings'
 import { SoundEffect } from '~/renderer/components/sound-effect'
 import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
+import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 
 export default function App() {
-  const viewportRef = useRef<HTMLDivElement>(null)
+  const [, setViewportRef] = useAtom(viewportRefAtom)
   const { data, error, isLoading } = trpcReact.initial.useQuery()
+
+  const callbackRef = useCallback<React.RefCallback<HTMLDivElement>>(
+    (node) => {
+      if (node) {
+        setViewportRef({ current: node })
+      }
+    },
+    [setViewportRef],
+  )
 
   if (isLoading) {
     return <p>程式初始化中...</p>
@@ -30,10 +41,10 @@ export default function App() {
   }
 
   return (
-    <FullscreenScrollArea viewportRef={viewportRef} className="h-screen w-screen">
+    <FullscreenScrollArea viewportRef={callbackRef} className="h-screen w-screen">
       <div className="max-w-lg min-h-screen grid gap-y-4 py-8 px-4 place-content-center mx-auto">
         <Launcher isDev={data.isDev}></Launcher>
-        <Connection viewportRef={viewportRef}></Connection>
+        <Connection></Connection>
         <Settings></Settings>
         <Open></Open>
 
