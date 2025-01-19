@@ -235,8 +235,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2(@trpc/client@11.0.0-rc.700(@trpc/server@11.0.0-rc.700(typescript@5.7.3))(typescript@5.7.3))(@trpc/server@11.0.0-rc.700(typescript@5.7.3))(electron@33.3.1)
       youtubei.js:
-        specifier: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793
-        version: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793
+        specifier: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@57bee28
+        version: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@57bee28
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -4198,8 +4198,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793:
-    resolution: {tarball: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793}
+  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@57bee28:
+    resolution: {tarball: https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@57bee28}
     version: 12.2.0
 
   zip-stream@4.1.1:
@@ -8546,7 +8546,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793:
+  youtubei.js@https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@57bee28:
     dependencies:
       '@bufbuild/protobuf': 2.2.3
       jintr: 3.2.0
