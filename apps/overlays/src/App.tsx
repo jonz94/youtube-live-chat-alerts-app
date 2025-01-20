@@ -90,12 +90,10 @@ function App() {
     }
 
     function onUpdate() {
-      console.log('update')
       setCacheTimestamp(String(Date.now()))
     }
 
     function onTemplateUpdated() {
-      console.log('update')
       void refetchSettings()
     }
 
