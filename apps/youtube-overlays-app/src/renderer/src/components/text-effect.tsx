@@ -46,8 +46,11 @@ export function TextEffect({
 }) {
   let spaceCount = 0
 
-  return children.split('').map((char, index) => {
-    if (char === ' ') {
+  // NOTE: instead of simple `children.split('')`, we use `Intl.Segmenter` API to better handle complex Emoji/Unicode
+  const graphemes = [...new Intl.Segmenter().segment(children)].map((x) => x.segment)
+
+  return graphemes.map((grapheme, index) => {
+    if (grapheme === ' ') {
       spaceCount++
     }
 
@@ -56,15 +59,15 @@ export function TextEffect({
 
     if (animate === 'bounce' || animate === undefined) {
       return (
-        <Bounce key={`char-${index}`} delayInMilliseconds={delayInMilliseconds}>
-          {char}
+        <Bounce key={`grapheme-${index}`} delayInMilliseconds={delayInMilliseconds}>
+          {grapheme}
         </Bounce>
       )
     }
 
     return (
       <motion.span
-        key={`char-${index}`}
+        key={`grapheme-${index}`}
         className={cn('inline-block whitespace-pre', className)}
         animate={animate}
         transition={{
@@ -76,7 +79,7 @@ export function TextEffect({
           ...transition,
         }}
       >
-        {char}
+        {grapheme}
       </motion.span>
     )
   })
