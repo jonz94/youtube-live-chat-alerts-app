@@ -18,10 +18,6 @@
     "bundle:win": {
       "dependsOn": ["build"]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
     "fmt": {
       "dependsOn": ["lint", "prettier"]
     }
