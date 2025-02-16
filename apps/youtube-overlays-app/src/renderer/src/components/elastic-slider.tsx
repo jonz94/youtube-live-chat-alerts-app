@@ -78,9 +78,9 @@ export default function ElasticSlider({ volume, setVolume }: ElasticSliderProps)
           }}
         >
           {volume === 0 ? (
-            <VolumeX className="size-5 translate-x-0 translate-y-0 text-white" />
+            <VolumeX className="size-5 translate-x-0 translate-y-0 text-foreground" />
           ) : (
-            <Volume1 className="size-5 translate-x-0 translate-y-0 text-white" />
+            <Volume1 className="size-5 translate-x-0 translate-y-0 text-foreground" />
           )}
         </motion.div>
 
@@ -126,11 +126,10 @@ export default function ElasticSlider({ volume, setVolume }: ElasticSliderProps)
             }}
             className="flex grow"
           >
-            <RadixSlider.Track className="relative isolate h-full grow overflow-hidden rounded-full bg-gray-500 ">
-              <RadixSlider.Range className="absolute h-full bg-white" />
+            <RadixSlider.Track className="relative isolate h-full grow overflow-hidden rounded-full bg-primary/20 dark:bg-gray-500">
+              <RadixSlider.Range className="absolute h-full bg-primary dark:bg-white" />
             </RadixSlider.Track>
           </motion.div>
-          <RadixSlider.Thumb />
         </RadixSlider.Root>
 
         <motion.div
@@ -142,7 +141,7 @@ export default function ElasticSlider({ volume, setVolume }: ElasticSliderProps)
             x: useTransform(() => (region === 'right' ? overflow.get() / scale.get() : 0)),
           }}
         >
-          <Volume2 className="size-5 translate-x-0 translate-y-0 text-white" />
+          <Volume2 className="size-5 translate-x-0 translate-y-0 text-foreground" />
         </motion.div>
       </motion.div>
     </>
