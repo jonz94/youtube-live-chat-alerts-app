@@ -16,15 +16,20 @@
     "prettier": "prettier --write . \"!apps\" && turbo prettier"
   },
   "devDependencies": {
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.8",
-    "turbo": "^2.3.4",
+    "turbo": "^2.4.2",
     "typescript": "~5.7.3"
   },
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.4.1",
   "engines": {
-    "node": ">=22.11.0",
-    "pnpm": ">=9"
+    "node": ">=22.11.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
   }
 }
