@@ -19,7 +19,7 @@ export function Bounce({
   const animationDelayInMilliseconds = (delayInMilliseconds % DURATION_IN_MILLISECONDS) - DURATION_IN_MILLISECONDS
 
   return (
-    <span
+    <b
       className={cn(
         'inline-block whitespace-pre animate-bounce duration-1000 repeat-infinite relative top-1',
         className,
@@ -29,7 +29,7 @@ export function Bounce({
       }}
     >
       {children}
-    </span>
+    </b>
   )
 }
 
@@ -66,7 +66,7 @@ export function TextEffect({
     }
 
     return (
-      <motion.span
+      <motion.b
         key={`grapheme-${index}`}
         className={cn('inline-block whitespace-pre', className)}
         animate={animate}
@@ -80,7 +80,7 @@ export function TextEffect({
         }}
       >
         {grapheme}
-      </motion.span>
+      </motion.b>
     )
   })
 }

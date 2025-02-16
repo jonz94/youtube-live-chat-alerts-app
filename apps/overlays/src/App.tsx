@@ -1,7 +1,7 @@
 import { DeferQueue } from '@poppinss/defer'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { TextEffect } from '~/components/text-effect'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
@@ -178,21 +178,21 @@ function App() {
               allowing CSS animations to reset properly by removing it from the DOM when closed
             */}
             {isOpen && (
-              <div className="flex p-4 space-x-4 text-4xl font-bold text-[#d48e26] text-shadow">
+              <p className="p-4 text-4xl font-bold text-[#d48e26] text-shadow break-all">
                 {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
                   if (item.type === 'text') {
-                    return <div key={`block-${index}`}>{item.text}</div>
+                    return <Fragment key={`block-${index}`}>{item.text}</Fragment>
                   }
 
                   return (
-                    <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                    <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
                       <TextEffect animate="bounce">
                         {convertToDisplayName(item.attrs.id, { name, amount }) ?? 'null'}
                       </TextEffect>
-                    </div>
+                    </span>
                   )
                 })}
-              </div>
+              </p>
             )}
           </div>
         </motion.div>

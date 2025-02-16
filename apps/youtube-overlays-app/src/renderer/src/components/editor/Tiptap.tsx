@@ -2,13 +2,17 @@ import { type Editor, EditorContent } from '@tiptap/react'
 import { Plus } from 'lucide-react'
 import { convertToDisplayName } from '~/renderer/components/editor/utils'
 import { Button } from '~/renderer/components/ui/button'
+import { cn } from '~/renderer/lib/utils'
 import './tiptap.css'
 
-export function Tiptap({ editor }: { editor: Editor }) {
+export function Tiptap({ editor, className }: { editor: Editor; className?: string }) {
   return (
     <>
       <EditorContent
-        className="flex w-full flex-col rounded-md border border-input shadow-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+        className={cn(
+          'flex w-full flex-col rounded-md border border-input shadow-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+          className,
+        )}
         editor={editor}
       />
 

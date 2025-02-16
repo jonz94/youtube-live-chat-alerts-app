@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Eye, FileImage, MessageSquareText, Music, Play, Save, Timer, Trash2 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useOneLineEditor } from '~/renderer/components/editor/core'
 import { Tiptap } from '~/renderer/components/editor/Tiptap'
@@ -199,22 +199,22 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
             自訂通知訊息文字
           </label>
 
-          <div className="flex space-x-1 text-xl font-bold text-[#d48e26] text-shadow min-h-7">
+          <p className="text-xl font-bold text-[#d48e26] text-shadow min-h-7 max-w-sm break-all">
             {editor &&
               templateSchema.safeParse(editor.getJSON().content!.at(0)!.content)?.data?.map((item, index) => {
                 if (item.type === 'text') {
-                  return <div key={`block-${index}`}>{item.text}</div>
+                  return <Fragment key={`block-${index}`}>{item.text}</Fragment>
                 }
 
                 return (
-                  <div key={`block-${index}`} className="text-[#32c3a6] flex">
+                  <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
                     <TextEffect animate="bounce">{convertToDisplayName(item.attrs.id) ?? 'null'}</TextEffect>
-                  </div>
+                  </span>
                 )
               })}
-          </div>
+          </p>
 
-          {editor && <Tiptap editor={editor}></Tiptap>}
+          {editor && <Tiptap editor={editor} className="max-w-sm"></Tiptap>}
 
           <Button
             onClick={() => {
@@ -507,24 +507,22 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
                       />
                     </div>
 
-                    <div className="flex p-4 space-x-1 text-xl font-bold text-[#d48e26] text-shadow">
-                      {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((templateItem, index) => {
-                        if (templateItem.type === 'text') {
-                          return (
-                            <div key={`block-${index}`} className="whitespace-nowrap">
-                              {templateItem.text}
-                            </div>
-                          )
-                        }
+                    <div>
+                      <p className="text-xl font-bold text-[#d48e26] text-shadow min-h-7 min-w-80 break-all">
+                        {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((templateItem, index) => {
+                          if (templateItem.type === 'text') {
+                            return <Fragment key={`block-${index}`}>{templateItem.text}</Fragment>
+                          }
 
-                        return (
-                          <div key={`block-${index}`} className="text-[#32c3a6] flex">
-                            <TextEffect animate="bounce">
-                              {templateItem.attrs.id === 'name' ? '測試貓草' : `${item.amount}`}
-                            </TextEffect>
-                          </div>
-                        )
-                      })}
+                          return (
+                            <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
+                              <TextEffect animate="bounce">
+                                {templateItem.attrs.id === 'name' ? '測試貓草' : `${item.amount}`}
+                              </TextEffect>
+                            </span>
+                          )
+                        })}
+                      </p>
                     </div>
                   </PopoverContent>
                 </Popover>
