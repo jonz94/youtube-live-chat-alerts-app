@@ -15,7 +15,7 @@ export const DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE 
   },
   {
     type: 'text',
-    text: '種了',
+    text: '贈送了',
   },
   {
     type: 'variable',
@@ -25,7 +25,7 @@ export const DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE 
   },
   {
     type: 'text',
-    text: '個貓草',
+    text: '個會員',
   },
 ] satisfies Template
 

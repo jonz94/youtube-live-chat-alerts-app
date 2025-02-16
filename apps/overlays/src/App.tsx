@@ -46,7 +46,7 @@ queue.drained = function () {
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const [name, setName] = useState('測試貓草')
+  const [name, setName] = useState('測試贊助者')
   const [amount, setAmount] = useState('87')
   const [isOpen, setIsOpen] = useState(false)
   const [debug] = useState(ENABLE_DEBUG_MODE)

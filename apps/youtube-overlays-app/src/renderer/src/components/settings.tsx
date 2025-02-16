@@ -517,7 +517,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
                           return (
                             <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
                               <TextEffect animate="bounce">
-                                {templateItem.attrs.id === 'name' ? '測試貓草' : `${item.amount}`}
+                                {templateItem.attrs.id === 'name' ? '測試贊助者' : `${item.amount}`}
                               </TextEffect>
                             </span>
                           )

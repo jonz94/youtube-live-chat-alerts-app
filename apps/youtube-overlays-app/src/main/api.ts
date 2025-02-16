@@ -33,7 +33,7 @@ export const router = t.router({
 
     const { animationTimeInMilliseconds } = getSettings()
 
-    const value = io.emit('open', { name: '測試貓草', amount: input.amount, animationTimeInMilliseconds })
+    const value = io.emit('open', { name: '測試贊助者', amount: input.amount, animationTimeInMilliseconds })
 
     return { opened: value }
   }),
