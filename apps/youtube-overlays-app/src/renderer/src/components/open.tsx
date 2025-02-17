@@ -34,7 +34,7 @@ export function Open() {
         <CardDescription>點擊按鈕即可測試贈訂各種不同會員數量時會發生的效果</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-x-4 items-center">
+        <div className="flex justify-between">
           {['50', '20', '10', '5', '1'].map((amount) => (
             <Button key={amount} variant="secondary" onClick={() => mutate({ amount })} disabled={isPending}>
               <FlaskConical />
