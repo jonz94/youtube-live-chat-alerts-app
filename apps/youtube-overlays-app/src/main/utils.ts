@@ -71,11 +71,11 @@ export async function getChannel(channelIdOrHandle: string) {
     const image = header.content?.image
     const handle =
       header.content?.metadata?.metadata_rows
-        .filter((row) => row.metadata_parts?.some((part) => part.text.toString().startsWith('@')))
+        .filter((row) => row.metadata_parts?.some((part) => (part.text ?? '').toString().startsWith('@')))
         .at(0)
-        ?.metadata_parts?.filter((part) => part.text.toString().startsWith('@'))
+        ?.metadata_parts?.filter((part) => (part.text ?? '').toString().startsWith('@'))
         .at(0)
-        ?.text.toString() ?? null
+        ?.text?.toString() ?? null
 
     if (!image) {
       const data = {
