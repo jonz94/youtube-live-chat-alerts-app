@@ -18,6 +18,12 @@ export default defineConfig({
         '~/renderer': resolve(import.meta.dirname, './src/renderer/src'),
       },
     },
-    plugins: [react()],
+    plugins: [
+      react({
+        babel: {
+          plugins: [['babel-plugin-react-compiler']],
+        },
+      }),
+    ],
   },
 })
