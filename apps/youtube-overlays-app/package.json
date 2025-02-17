@@ -68,7 +68,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "trpc-electron": "^0.1.2",
-    "youtubei.js": "https://pkg.pr.new/jonz94/YouTube.js/youtubei.js@431c793",
+    "youtubei.js": "^13.0.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
