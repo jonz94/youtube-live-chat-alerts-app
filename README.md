@@ -8,7 +8,7 @@ An Electron app that displays customizable alerts from YouTube live chat during 
 
 ## Credits
 
-<img width="64" src="https://github.com/jonz94/youtube-live-chat-alerts-app/blob/main/electron-app/resources/icon.png?raw=true" alt="logo">
+<img width="64" src="./apps/youtube-overlays-app/resources/icon.png" alt="logo">
 
 - The [Logo](./electron-app/resources/icon.png) above is drawn by 庫洛姆•Kuromu [^YouTube] [^Twitter], and this app is a gift dedicated to her.
 
