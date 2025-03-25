@@ -163,7 +163,7 @@ export async function getLiveOrUpcomingStreams(channelIdOrHandle: string) {
         throw new Error(`tabContent contents content type ${content.type} not implemented`)
       }
 
-      const text = content.duration.text.toLowerCase()
+      const text = content.duration.text?.toLowerCase() ?? ''
 
       return text === 'live' || text === 'upcoming'
     })
