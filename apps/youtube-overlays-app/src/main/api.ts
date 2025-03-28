@@ -141,6 +141,16 @@ export const router = t.router({
       return { error: null, data }
     }),
 
+  connectPaymentUrl: t.procedure.input(z.object({ url: z.string().url() })).mutation(async ({ input }) => {
+    try {
+      const response = await fetch(input.url)
+
+      return { error: null, data: response }
+    } catch (error) {
+      return { error, data: null }
+    }
+  }),
+
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
     const { videoId } = input
 

@@ -1,11 +1,18 @@
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import viteReact from '@vitejs/plugin-react'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // subpath
+  base: '/overlays',
+
   plugins: [
-    react({
+    TanStackRouterVite({
+      autoCodeSplitting: false,
+    }),
+    viteReact({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
       },
@@ -16,7 +23,6 @@ export default defineConfig({
       '~': resolve(import.meta.dirname, './src'),
     },
   },
-  base: '/overlays',
   server: {
     port: 1337,
   },

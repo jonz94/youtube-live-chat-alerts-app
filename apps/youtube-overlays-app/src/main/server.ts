@@ -4,8 +4,9 @@ import { serveStatic } from '@hono/node-server/serve-static'
 import { app as electronApp } from 'electron'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { existsSync } from 'node:fs'
 import { type Server as HttpServer } from 'node:http'
-import { relative, resolve } from 'node:path'
+import { join, relative, resolve } from 'node:path'
 import { getSettings, getSettingsDir } from './settings'
 import { startWebsocket } from './websocket'
 
@@ -22,7 +23,18 @@ export function startWebServer(port = 21829) {
       '/overlays/*',
       serveStatic({
         root,
-        rewriteRequestPath: (path) => path.replace(/^\/overlays/, '/resources/app.asar.unpacked/resources/overlays'),
+        rewriteRequestPath: (path) => {
+          const index = '/resources/app.asar.unpacked/resources/overlays'
+          try {
+            const rewritePath = path.replace(/^\/overlays/, '/resources/app.asar.unpacked/resources/overlays')
+
+            const doesExist = existsSync(join(appInstallDir, rewritePath))
+
+            return doesExist ? rewritePath : index
+          } catch {
+            return index
+          }
+        },
         onFound(path) {
           console.log('found')
           console.log(path)

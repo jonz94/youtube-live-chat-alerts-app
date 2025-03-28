@@ -19,6 +19,10 @@ export function startWebsocket(server: HttpServer) {
       console.log(arg)
     })
 
+    socket.on('receive-donation', (arg) => {
+      console.log(arg)
+    })
+
     socket.on('disconnect', () => {
       console.log('user disconnected')
     })

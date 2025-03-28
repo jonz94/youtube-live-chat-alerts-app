@@ -22,17 +22,18 @@
     "turbo": "^2.4.4",
     "typescript": "~5.8.2"
   },
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.7.0",
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=22.14.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
+      "electron-winstaller",
       "esbuild"
     ],
     "overrides": {
-      "esbuild": "^0.25.0"
+      "esbuild": "^0.25.1"
     }
   }
 }

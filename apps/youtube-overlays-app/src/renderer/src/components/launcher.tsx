@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { cn } from '~/renderer/lib/utils'
 
-export function Launcher({ isDev }: { isDev: boolean }) {
-  const url = isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'
+export function Launcher({ url }: { url: string }) {
   const [isGrabbing, setIsGrabbing] = useState(false)
 
   return (
