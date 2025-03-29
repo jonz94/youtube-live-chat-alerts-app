@@ -74,3 +74,10 @@ export interface VideoInfo {
   title: string
   startTimestamp: number
 }
+
+export const parsedPaymentUrlDataSchema = z.object({
+  type: z.enum(['ECPAY', 'ECPAY_STAGE', 'OPAY', 'UNKNOWN']),
+  id: z.string(),
+})
+
+export type ParsedPaymentUrlData = z.infer<typeof parsedPaymentUrlDataSchema>

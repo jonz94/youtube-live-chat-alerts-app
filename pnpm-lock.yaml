@@ -44,6 +44,15 @@ importers:
       '@tanstack/react-router-devtools':
         specifier: ^1.114.29
         version: 1.114.29(@tanstack/react-router@1.114.29(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@tanstack/router-core@1.114.29)(csstype@3.1.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(tiny-invariant@1.3.3)
+      '@trpc/client':
+        specifier: ^11.0.1
+        version: 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
+      '@trpc/react-query':
+        specifier: ^11.0.1
+        version: 11.0.1(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
+      '@trpc/server':
+        specifier: ^11.0.1
+        version: 11.0.1(typescript@5.8.2)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -202,14 +211,14 @@ importers:
         specifier: ^2.11.6
         version: 2.11.6(@tiptap/core@2.11.6(@tiptap/pm@2.11.6))(@tiptap/pm@2.11.6)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@trpc/client':
-        specifier: ^11.0.0
-        version: 11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2)
+        specifier: ^11.0.1
+        version: 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
       '@trpc/react-query':
-        specifier: ^11.0.0
-        version: 11.0.0(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.0(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
+        specifier: ^11.0.1
+        version: 11.0.1(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
       '@trpc/server':
-        specifier: ^11.0.0
-        version: 11.0.0(typescript@5.8.2)
+        specifier: ^11.0.1
+        version: 11.0.1(typescript@5.8.2)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -263,7 +272,7 @@ importers:
         version: 1.0.7(tailwindcss@3.4.17)
       trpc-electron:
         specifier: ^0.1.2
-        version: 0.1.2(@trpc/client@11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.0(typescript@5.8.2))(electron@35.1.2)
+        version: 0.1.2(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(electron@35.1.2)
       youtubei.js:
         specifier: ^13.3.0
         version: 13.3.0
@@ -340,6 +349,15 @@ importers:
 
   tooling/tailwind:
     dependencies:
+      '@trpc/client':
+        specifier: ^11.0.1
+        version: 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
+      '@trpc/react-query':
+        specifier: ^11.0.1
+        version: 11.0.1(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)
+      '@trpc/server':
+        specifier: ^11.0.1
+        version: 11.0.1(typescript@5.8.2)
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
@@ -1571,24 +1589,24 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@trpc/client@11.0.0':
-    resolution: {integrity: sha512-U2THlxsdr4ykAX5lpTU8k5WRADPQ+68Ex2gfUht3MlCxGK7njBmNSSzjpQSWNt7tMI/xsYrddFiRlmEPrh+Cbg==}
+  '@trpc/client@11.0.1':
+    resolution: {integrity: sha512-HvOrvWAXbGBwt4om+NfuxrK4f+ik2aaNIXq7WLrJbEp7U+YXfh5++1a5p4JDaikrvSaObJ389DhYAGWz90xSGw==}
     peerDependencies:
-      '@trpc/server': 11.0.0
+      '@trpc/server': 11.0.1
       typescript: '>=5.7.2'
 
-  '@trpc/react-query@11.0.0':
-    resolution: {integrity: sha512-HeE9bBLA6nqC2xk5wlNZIPQ5vmyli3tgNNab8fTE489+ksNMKxaIx66pZKsMJIorDcP1wS0rWNV+GroU0iR98g==}
+  '@trpc/react-query@11.0.1':
+    resolution: {integrity: sha512-astHk2cchLjyXx4cScUZj4zOM5um10zdX4ExVUllBI+kU5sUTbztigDZCGDz8WbdsOiSzYHL4KINdERaQrXWAQ==}
     peerDependencies:
       '@tanstack/react-query': ^5.67.1
-      '@trpc/client': 11.0.0
-      '@trpc/server': 11.0.0
+      '@trpc/client': 11.0.1
+      '@trpc/server': 11.0.1
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.0':
-    resolution: {integrity: sha512-xY9q/b/wR/tWGYTm5xmRjivkYD2EZZXmOKmHuNJRYZuLbieeNUsdfQRjJC409WB1pjKWInomhHwuA8bahZJ4lQ==}
+  '@trpc/server@11.0.1':
+    resolution: {integrity: sha512-DZS3+bONLno4oJjHBMrS3xRPtoZsnmBImDH/Mmo1QhaFt3Xp/S0Riu7WU/oofsLTVj2m1UO5LlgLJFumvlSNoQ==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -5587,21 +5605,21 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@trpc/client@11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2)':
+  '@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)':
     dependencies:
-      '@trpc/server': 11.0.0(typescript@5.8.2)
+      '@trpc/server': 11.0.1(typescript@5.8.2)
       typescript: 5.8.2
 
-  '@trpc/react-query@11.0.0(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.0(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)':
+  '@trpc/react-query@11.0.1(@tanstack/react-query@5.70.0(react@19.0.0))(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.8.2)':
     dependencies:
       '@tanstack/react-query': 5.70.0(react@19.0.0)
-      '@trpc/client': 11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2)
-      '@trpc/server': 11.0.0(typescript@5.8.2)
+      '@trpc/client': 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
+      '@trpc/server': 11.0.1(typescript@5.8.2)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       typescript: 5.8.2
 
-  '@trpc/server@11.0.0(typescript@5.8.2)':
+  '@trpc/server@11.0.1(typescript@5.8.2)':
     dependencies:
       typescript: 5.8.2
 
@@ -8497,10 +8515,10 @@ snapshots:
 
   tr46@0.0.3: {}
 
-  trpc-electron@0.1.2(@trpc/client@11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.0(typescript@5.8.2))(electron@35.1.2):
+  trpc-electron@0.1.2(@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2))(@trpc/server@11.0.1(typescript@5.8.2))(electron@35.1.2):
     dependencies:
-      '@trpc/client': 11.0.0(@trpc/server@11.0.0(typescript@5.8.2))(typescript@5.8.2)
-      '@trpc/server': 11.0.0(typescript@5.8.2)
+      '@trpc/client': 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
+      '@trpc/server': 11.0.1(typescript@5.8.2)
       electron: 35.1.2
 
   truncate-utf8-bytes@1.0.2:
