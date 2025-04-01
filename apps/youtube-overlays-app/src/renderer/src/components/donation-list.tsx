@@ -23,7 +23,27 @@ export function DonationList() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-2 font-pixel">
-      <PaidMessage
+      <PaidMessage price={-Infinity} nickname={'測試者'.repeat(100)}></PaidMessage>
+      <PaidMessage price={0} nickname={'測試者'.repeat(100)}></PaidMessage>
+      <PaidMessage price={1} nickname={'測試者'.repeat(100)}></PaidMessage>
+      <PaidMessage price={29} nickname={'測試者'.repeat(100)}></PaidMessage>
+      <PaidMessage price={30} nickname={'測試者'.repeat(100)}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={74}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={75}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={149}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={150}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={299}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={300}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={749}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={750}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={1499}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={1500}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={2819}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={2820}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={9999}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={10000}></PaidMessage>
+      <PaidMessage nickname={'測試者'.repeat(100)} price={50000}></PaidMessage>
+      {/* <PaidMessage
         headerBackgroundColor="#1565c0"
         contentBackgroundColor="#1e88e5"
         textColor="white"
@@ -99,7 +119,7 @@ export function DonationList() {
         price={10000}
         message={'這是一筆贊助測試~'}
         effect="shiny"
-      ></PaidMessage>
+      ></PaidMessage> */}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/renderer/components/ui/card'
@@ -9,59 +9,41 @@ import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
 import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
-import { SettingsSchema } from '../../../main/schema'
 
-export function PaymentConnection() {
-  const { data: settings, error, isLoading, refetch } = trpcReact.settings.useQuery()
+function useEcpayConnectionState() {
+  const [connectionState, setConnectionState] = useState<string | null>(null)
 
   useEffect(() => {
-    function onChannelUpdated() {
-      console.log('update')
-      void refetch()
+    function onEcpayConnectionStatusChanged(state: string) {
+      console.log('ecpay-connection-state-changed', state)
+      setConnectionState(state)
     }
 
-    socket.on('channel-updated', onChannelUpdated)
+    socket.on('ecpay-connection-state-changed', onEcpayConnectionStatusChanged)
 
     return () => {
-      socket.off('channel-updated', onChannelUpdated)
+      socket.off('ecpay-connection-state-changed', onEcpayConnectionStatusChanged)
     }
-  }, [refetch])
+  }, [])
 
-  if (isLoading) {
-    return <p>載入設定檔...</p>
-  }
-
-  if (error) {
-    return (
-      <div className="text-center">
-        <p>載入設定檔時發生錯誤：</p>
-        <p>{error.message}</p>
-      </div>
-    )
-  }
-
-  if (!settings) {
-    return <p>載入設定檔失敗...</p>
-  }
-
-  return <ConnectionCard settings={settings}></ConnectionCard>
+  return { connectionState }
 }
 
-function ConnectionCard({ settings }: { settings: SettingsSchema }) {
-  console.log({ settings })
-
+export function PaymentConnection() {
   const inputRef = useRef<HTMLInputElement>(null)
   const viewportRef = useAtomValue(viewportRefAtom)
 
+  const { connectionState } = useEcpayConnectionState()
+
   const connectPaymentUrl = trpcReact.connectPaymentUrl.useMutation({
-    onSuccess: ({ error, data }) => {
+    onSuccess: ({ error }, { id, type }) => {
       if (error) {
         console.log('error', error)
 
         return
       }
 
-      console.log('success', data)
+      console.log({ id, type })
 
       toast.success('成功與 payment 建立連線！')
 
@@ -70,6 +52,25 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
       }
 
       viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  const disconnectPaymentUrl = trpcReact.disconnectPaymentUrl.useMutation({
+    onSuccess: ({ error }) => {
+      if (error) {
+        console.log('error', error)
+
+        return
+      }
+
+      toast.success('成功與 payment 斷開連線！')
+
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
     },
     onError: (error) => {
       console.log('error', error)
@@ -85,9 +86,18 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
 
       <CardContent className="flex flex-col gap-6">
         <Input ref={inputRef} type="text" placeholder="請輸入 Payment 網址" />
+        <p>{connectionState}</p>
       </CardContent>
 
-      <CardFooter className={cn('flex justify-end')}>
+      <CardFooter className={cn('flex justify-between')}>
+        <Button
+          onClick={() => {
+            disconnectPaymentUrl.mutate()
+          }}
+        >
+          斷開連線
+        </Button>
+
         <Button
           onClick={() => {
             const value = inputRef.current?.value
@@ -100,9 +110,11 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
 
             console.log({ type, id })
 
-            console.log(type, id)
+            if (!id) {
+              return
+            }
 
-            connectPaymentUrl.mutate({ url: value })
+            connectPaymentUrl.mutate({ type, id })
           }}
         >
           🚀 開始

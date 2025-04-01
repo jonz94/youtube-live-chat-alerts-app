@@ -1,9 +1,6 @@
-export type PaymentType = 'ECPAY' | 'ECPAY_STAGE' | 'OPAY' | 'UNKNOWN'
+import { ParsedPaymentUrlData } from '../../../main/schema'
 
-export interface ParsedPaymentUrlData {
-  type: PaymentType
-  id: string | null
-}
+export type PaymentType = 'ECPAY' | 'ECPAY_STAGE' | 'OPAY' | 'UNKNOWN'
 
 function getIdFromPathname(pathname: string) {
   return pathname.replaceAll('/Broadcaster/AlertBox/', '').replaceAll('/Broadcaster/Donate/', '')
@@ -19,7 +16,7 @@ export function parsePaymentUrl(originalUrl: string): ParsedPaymentUrlData {
   })()
 
   if (!parsedUrl) {
-    return { type: 'UNKNOWN', id: null }
+    return { type: 'UNKNOWN', id: '' }
   }
 
   switch (parsedUrl.host) {
@@ -33,6 +30,6 @@ export function parsePaymentUrl(originalUrl: string): ParsedPaymentUrlData {
       return { type: 'OPAY', id: getIdFromPathname(parsedUrl.pathname) }
 
     default:
-      return { type: 'UNKNOWN', id: null }
+      return { type: 'UNKNOWN', id: '' }
   }
 }

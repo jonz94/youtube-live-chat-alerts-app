@@ -2,8 +2,9 @@ import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { YTNodes } from 'youtubei.js'
 import { z } from 'zod'
+import { getConnectionStatus, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
 import { getInnertubeClient } from './innertube'
-import { templateSchema, VideoInfo } from './schema'
+import { parsedPaymentUrlDataSchema, templateSchema, VideoInfo } from './schema'
 import {
   getSettings,
   removeChannelInfoSetting,
@@ -141,14 +142,40 @@ export const router = t.router({
       return { error: null, data }
     }),
 
-  connectPaymentUrl: t.procedure.input(z.object({ url: z.string().url() })).mutation(async ({ input }) => {
-    try {
-      const response = await fetch(input.url)
+  getConnectionStatus: t.procedure.query(() => {
+    return getConnectionStatus()
+  }),
 
-      return { error: null, data: response }
-    } catch (error) {
-      return { error, data: null }
+  connectPaymentUrl: t.procedure.input(parsedPaymentUrlDataSchema).mutation(async ({ input }) => {
+    if (input.type === 'UNKNOWN') {
+      return { error: '網址格式錯誤，請再重新貼一次網址試試看' }
     }
+
+    if (input.type === 'OPAY') {
+      return { error: '暫時不支援歐付寶 OPAY' }
+    }
+
+    const { token } = await getToken(input.id, input.type === 'ECPAY_STAGE')
+
+    if (!token) {
+      return { error: '無法取得連線 token' }
+    }
+
+    const hubConnection = await startEcpayConnection(token, input.type === 'ECPAY_STAGE')
+
+    if (hubConnection === null) {
+      return { error: '與綠界建立 signalr 連線時失敗' }
+    }
+
+    listen(input.id)
+
+    return { error: null }
+  }),
+
+  disconnectPaymentUrl: t.procedure.mutation(async () => {
+    await stopEcpayConnection()
+
+    return { error: null }
   }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
