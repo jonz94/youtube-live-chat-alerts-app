@@ -81,3 +81,11 @@ export const parsedPaymentUrlDataSchema = z.object({
 })
 
 export type ParsedPaymentUrlData = z.infer<typeof parsedPaymentUrlDataSchema>
+
+export interface Donation {
+  type: 'ECPAY'
+  nickname: string
+  price: number
+  message?: string
+  isTesting?: boolean
+}
