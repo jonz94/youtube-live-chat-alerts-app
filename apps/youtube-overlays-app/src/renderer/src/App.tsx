@@ -10,16 +10,25 @@ import { PaymentConnection } from '~/renderer/components/payment-connection'
 import { Settings } from '~/renderer/components/settings'
 import { SoundEffect } from '~/renderer/components/sound-effect'
 import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/renderer/components/ui/tabs'
 import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
+
+type Page = 'YOUTUBE_GIFTED_MEMBERSHIP' | 'DONATION_LIST' | 'PROGRESS_BAR'
+
+const pages = ['YOUTUBE_GIFTED_MEMBERSHIP', 'DONATION_LIST', 'PROGRESS_BAR'] as const
+
+const pageToPageName: Record<Page, string> = {
+  YOUTUBE_GIFTED_MEMBERSHIP: 'YT 會員贈訂',
+  DONATION_LIST: '斗內清單',
+  PROGRESS_BAR: '進度條',
+}
 
 export default function App() {
   const setViewportRef = useSetAtom(viewportRefAtom)
   const { data, error, isLoading } = trpcReact.initial.useQuery()
 
-  const [currentPage, setCurrentPage] = useState<'YOUTUBE_GIFTED_MEMBERSHIP' | 'DONATION_LIST' | 'PROGRESS_BAR'>(
-    'YOUTUBE_GIFTED_MEMBERSHIP',
-  )
+  const [currentPage, setCurrentPage] = useState<Page>('YOUTUBE_GIFTED_MEMBERSHIP')
 
   const callbackRef = useCallback<React.RefCallback<HTMLDivElement>>(
     (node) => {
@@ -49,16 +58,25 @@ export default function App() {
 
   return (
     <FullscreenScrollArea viewportRef={callbackRef} className="h-screen w-screen">
-      <div className="max-w-lg min-h-screen flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
-        <div className="flex gap-4">
-          <div>切換選單:</div>
-          <div onClick={() => setCurrentPage('YOUTUBE_GIFTED_MEMBERSHIP')}>YT 贈訂</div>
-          <div onClick={() => setCurrentPage('DONATION_LIST')}>斗內清單</div>
-          <div onClick={() => setCurrentPage('PROGRESS_BAR')}>進度條</div>
-        </div>
+      <Tabs value={currentPage} onValueChange={(value) => setCurrentPage(value as Page)} className="pb-4">
+        <TabsList className="before:bg-border relative h-auto w-full gap-2 bg-transparent pt-6 pb-0 before:absolute before:inset-x-0 before:bottom-0 before:h-px">
+          {pages.map((page) => (
+            <TabsTrigger
+              key={`tab-trigger-${page}`}
+              value={page}
+              className="w-28 bg-muted overflow-hidden rounded-b-none border-x border-t py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
+            >
+              {pageToPageName[page]}
+            </TabsTrigger>
+          ))}
 
-        <div className="flex flex-col gap-y-4 flex-1">
-          <section className={currentPage === 'YOUTUBE_GIFTED_MEMBERSHIP' ? 'contents' : 'hidden'}>
+          <div className="absolute top-4 right-6">
+            <ModeToggle></ModeToggle>
+          </div>
+        </TabsList>
+
+        <TabsContent value="YOUTUBE_GIFTED_MEMBERSHIP">
+          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
@@ -67,30 +85,28 @@ export default function App() {
             <Open></Open>
 
             <AppWithSettings></AppWithSettings>
-          </section>
-
-          <section className={currentPage === 'DONATION_LIST' ? 'contents' : 'hidden'}>
+          </div>
+        </TabsContent>
+        <TabsContent value="DONATION_LIST">
+          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
 
             <PaymentConnection></PaymentConnection>
             <DonationList></DonationList>
-          </section>
-
-          <section className={currentPage === 'PROGRESS_BAR' ? 'contents' : 'hidden'}>
+          </div>
+        </TabsContent>
+        <TabsContent value="PROGRESS_BAR">
+          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
 
             <DonationProgressBar></DonationProgressBar>
-          </section>
-        </div>
-      </div>
-
-      <div className="fixed top-6 right-6">
-        <ModeToggle></ModeToggle>
-      </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </FullscreenScrollArea>
   )
 }

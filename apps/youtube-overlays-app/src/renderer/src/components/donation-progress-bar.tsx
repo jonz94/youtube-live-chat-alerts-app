@@ -21,11 +21,11 @@ export function DonationProgressBar() {
 
   // TODO: listen socket event to increase progress
   useEffect(() => {
-    //  const timeout = setInterval(
-    //    () => setProgress((progress) => progress + Math.floor(Math.random() * 10000 + 5000)),
-    //    1000,
-    //  )
-    //  return () => clearInterval(timeout)
+    // const timeout = setInterval(
+    //   () => setProgress((progress) => progress + Math.floor(Math.random() * 10000 + 5000)),
+    //   1000,
+    // )
+    // return () => clearInterval(timeout)
   }, [])
 
   useEffect(() => {
@@ -40,13 +40,11 @@ export function DonationProgressBar() {
     }
   }, [])
 
-  console.log(progress, progressBarValue)
-
   return (
     <div className="mt-8 w-full px-4 flex flex-col gap-y-1 flex-1">
       <div className="relative isolate">
         <p
-          className="absolute font-pixel text-2xl"
+          className="absolute font-pixel text-2xl text-shadow text-white"
           style={{
             zIndex: 10,
             top: 0 + 上方預留空間,
@@ -60,17 +58,19 @@ export function DonationProgressBar() {
           className="absolute transition-transform duration-1000 w-full"
           style={{
             zIndex: 20,
-            top: -184 + 上方預留空間,
-            left: -230,
+            left: 5,
+            top: 30,
             transform: `translateX(${progressBarValue <= 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue}%)`,
           }}
         >
           {/* FIXME: use settings.json to load this image */}
           <img
+            className="-translate-x-1/2 -translate-y-1/2"
             src="http://localhost:21829/assets/progress.gif"
             alt=""
             style={{
-              scale: 0.5,
+              height: 'auto',
+              width: 200,
             }}
           />
         </div>
