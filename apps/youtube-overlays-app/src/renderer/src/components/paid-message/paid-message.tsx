@@ -8,6 +8,9 @@ const IMAGE_SIZE_IN_PIXEL = 40
 const PADDING_IN_PIXEL = 16
 const GAP_IN_PIXEL = 8
 
+const PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL = 4
+const MARGIN_FOR_PIXEL_ART_IN_PIXEL = PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL * 2
+
 type PriceVariant = { threshold: number; variant: string }
 
 const defaultPriceRanges: PriceVariant[] = [
@@ -20,7 +23,7 @@ const defaultPriceRanges: PriceVariant[] = [
   { threshold: 1499, variant: 'pink' },
   { threshold: 2819, variant: 'red' },
   { threshold: 9999, variant: 'rainbow' },
-  { threshold: Infinity, variant: 'shiny' },
+  { threshold: Infinity, variant: 'purple' },
 ]
 
 type Variant = {
@@ -79,6 +82,12 @@ const variants: Record<Variant['name'], Variant> = {
     effectClassName: 'rainbow',
     textColor: 'white',
   },
+  purple: {
+    name: 'purple',
+    headerBackgroundColor: '#6d28d9',
+    contentBackgroundColor: '#7c3aed',
+    textColor: 'white',
+  },
   shiny: {
     name: 'shiny',
     effectClassName: 'shiny',
@@ -118,21 +127,29 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
   return (
     <div
-      className={cn('overflow-hidden flex flex-col', variant.effectClassName)}
+      className="overflow-hidden flex flex-col"
       style={{
         width,
         borderRadius: 4,
       }}
     >
       <div
-        className="font-normal text-[15px] w-full leading-[normal] py-2 min-h-[20px] grid items-center"
+        className={cn(
+          'font-normal text-[15px] leading-[normal] py-2 min-h-[20px] grid items-center',
+          // for pixel art
+          'relative',
+          variant.effectClassName,
+        )}
         style={{
           background: variant.headerBackgroundColor,
           color: variant.textColor,
+          marginTop: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
+          marginRight: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
+          marginLeft: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
           paddingLeft: PADDING_IN_PIXEL,
           paddingRight: PADDING_IN_PIXEL,
           columnGap: GAP_IN_PIXEL,
-          gridTemplateColumns: `40px ${width - IMAGE_SIZE_IN_PIXEL - PADDING_IN_PIXEL - PADDING_IN_PIXEL - GAP_IN_PIXEL}px`,
+          gridTemplateColumns: `40px ${width - IMAGE_SIZE_IN_PIXEL - 2 * MARGIN_FOR_PIXEL_ART_IN_PIXEL - 2 * PADDING_IN_PIXEL - GAP_IN_PIXEL}px`,
         }}
       >
         <div
@@ -152,13 +169,84 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
             }).format(price)}
           </div>
         </div>
+
+        {/* top pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            top: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* top left corner pixel */}
+        <div
+          className="absolute bg-black top-0 left-0"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* top right corner pixel */}
+        <div
+          className="absolute bg-black top-0 right-0"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* left pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: `calc(100% - ${PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            top: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            left: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* right pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: `calc(100% - ${PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            top: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* right pixel shadown */}
+        <div
+          className="absolute bg-[#0004]"
+          style={{
+            height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: 0,
+            right: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
       </div>
 
       <div
-        className="font-normal text-base py-2 min-h-10"
+        aria-label="content"
+        className={cn(
+          'font-normal text-base py-2 min-h-10',
+          // for pixel art
+          'relative',
+          variant.effectClassName,
+        )}
         style={{
           background: variant.contentBackgroundColor,
           color: variant.textColor,
+          marginBottom: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
+          marginRight: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
+          marginLeft: MARGIN_FOR_PIXEL_ART_IN_PIXEL,
           paddingLeft: PADDING_IN_PIXEL,
           paddingRight: PADDING_IN_PIXEL,
         }}
@@ -171,6 +259,105 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
         >
           {message}
         </div>
+
+        {/* bottom pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* bottom left corner pixel */}
+        <div
+          className="absolute bg-black bottom-0 left-0"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* bottom right corner pixel */}
+        <div
+          className="absolute bg-black bottom-0 right-0"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* left pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: `calc(100% - ${PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            left: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* right pixel border */}
+        <div
+          className="absolute bg-black"
+          style={{
+            height: `calc(100% - ${PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+
+        {/* right pixel shadown */}
+        <div
+          className="absolute bg-[#0004]"
+          style={{
+            height: `100%`,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            top: 0,
+            right: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+        {/* shadow */}
+        <div
+          className="absolute bg-[#0003]"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+            bottom: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: 0,
+          }}
+        ></div>
+        <div
+          className="absolute bg-[#0004]"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+        <div
+          className="absolute bg-[#0008]"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: 0,
+            right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+          }}
+        ></div>
+        <div
+          className="absolute bg-[#0008]"
+          style={{
+            height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+            right: 0,
+          }}
+        ></div>
       </div>
     </div>
   )
