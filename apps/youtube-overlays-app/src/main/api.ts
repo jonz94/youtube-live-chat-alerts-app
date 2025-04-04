@@ -149,8 +149,6 @@ export const router = t.router({
     }),
 
   getConnectionState: t.procedure.query(() => {
-    console.log('api:', getConnectionState())
-
     return getConnectionState()
   }),
 

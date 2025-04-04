@@ -56,6 +56,9 @@ function ProgressBar({ settings }: { settings: SettingsSchema }) {
 
   const progressBarValue = (progress / target) * 100
 
+  const visualProgressBarValue =
+    progressBarValue < 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue < 100 ? progressBarValue : 95
+
   return (
     <div
       className="w-full px-8"
@@ -81,7 +84,7 @@ function ProgressBar({ settings }: { settings: SettingsSchema }) {
             zIndex: 20,
             left: 5,
             top: -50 + 上方預留空間_IN_PIXEL,
-            transform: `translateX(${progressBarValue <= 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue}%)`,
+            transform: `translateX(${visualProgressBarValue}%)`,
           }}
         >
           {/* FIXME: use settings.json to load this image */}
@@ -104,10 +107,7 @@ function ProgressBar({ settings }: { settings: SettingsSchema }) {
             left: 0,
           }}
         >
-          <Progress
-            className="h-6 rounded-none bg-[#333]"
-            value={progressBarValue < 1 ? 1 : progressBarValue}
-          ></Progress>
+          <Progress className="h-6 rounded-none bg-[#333]" value={visualProgressBarValue}></Progress>
           {/* top pixel border */}
           <div
             className="absolute bg-black"

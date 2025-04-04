@@ -69,6 +69,9 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
 
   const progressBarValue = (progress / target) * 100
 
+  const visualProgressBarValue =
+    progressBarValue < 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue < 100 ? progressBarValue : 95
+
   return (
     <Card
       className="bg-white border-none"
@@ -76,7 +79,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
         paddingBottom: 上方預留空間_IN_PIXEL,
       }}
     >
-      <CardContent>
+      <CardContent className="px-8">
         <div className="relative isolate">
           <p
             className="absolute font-pixel text-2xl text-shadow text-white whitespace-pre"
@@ -93,9 +96,9 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             className="absolute transition-transform duration-1000 w-full"
             style={{
               zIndex: 20,
-              left: 5,
+              left: 0,
               top: -50 + 上方預留空間_IN_PIXEL,
-              transform: `translateX(${progressBarValue <= 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue}%)`,
+              transform: `translateX(${visualProgressBarValue}%)`,
             }}
           >
             {/* FIXME: use settings.json to load this image */}
@@ -118,10 +121,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
               left: 0,
             }}
           >
-            <Progress
-              className="h-6 rounded-none bg-[#333]"
-              value={progressBarValue < 1 ? 1 : progressBarValue}
-            ></Progress>
+            <Progress className="h-6 rounded-none bg-[#333]" value={visualProgressBarValue}></Progress>
             {/* top pixel border */}
             <div
               className="absolute bg-black"

@@ -13,6 +13,14 @@ import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 import { SettingsSchema } from '../../../main/schema'
 
+const connectionStateName: Record<HubConnectionState, string> = {
+  Connected: '已連線',
+  Connecting: '正在連線',
+  Disconnected: '已中斷連線',
+  Disconnecting: '正在中斷連線',
+  Reconnecting: '重新連線中',
+}
+
 export function PaymentConnection() {
   const {
     data: settings,
@@ -225,7 +233,7 @@ function PaymentConnectionCard({
       </CardFooter>
 
       <div className="text-muted-foreground w-full text-center">
-        連線狀態: {connectionState === null ? '未設定' : connectionState}
+        連線狀態：{connectionState === null ? '未設定' : connectionStateName[connectionState]}
       </div>
     </Card>
   )

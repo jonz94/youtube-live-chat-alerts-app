@@ -133,7 +133,7 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
         <div className="flex flex-col gap-y-2">
           <label className="flex items-center gap-2">
             <CircleDollarSign />
-            現在金額（直接設定）
+            設定目前金額（直接設定）
           </label>
           <div className="flex gap-x-2">
             <Input
@@ -160,11 +160,11 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
         <div className="flex flex-col gap-y-2">
           <label className="flex items-center gap-2">
             <CircleDollarSign />
-            更新現在金額（減少/ 增加）
+            調整目前金額（減少/ 增加）
           </label>
           <div className="flex gap-x-2">
             <Button
-              className="bg-green-600"
+              className="bg-green-600 hover:bg-green-600/80"
               onClick={() => {
                 if (delta === 0) {
                   return
@@ -176,7 +176,6 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
               }}
             >
               <Minus />
-              減少
             </Button>
             <Input
               className="text-center"
@@ -186,7 +185,7 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
               min={0}
             />
             <Button
-              className="bg-red-600"
+              className="bg-red-600 hover:bg-red-600/80"
               onClick={() => {
                 if (delta === 0) {
                   return
@@ -198,7 +197,6 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
               }}
             >
               <Plus />
-              增加
             </Button>
           </div>
         </div>

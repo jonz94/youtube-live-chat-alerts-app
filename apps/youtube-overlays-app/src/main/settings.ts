@@ -259,6 +259,14 @@ export function removePaymentsSettings(payment: ParsedPaymentUrlData) {
 }
 
 export function addTempDonation(donation: TempDonation) {
+  const price = donation.price
+
+  if (price === null || price <= 0) {
+    return
+  }
+
+  updateProgressBarCurrentValueSettingViaDelta(price)
+
   const donations = [...settings.tempDonations, donation]
 
   const uniqueDonations = donations.filter(

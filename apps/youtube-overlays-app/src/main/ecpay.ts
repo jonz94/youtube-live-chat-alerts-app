@@ -85,19 +85,50 @@ export async function startEcpayConnection(token: string, isStage = false) {
   return hubConnection
 }
 
+function parseData(data: unknown) {
+  if (!Array.isArray(data)) {
+    return { error: 'data is not array', data }
+  }
+
+  if (data.length < 3) {
+    return { error: 'data length < 3', data }
+  }
+
+  return {
+    error: null,
+    data: {
+      nickname: data[0] as string,
+      price: Number.parseInt(data[1] as string),
+      message: data[2] === null ? undefined : (data[2] as string),
+    },
+  }
+}
+
 export function listen(id: string) {
   hubConnection?.on(id, (...data) => {
     const now = Date.now()
     console.log('!!!', data)
 
+    // TODO: parse data as [ 'XXX', '100', '這是一筆贊助測試～' ]
+    const { error, data: parsedData } = parseData(data)
+
+    if (error !== null) {
+      return
+    }
+
+    console.log({ parsedData })
+
+    const { nickname, price, message } = parsedData
+
     io?.emit('receive-donation', { type: 'ECPAY', to: id, data })
+
     addTempDonation({
       type: 'ECPAY',
       to: id,
-      message: '',
       uniqueId: `ECPAY${now}`,
-      price: 100,
-      nickname: '',
+      nickname,
+      price,
+      message,
       createdAt: now,
       hide: false,
     })
