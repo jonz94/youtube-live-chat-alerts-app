@@ -11,6 +11,7 @@
     "clean:workspaces": "turbo run clean",
     "dev": "pnpm --parallel --filter \"./apps/**\" run dev",
     "dev:turbo": "turbo dev",
+    "dev:watch": "pnpm --parallel --filter \"./apps/**\" run dev:watch",
     "fmt": "turbo fmt",
     "lint": "turbo lint",
     "prettier": "prettier --write . \"!apps\" && turbo prettier"
@@ -19,20 +20,21 @@
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.10",
-    "turbo": "^2.4.4",
+    "turbo": "^2.5.0",
     "typescript": "~5.8.2"
   },
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.7.1",
   "engines": {
-    "node": ">=22.11.0"
+    "node": ">=22.14.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
+      "electron-winstaller",
       "esbuild"
     ],
     "overrides": {
-      "esbuild": "^0.25.0"
+      "esbuild": "^0.25.2"
     }
   }
 }

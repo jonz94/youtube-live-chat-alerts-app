@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { cn } from '~/renderer/lib/utils'
 
-export function Launcher({ isDev }: { isDev: boolean }) {
-  const url = isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'
+export function Launcher({ name, url }: { name?: string; url: string }) {
   const [isGrabbing, setIsGrabbing] = useState(false)
 
   return (
@@ -19,7 +18,7 @@ export function Launcher({ isDev }: { isDev: boolean }) {
     >
       <Card className="hover:border-primary hover:bg-primary/10">
         <CardHeader>
-          <CardTitle>瀏覽器顯示</CardTitle>
+          <CardTitle>瀏覽器顯示{name ? `（${name}）` : ''}</CardTitle>
           <CardDescription>此視窗可作為 OBS 輸入源</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
+import { fontFamily } from 'tailwindcss/defaultTheme'
 import plugin from 'tailwindcss/plugin'
 
 export const content = ['./index.html', './src/**/*.{ts,tsx}'] as const
@@ -8,7 +9,36 @@ export default {
   darkMode: ['class'],
   content: [...content],
   theme: {
+    fontFamily: {
+      pixel: [
+        '"Cubic 11"',
+        '"Noto Sans TC"',
+        '"Noto Sans JP"',
+        '"Noto Sans KR"',
+        '"Noto Sans SC"',
+        '"Source Han Sans TC"',
+        '"Source Han Sans JP"',
+        '"Source Han Sans KR"',
+        '"Source Han Sans SC"',
+        '"微軟正黑體"',
+        ...fontFamily.sans,
+      ],
+    },
     extend: {
+      fontFamily: {
+        sans: [
+          '"Noto Sans TC"',
+          '"Noto Sans JP"',
+          '"Noto Sans KR"',
+          '"Noto Sans SC"',
+          '"Source Han Sans TC"',
+          '"Source Han Sans JP"',
+          '"Source Han Sans KR"',
+          '"Source Han Sans SC"',
+          '"微軟正黑體"',
+          ...fontFamily.sans,
+        ],
+      },
       screens: {
         xs: '480px',
       },

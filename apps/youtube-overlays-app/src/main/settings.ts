@@ -6,11 +6,16 @@ import {
   ChannelInfo,
   DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
   DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
+  DEFAULT_PROGRESSBAR_TAGET_VALUE,
+  DEFAULT_TEMP_DONATIONS,
   DEFAULT_VOLUME,
+  ParsedPaymentUrlData,
   settingsSchema,
   SettingsSchema,
+  TempDonation,
   type Template,
 } from './schema'
+import { io } from './websocket'
 
 let settings: SettingsSchema = {
   animationTimeInMilliseconds: DEFAULT_ANIMATION_TIME_IN_MILLISECONDS,
@@ -18,6 +23,13 @@ let settings: SettingsSchema = {
   channelInfo: null,
   liveChatSponsorshipsGiftPurchaseAnnouncementTemplate:
     DEFAULT_LIVE_CHAT_SPONSORSHIPS_GIFT_PURCHASE_ANNOUNCEMENT_TEMPLATE,
+  payments: [],
+  progressBarText: '',
+  progressBarCurrentValue: 0,
+  progressBarTargetValue: DEFAULT_PROGRESSBAR_TAGET_VALUE,
+
+  // TODO: remove this after saving donation data into database
+  tempDonations: DEFAULT_TEMP_DONATIONS,
 }
 
 const DEFAULT_SOUND_EFFECT_PATH = is.dev
@@ -27,6 +39,16 @@ const DEFAULT_SOUND_EFFECT_PATH = is.dev
 const DEFAULT_IMAGE_PATH = is.dev
   ? resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png')
   : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png')
+
+// FIXME: remove this after allowing user to set avatar for paid message
+const DEFAULT_AVATAR_PATH = is.dev
+  ? resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png')
+  : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png')
+
+// FIXME: remove this after allowing user to set progress bar image
+const DEFAULT_PROGRESS_IMAGE_PATH = is.dev
+  ? resolve(import.meta.dirname, '..', '..', 'resources', 'progress.gif')
+  : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'progress.gif')
 
 const AMOUNT = ['1', '5', '10', '20', '50'] as const
 
@@ -100,6 +122,18 @@ export function initializeSettings() {
     rmSync(legacyImagePath, { force: true })
   }
 
+  // FIXME: remove this after allowing user to set avatar for paid message
+  const avatarPath = resolve(assetsDir, 'avatar.gif')
+  if (!existsSync(avatarPath)) {
+    copyFileSync(DEFAULT_AVATAR_PATH, avatarPath)
+  }
+
+  // FIXME: remove this after allowing user to set progress bar image
+  const progressImagePath = resolve(assetsDir, 'progress.gif')
+  if (!existsSync(progressImagePath)) {
+    copyFileSync(DEFAULT_PROGRESS_IMAGE_PATH, progressImagePath)
+  }
+
   const settingsContent = readFileSync(settingsPath, 'utf-8')
 
   settings = settingsSchema.parse(JSON.parse(settingsContent))
@@ -107,6 +141,8 @@ export function initializeSettings() {
   console.dir({ settings }, { depth: Infinity })
 
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return settings
 }
 
 export function getSettings() {
@@ -202,4 +238,84 @@ export function updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSettin
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
 
   return template
+}
+
+export function addPaymentsSettings(payment: ParsedPaymentUrlData) {
+  settings.payments = [...settings.payments, payment]
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return payment
+}
+
+export function removePaymentsSettings(payment: ParsedPaymentUrlData) {
+  settings.payments = []
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  return payment
+}
+
+export function addTempDonation(donation: TempDonation) {
+  const price = donation.price
+
+  if (price === null || price <= 0) {
+    return
+  }
+
+  updateProgressBarCurrentValueSettingViaDelta(price)
+
+  const donations = [...settings.tempDonations, donation]
+
+  const uniqueDonations = donations.filter(
+    (item, index) => donations.findIndex((donation) => donation.uniqueId === item.uniqueId) === index,
+  )
+
+  settings.tempDonations = uniqueDonations
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  io?.emit('donation-list-updated')
+}
+
+export function updateProgressBarTextSetting(text: string) {
+  settings.progressBarText = text
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  io?.emit('progress-bar-updated')
+
+  return text
+}
+
+export function updateProgressBarCurrentValueSetting(value: number) {
+  settings.progressBarCurrentValue = value <= 0 ? 0 : Math.floor(value)
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  io?.emit('progress-bar-updated')
+
+  return value
+}
+
+export function updateProgressBarCurrentValueSettingViaDelta(delta: number) {
+  const value = settings.progressBarCurrentValue + Math.floor(delta)
+
+  return updateProgressBarCurrentValueSetting(value)
+}
+
+export function updateProgressBarTargetValueSetting(value: number) {
+  settings.progressBarTargetValue = value <= 1 ? 1 : Math.floor(value)
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  io?.emit('progress-bar-updated')
+
+  return value
 }

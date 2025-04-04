@@ -1,4 +1,4 @@
-import { AnimationProps, motion } from 'motion/react'
+import { type AnimationProps, motion } from 'motion/react'
 import { cn } from '~/lib/utils'
 
 export function Bounce({

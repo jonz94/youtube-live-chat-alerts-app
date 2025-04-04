@@ -1,12 +1,13 @@
 import { DeferQueue } from '@poppinss/defer'
 import { useQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { Fragment, useEffect, useState } from 'react'
 import { TextEffect } from '~/components/text-effect'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 import { fetchSettings } from '~/query'
-import { socket } from './socket'
+import { socket } from '../socket'
 
 interface PresentOptions {
   name: string
@@ -43,6 +44,10 @@ queue.taskCompleted = function (task) {
 queue.drained = function () {
   console.log('Processed last task in the queue')
 }
+
+export const Route = createFileRoute('/')({
+  component: App,
+})
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
@@ -200,5 +205,3 @@ function App() {
     </div>
   )
 }
-
-export default App

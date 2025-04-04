@@ -2,17 +2,24 @@ import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { YTNodes } from 'youtubei.js'
 import { z } from 'zod'
+import { getConnectionState, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
 import { getInnertubeClient } from './innertube'
-import { templateSchema, VideoInfo } from './schema'
+import { parsedPaymentUrlDataSchema, templateSchema, VideoInfo } from './schema'
 import {
+  addPaymentsSettings,
   getSettings,
   removeChannelInfoSetting,
+  removePaymentsSettings,
   resetImage,
   resetSoundEffect,
   updateAnimationTimeInMillisecondsSetting,
   updateChannelInfoSetting,
   updateImage,
   updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting,
+  updateProgressBarCurrentValueSetting,
+  updateProgressBarCurrentValueSettingViaDelta,
+  updateProgressBarTargetValueSetting,
+  updateProgressBarTextSetting,
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
@@ -140,6 +147,78 @@ export const router = t.router({
 
       return { error: null, data }
     }),
+
+  getConnectionState: t.procedure.query(() => {
+    return getConnectionState()
+  }),
+
+  connectPaymentUrl: t.procedure.input(parsedPaymentUrlDataSchema).mutation(async ({ input }) => {
+    if (input.type === 'UNKNOWN') {
+      return { error: '網址格式錯誤，請再重新貼一次網址試試看' }
+    }
+
+    if (input.type === 'OPAY') {
+      return { error: '暫時不支援歐付寶 OPAY' }
+    }
+
+    const { token } = await getToken(input.id, input.type === 'ECPAY_STAGE')
+
+    if (!token) {
+      return { error: '無法取得連線 token' }
+    }
+
+    const hubConnection = await startEcpayConnection(token, input.type === 'ECPAY_STAGE')
+
+    if (hubConnection === null) {
+      return { error: '與綠界建立 signalr 連線時失敗' }
+    }
+
+    listen(input.id)
+
+    addPaymentsSettings(input)
+
+    return { error: null }
+  }),
+
+  disconnectPaymentUrl: t.procedure.mutation(async () => {
+    await stopEcpayConnection()
+
+    return { error: null }
+  }),
+
+  removePaymentSetting: t.procedure.input(parsedPaymentUrlDataSchema).mutation(async ({ input }) => {
+    await stopEcpayConnection()
+
+    removePaymentsSettings(input)
+
+    return { error: null }
+  }),
+
+  updateProgressBarTextSetting: t.procedure.input(z.object({ text: z.string() })).mutation(({ input }) => {
+    updateProgressBarTextSetting(input.text)
+
+    return { error: null, data: input.text }
+  }),
+
+  updateProgressBarCurrentValueSetting: t.procedure.input(z.object({ value: z.number() })).mutation(({ input }) => {
+    updateProgressBarCurrentValueSetting(input.value)
+
+    return { error: null, data: input.value }
+  }),
+
+  updateProgressBarCurrentValueSettingViaDelta: t.procedure
+    .input(z.object({ delta: z.number() }))
+    .mutation(({ input }) => {
+      updateProgressBarCurrentValueSettingViaDelta(input.delta)
+
+      return { error: null, data: input.delta }
+    }),
+
+  updateProgressBarTargetValueSetting: t.procedure.input(z.object({ value: z.number() })).mutation(({ input }) => {
+    updateProgressBarTargetValueSetting(input.value)
+
+    return { error: null, data: input.value }
+  }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
     const { videoId } = input

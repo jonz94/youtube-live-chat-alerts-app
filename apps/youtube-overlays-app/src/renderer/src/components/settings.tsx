@@ -49,6 +49,10 @@ export function Settings() {
 }
 
 function SettingsCard({ settings }: { settings: SettingsSchema }) {
+  // NOTE: disable react compiler because the editor will not re-render correctly
+  // eslint-disable-next-line react-compiler/react-compiler
+  'use no memo'
+
   const inputRef = useRef<HTMLInputElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [volume, setVolume] = useState(settings.volume)
@@ -172,6 +176,8 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
                 }
 
                 void audioRef.current.play()
+
+                toast.success(`已播放音效～`)
               }}
             >
               <Music />
@@ -420,6 +426,8 @@ function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
                 }
 
                 void audioRef.current.play()
+
+                toast.success(`已播放【贈訂 ${amount} 個會員】的音效～`)
               }}
             >
               <Play />
@@ -465,7 +473,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
 
   return (
     <Table className="border-separate border-spacing-0 text-center">
-      <TableHeader className="sticky top-0 bottom-8 bg-background">
+      <TableHeader className="sticky top-[60px] bottom-8 bg-background">
         <TableRow>
           <TableHead className="border-y text-foreground text-center">贈訂數量</TableHead>
           <TableHead className="border-y text-foreground text-center">自訂圖片或動圖</TableHead>
