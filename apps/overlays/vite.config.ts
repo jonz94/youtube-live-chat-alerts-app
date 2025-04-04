@@ -10,7 +10,7 @@ export default defineConfig({
 
   plugins: [
     TanStackRouterVite({
-      autoCodeSplitting: false,
+      autoCodeSplitting: true,
     }),
     viteReact({
       babel: {
