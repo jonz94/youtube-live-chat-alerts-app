@@ -6,7 +6,7 @@ import { trpcReact } from '~/renderer/trpc'
 import { SettingsSchema } from '../../../main/schema'
 
 const PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL = 4
-const 上方預留空間_IN_PIXEL = 100
+const RESERVED_TOP_SPACING_IN_PIXELS = 100
 
 interface Donation {
   type: 'ECPAY'
@@ -76,7 +76,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
     <Card
       className="bg-white border-none"
       style={{
-        paddingBottom: 上方預留空間_IN_PIXEL,
+        paddingBottom: RESERVED_TOP_SPACING_IN_PIXELS,
       }}
     >
       <CardContent className="px-8">
@@ -85,7 +85,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             className="absolute font-pixel text-2xl text-shadow text-white whitespace-pre"
             style={{
               zIndex: 10,
-              top: -2 + 上方預留空間_IN_PIXEL,
+              top: -2 + RESERVED_TOP_SPACING_IN_PIXELS,
               left: 16,
             }}
           >
@@ -97,7 +97,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             style={{
               zIndex: 20,
               left: 0,
-              top: -50 + 上方預留空間_IN_PIXEL,
+              top: -50 + RESERVED_TOP_SPACING_IN_PIXELS,
               transform: `translateX(${visualProgressBarValue}%)`,
             }}
           >
@@ -117,7 +117,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             className="relative m-1"
             style={{
               zIndex: 0,
-              top: 上方預留空間_IN_PIXEL,
+              top: RESERVED_TOP_SPACING_IN_PIXELS,
               left: 0,
             }}
           >

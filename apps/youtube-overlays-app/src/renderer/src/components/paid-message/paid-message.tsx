@@ -127,7 +127,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
   return (
     <div
-      className="overflow-hidden flex flex-col"
+      className="overflow-hidden flex flex-col isolate"
       style={{
         width,
         borderRadius: 4,

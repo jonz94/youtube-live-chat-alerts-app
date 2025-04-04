@@ -160,30 +160,9 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
         <div className="flex flex-col gap-y-2">
           <label className="flex items-center gap-2">
             <CircleDollarSign />
-            調整目前金額（減少/ 增加）
+            調整目前金額（增加 / 減少）
           </label>
-          <div className="flex gap-x-2">
-            <Button
-              className="bg-green-600 hover:bg-green-600/80"
-              onClick={() => {
-                if (delta === 0) {
-                  return
-                }
-
-                updateProgressBarCurrentValueViaDelta.mutate({ delta: -1 * delta })
-                refetch()
-                setDelta(0)
-              }}
-            >
-              <Minus />
-            </Button>
-            <Input
-              className="text-center"
-              type="number"
-              value={delta}
-              onChange={(e) => setDelta(Math.floor(Number(e.target.value)))}
-              min={0}
-            />
+          <div className="grid grid-cols-[40px_1fr_40px] gap-x-2">
             <Button
               className="bg-red-600 hover:bg-red-600/80"
               onClick={() => {
@@ -197,6 +176,27 @@ function SettingsCard({ settings, refetch }: { settings: SettingsSchema; refetch
               }}
             >
               <Plus />
+            </Button>
+            <Input
+              className="text-center"
+              type="number"
+              value={delta}
+              onChange={(e) => setDelta(Math.floor(Number(e.target.value)))}
+              min={0}
+            />
+            <Button
+              className="bg-green-600 hover:bg-green-600/80"
+              onClick={() => {
+                if (delta === 0) {
+                  return
+                }
+
+                updateProgressBarCurrentValueViaDelta.mutate({ delta: -1 * delta })
+                refetch()
+                setDelta(0)
+              }}
+            >
+              <Minus />
             </Button>
           </div>
         </div>

@@ -59,7 +59,11 @@ export default function App() {
 
   return (
     <FullscreenScrollArea viewportRef={callbackRef} className="h-screen w-screen">
-      <Tabs value={currentPage} onValueChange={(value) => setCurrentPage(value as Page)} className="pb-4">
+      <Tabs
+        value={currentPage}
+        onValueChange={(value) => setCurrentPage(value as Page)}
+        className="sticky z-10 top-0 bg-background"
+      >
         <TabsList className="before:bg-border relative h-auto w-full gap-2 bg-transparent pt-6 pb-0 before:absolute before:inset-x-0 before:bottom-0 before:h-px">
           {pages.map((page) => (
             <TabsTrigger
@@ -71,7 +75,7 @@ export default function App() {
             </TabsTrigger>
           ))}
 
-          <div className="absolute top-4 right-6">
+          <div className="absolute top-[10px] right-[10px]">
             <ModeToggle></ModeToggle>
           </div>
         </TabsList>

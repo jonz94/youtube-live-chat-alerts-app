@@ -473,7 +473,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
 
   return (
     <Table className="border-separate border-spacing-0 text-center">
-      <TableHeader className="sticky top-0 bottom-8 bg-background">
+      <TableHeader className="sticky top-[60px] bottom-8 bg-background">
         <TableRow>
           <TableHead className="border-y text-foreground text-center">贈訂數量</TableHead>
           <TableHead className="border-y text-foreground text-center">自訂圖片或動圖</TableHead>

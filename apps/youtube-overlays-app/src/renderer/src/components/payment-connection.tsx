@@ -22,12 +22,7 @@ const connectionStateName: Record<HubConnectionState, string> = {
 }
 
 export function PaymentConnection() {
-  const {
-    data: settings,
-    error: settingsError,
-    isLoading: isSettingsLoading,
-    refetch: refetchSettings,
-  } = trpcReact.settings.useQuery()
+  const { data: settings, error: settingsError, isLoading: isSettingsLoading } = trpcReact.settings.useQuery()
 
   const {
     data: connectionState,
@@ -35,25 +30,6 @@ export function PaymentConnection() {
     isLoading: isConnectionLoading,
     refetch: refetchConnectionState,
   } = trpcReact.getConnectionState.useQuery()
-
-  useEffect(() => {
-    function onChannelUpdated() {
-      console.log('update')
-      void refetchSettings()
-    }
-
-    socket.on('channel-updated', onChannelUpdated)
-
-    return () => {
-      socket.off('channel-updated', onChannelUpdated)
-    }
-  }, [refetchSettings])
-
-  useEffect(() => {
-    const timeout = setInterval(() => void refetchConnectionState(), 5000)
-
-    return () => clearInterval(timeout)
-  }, [refetchConnectionState])
 
   useEffect(() => {
     function onEcpayConnectionStatusChanged(state: HubConnectionState) {
@@ -96,8 +72,6 @@ function PaymentConnectionCard({
   settings: SettingsSchema
   initialConnectionState: HubConnectionState | null
 }) {
-  console.log(settings.payments, initialConnectionState)
-
   const inputRef = useRef<HTMLInputElement>(null)
   const viewportRef = useAtomValue(viewportRefAtom)
 
@@ -192,43 +166,42 @@ function PaymentConnectionCard({
 
       <CardFooter className="flex justify-end gap-x-4">
         {connectionState === HubConnectionState.Connected ? (
-          <>
-            {settings.payments.map((payment) => (
-              <Button
-                key={`${payment.type}-${payment.id}`}
-                variant="destructive"
-                onClick={() => {
-                  removePaymentSetting.mutate(payment)
-                }}
-              >
-                刪除連線設定
-              </Button>
-            ))}
-          </>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              const payment = settings.payments.at(0)
+
+              if (!payment) {
+                return
+              }
+
+              removePaymentSetting.mutate(payment)
+            }}
+          >
+            刪除連線設定
+          </Button>
         ) : (
-          <>
-            <Button
-              onClick={() => {
-                const value = inputRef.current?.value
+          <Button
+            onClick={() => {
+              const value = inputRef.current?.value
 
-                if (!value) {
-                  return
-                }
+              if (!value) {
+                return
+              }
 
-                const { type, id } = parsePaymentUrl(value)
+              const { type, id } = parsePaymentUrl(value)
 
-                console.log({ type, id })
+              console.log({ type, id })
 
-                if (!id) {
-                  return
-                }
+              if (!id) {
+                return
+              }
 
-                connectPaymentUrl.mutate({ type, id })
-              }}
-            >
-              🚀 開始
-            </Button>
-          </>
+              connectPaymentUrl.mutate({ type, id })
+            }}
+          >
+            🚀 開始
+          </Button>
         )}
       </CardFooter>
 
