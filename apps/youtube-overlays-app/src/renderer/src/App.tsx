@@ -21,7 +21,7 @@ const pages = ['YOUTUBE_GIFTED_MEMBERSHIP', 'DONATION_LIST', 'PROGRESS_BAR'] as 
 const pageToPageName: Record<Page, string> = {
   YOUTUBE_GIFTED_MEMBERSHIP: 'YT 會員贈訂',
   DONATION_LIST: '斗內清單',
-  PROGRESS_BAR: '進度條',
+  PROGRESS_BAR: '斗內進度條',
 }
 
 export default function App() {
@@ -78,6 +78,7 @@ export default function App() {
         <TabsContent value="YOUTUBE_GIFTED_MEMBERSHIP">
           <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
+              name={pageToPageName['YOUTUBE_GIFTED_MEMBERSHIP']}
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
             <Connection></Connection>
@@ -90,6 +91,7 @@ export default function App() {
         <TabsContent value="DONATION_LIST">
           <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
+              name={pageToPageName['DONATION_LIST']}
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
 
@@ -100,6 +102,7 @@ export default function App() {
         <TabsContent value="PROGRESS_BAR">
           <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
             <Launcher
+              name={pageToPageName['PROGRESS_BAR']}
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
             ></Launcher>
 

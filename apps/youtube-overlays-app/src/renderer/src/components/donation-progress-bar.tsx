@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { Progress } from '~/renderer/components/ui/progress'
 import { socket } from '~/renderer/socket'
 
@@ -41,175 +42,203 @@ export function DonationProgressBar() {
   }, [])
 
   return (
-    <div className="mt-8 w-full px-4 flex flex-col gap-y-1 flex-1">
-      <div className="relative isolate">
-        <p
-          className="absolute font-pixel text-2xl text-shadow text-white"
-          style={{
-            zIndex: 10,
-            top: 0 + 上方預留空間,
-            left: 16,
-          }}
-        >
-          進度條 {progress}/{TARGET}
-        </p>
+    <>
+      <Card
+        style={{
+          paddingBottom: 上方預留空間,
 
-        <div
-          className="absolute transition-transform duration-1000 w-full"
-          style={{
-            zIndex: 20,
-            left: 5,
-            top: 30,
-            transform: `translateX(${progressBarValue <= 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue}%)`,
-          }}
-        >
-          {/* FIXME: use settings.json to load this image */}
-          <img
-            className="-translate-x-1/2 -translate-y-1/2"
-            src="http://localhost:21829/assets/progress.gif"
-            alt=""
-            style={{
-              height: 'auto',
-              width: 200,
-            }}
-          />
-        </div>
+          background: `
+            linear-gradient(45deg, #ccc 25%, transparent 25%),
+            linear-gradient(-45deg, #ccc 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #ccc 75%),
+            linear-gradient(-45deg, transparent 75%, #ccc 75%)
+          `,
+          backgroundSize: '20px 20px',
+          backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+          backgroundColor: 'white',
+        }}
+      >
+        <CardContent>
+          <div className="relative isolate">
+            <p
+              className="absolute font-pixel text-2xl text-shadow text-white"
+              style={{
+                zIndex: 10,
+                top: -2 + 上方預留空間,
+                left: 16,
+              }}
+            >
+              進度條 {progress}/{TARGET}
+            </p>
 
-        <div
-          className="relative m-1"
-          style={{
-            zIndex: 0,
-            top: 上方預留空間,
-            left: 0,
-          }}
-        >
-          <Progress
-            className="h-6 rounded-none bg-[#333]"
-            value={progressBarValue < 1 ? 1 : progressBarValue}
-          ></Progress>
-          {/* top pixel border */}
-          <div
-            className="absolute bg-black"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              top: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* bottom pixel border */}
-          <div
-            className="absolute bg-black"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* top left corner pixel */}
-          <div
-            className="absolute bg-black top-0 left-0"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* top right corner pixel */}
-          <div
-            className="absolute bg-black top-0 right-0"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* bottom left corner pixel */}
-          <div
-            className="absolute bg-black bottom-0 left-0"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
+            <div
+              className="absolute transition-transform duration-1000 w-full"
+              style={{
+                zIndex: 20,
+                left: 5,
+                top: 30,
+                transform: `translateX(${progressBarValue <= 1 ? 1 : progressBarValue >= 100 ? 100 : progressBarValue}%)`,
+              }}
+            >
+              {/* FIXME: use settings.json to load this image */}
+              <img
+                className="-translate-x-1/2 -translate-y-1/2"
+                src="http://localhost:21829/assets/progress.gif"
+                alt=""
+                style={{
+                  height: 'auto',
+                  width: 200,
+                }}
+              />
+            </div>
 
-          {/* bottom right corner pixel */}
-          <div
-            className="absolute bg-black bottom-0 right-0"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* left pixel border */}
-          <div
-            className="absolute bg-black"
-            style={{
-              height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              left: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* right pixel border */}
-          <div
-            className="absolute bg-black"
-            style={{
-              height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
+            <div
+              className="relative m-1"
+              style={{
+                zIndex: 0,
+                top: 上方預留空間,
+                left: 0,
+              }}
+            >
+              <Progress
+                className="h-6 rounded-none bg-[#333]"
+                value={progressBarValue < 1 ? 1 : progressBarValue}
+              ></Progress>
+              {/* top pixel border */}
+              <div
+                className="absolute bg-black"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  top: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* bottom pixel border */}
+              <div
+                className="absolute bg-black"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* top left corner pixel */}
+              <div
+                className="absolute bg-black top-0 left-0"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* top right corner pixel */}
+              <div
+                className="absolute bg-black top-0 right-0"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* bottom left corner pixel */}
+              <div
+                className="absolute bg-black bottom-0 left-0"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
 
-          {/* right pixel shadown */}
-          <div
-            className="absolute bg-[#0004]"
-            style={{
-              height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              top: 2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          {/* shadow */}
-          <div
-            className="absolute bg-[#0003]"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
-              bottom: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: 0,
-            }}
-          ></div>
-          <div
-            className="absolute bg-[#0004]"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          <div
-            className="absolute bg-[#0008]"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              bottom: 0,
-              right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-            }}
-          ></div>
-          <div
-            className="absolute bg-[#0008]"
-            style={{
-              height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
-              right: 0,
-            }}
-          ></div>
-        </div>
-      </div>
-    </div>
+              {/* bottom right corner pixel */}
+              <div
+                className="absolute bg-black bottom-0 right-0"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* left pixel border */}
+              <div
+                className="absolute bg-black"
+                style={{
+                  height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  left: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* right pixel border */}
+              <div
+                className="absolute bg-black"
+                style={{
+                  height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  bottom: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+
+              {/* right pixel shadown */}
+              <div
+                className="absolute bg-[#0004]"
+                style={{
+                  height: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  top: 2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              {/* shadow */}
+              <div
+                className="absolute bg-[#0003]"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: `calc(100% - ${2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL}px)`,
+                  bottom: -2 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: 0,
+                }}
+              ></div>
+              <div
+                className="absolute bg-[#0004]"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              <div
+                className="absolute bg-[#0008]"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  bottom: 0,
+                  right: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                }}
+              ></div>
+              <div
+                className="absolute bg-[#0008]"
+                style={{
+                  height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  bottom: -1 * PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
+                  right: 0,
+                }}
+              ></div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>斗內進度條設定</CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          <p>即將推出</p>
+        </CardContent>
+      </Card>
+    </>
   )
 }

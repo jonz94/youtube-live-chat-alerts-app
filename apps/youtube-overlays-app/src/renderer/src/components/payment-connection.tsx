@@ -45,7 +45,7 @@ export function PaymentConnection() {
 
       console.log({ id, type })
 
-      toast.success('成功與 payment 建立連線！')
+      toast.success('成功建立連線！')
 
       if (inputRef.current) {
         inputRef.current.value = ''
@@ -66,7 +66,7 @@ export function PaymentConnection() {
         return
       }
 
-      toast.success('成功與 payment 斷開連線！')
+      toast.success('成功斷開連線！')
 
       if (inputRef.current) {
         inputRef.current.value = ''
@@ -81,11 +81,13 @@ export function PaymentConnection() {
     <Card>
       <CardHeader>
         <CardTitle>建立連線</CardTitle>
-        <CardDescription className={cn('max-w-sm')}>輸入 Payment 網址</CardDescription>
+        <CardDescription className={cn('max-w-sm')}>
+          輸入綠界實況主收款網址，並按下開始，讓小程式可以讀取到綠界的贊助成功訊息
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-6">
-        <Input ref={inputRef} type="text" placeholder="請輸入 Payment 網址" />
+        <Input ref={inputRef} type="text" placeholder="請輸入綠界實況主收款網址" />
         <p>{connectionState}</p>
       </CardContent>
 
