@@ -1,4 +1,5 @@
 import { HubConnectionBuilder, type HubConnection } from '@microsoft/signalr'
+import { addTempDonation } from './settings'
 import { io } from './websocket'
 
 let hubConnection: HubConnection | null = null
@@ -31,7 +32,7 @@ export async function getToken(id: string, isStage = false) {
   }
 }
 
-export function getConnectionStatus() {
+export function getConnectionState() {
   if (hubConnection === null) {
     return null
   }
@@ -49,14 +50,6 @@ export async function startEcpayConnection(token: string, isStage = false) {
       accessTokenFactory: () => token,
     })
     .build()
-
-  console.log(connection.state)
-
-  await connection.start()
-
-  console.log(connection.state)
-
-  io?.emit('ecpay-connection-state-changed', connection.state)
 
   connection.onclose((error) => {
     const state = connection.state
@@ -79,6 +72,14 @@ export async function startEcpayConnection(token: string, isStage = false) {
     io?.emit('ecpay-connection-state-changed', state)
   })
 
+  console.log(connection.state)
+
+  await connection.start()
+
+  console.log(connection.state)
+
+  io?.emit('ecpay-connection-state-changed', connection.state)
+
   hubConnection = connection
 
   return hubConnection
@@ -86,8 +87,20 @@ export async function startEcpayConnection(token: string, isStage = false) {
 
 export function listen(id: string) {
   hubConnection?.on(id, (...data) => {
-    console.log(data)
+    const now = Date.now()
+    console.log('!!!', data)
+
     io?.emit('receive-donation', { type: 'ECPAY', to: id, data })
+    addTempDonation({
+      type: 'ECPAY',
+      to: id,
+      message: '',
+      uniqueId: `ECPAY${now}`,
+      price: 100,
+      nickname: '',
+      createdAt: now,
+      hide: false,
+    })
   })
 }
 

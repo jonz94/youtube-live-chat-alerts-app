@@ -18,6 +18,7 @@ export const fetchLivechatData = (videoId: string) => {
 
 export async function fetchSettings() {
   const content = await fetch('http://localhost:21829/api/settings').then((response) => response.text())
+
   const parsedData = await settingsSchema.parseAsync(JSON.parse(content))
 
   return parsedData

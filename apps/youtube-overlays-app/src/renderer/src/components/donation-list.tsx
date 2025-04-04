@@ -1,59 +1,85 @@
-import { useEffect, useState } from 'react'
-import { PaidMessage } from '~/renderer/components/paid-message/paid-message'
+import { X } from 'lucide-react'
+import { useEffect } from 'react'
+import { PaidMessage, priceToVariant } from '~/renderer/components/paid-message/paid-message'
+import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/renderer/components/ui/card'
+import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
-
-interface Donation {
-  type: 'ECPAY'
-  to: string
-  data: unknown
-}
+import { trpcReact } from '~/renderer/trpc'
+import { SettingsSchema } from '../../../main/schema'
 
 export function DonationList() {
-  const [donations] = useState([
-    { price: -Infinity, nickname: '測試者' },
-    { price: 0, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 15, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 30, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 75, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 150, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 300, nickname: '測試者', message: '這是一筆贊助測試~' },
-    { price: 750, nickname: '測試者', message: '這是一筆贊助測試~' },
-    {
-      price: 1500,
-      nickname: '名字很長'.repeat(10),
-      message: '很長很長的文字測試~'.repeat(10),
-    },
-    { price: 2820, nickname: '測試者', message: 'RGB 彩虹測試！' },
-    { price: 10000, nickname: '測試者', message: '這是一筆贊助測試~' },
-  ])
+  const { data: settings, error, isLoading, refetch } = trpcReact.settings.useQuery()
 
-  // TODO: listen donation event and add it to the donation list
   useEffect(() => {
-    function onReceiveDonation({ type, to, data }: Donation) {
-      console.log('receive donation', type, to, data)
+    function onDonationListUpdate() {
+      void refetch()
     }
 
-    socket.on('receive-donation', onReceiveDonation)
+    socket.on('donation-list-updated', onDonationListUpdate)
 
     return () => {
-      socket.off('receive-donation', onReceiveDonation)
+      socket.off('donation-list-updated', onDonationListUpdate)
     }
-  }, [])
+  }, [refetch])
+
+  if (isLoading) {
+    return <p>載入設定檔...</p>
+  }
+
+  if (error) {
+    return (
+      <div className="text-center">
+        <p>載入設定檔時發生錯誤：</p>
+        <p>{error.message}</p>
+      </div>
+    )
+  }
+
+  if (!settings) {
+    return <p>載入設定檔失敗...</p>
+  }
+
+  return <DonationListCard settings={settings}></DonationListCard>
+}
+
+function DonationListCard({ settings }: { settings: SettingsSchema }) {
+  const donations = settings.tempDonations
+
+  const uniqueDonations = donations.filter(
+    (item, index) => donations.findIndex((donation) => donation.uniqueId === item.uniqueId) === index,
+  )
 
   return (
     <>
       <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle>斗內清單</CardTitle>
-          <CardDescription>目前只會顯示最新的 20 筆斗內紀錄</CardDescription>
+          <CardDescription>目前只會顯示最新的 100 筆斗內紀錄</CardDescription>
         </CardHeader>
 
         <CardContent className="py-4 bg-white">
           <div className="w-full flex flex-col items-center justify-center gap-2 font-pixel">
-            {donations.slice(0, 100).map((props, index) => (
-              <PaidMessage key={index} {...props} />
-            ))}
+            {uniqueDonations
+              .reverse()
+              .slice(0, 100)
+              .map((donation) => (
+                <div
+                  key={donation.uniqueId}
+                  className={cn('relative', priceToVariant(donation.price).name === 'unknown' && 'hidden')}
+                >
+                  <PaidMessage {...donation} />
+
+                  {/* TODO: click to hide donation */}
+                  <Button
+                    className="hidden absolute top-0 right-0 text-black hover:bg-transparent size-12"
+                    variant="ghost"
+                    onClick={() => console.log(donation.uniqueId)}
+                  >
+                    <X></X>
+                  </Button>
+                </div>
+              ))}
           </div>
         </CardContent>
       </Card>

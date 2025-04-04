@@ -11,6 +11,7 @@
     "build-only": "vite build",
     "clean": "git clean -xdf .turbo node_modules ../youtube-overlays-app/resources/overlays",
     "dev": "vite",
+    "dev:watch": "pnpm run dev",
     "lint": "eslint . --fix",
     "prettier": "prettier --write .",
     "preview": "vite preview",
@@ -18,6 +19,7 @@
   },
   "dependencies": {
     "@poppinss/defer": "^1.1.1",
+    "@radix-ui/react-progress": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@tanstack/react-query": "^5.71.5",
     "@tanstack/react-router": "^1.114.34",

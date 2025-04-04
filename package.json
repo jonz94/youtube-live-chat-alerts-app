@@ -11,6 +11,7 @@
     "clean:workspaces": "turbo run clean",
     "dev": "pnpm --parallel --filter \"./apps/**\" run dev",
     "dev:turbo": "turbo dev",
+    "dev:watch": "pnpm --parallel --filter \"./apps/**\" run dev:watch",
     "fmt": "turbo fmt",
     "lint": "turbo lint",
     "prettier": "prettier --write . \"!apps\" && turbo prettier"

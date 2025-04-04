@@ -1,0 +1,40 @@
+.rainbow {
+  background: linear-gradient(86deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background-size: 1800% 1800%;
+  animation: rainbow 6s ease infinite;
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 82%;
+  }
+
+  50% {
+    background-position: 100% 19%;
+  }
+
+  100% {
+    background-position: 0% 82%;
+  }
+}
+
+.shiny {
+  background: linear-gradient(270deg, #faff6f 50%, #ffffff 60%, #faff6f 70%);
+  background-size: 600% 200%;
+  animation: shiny 20s linear infinite;
+  animation-delay: 0s;
+}
+
+@keyframes shiny {
+  0% {
+    background-position-x: 400%;
+  }
+
+  50% {
+    background-position-x: 0%;
+  }
+
+  100% {
+    background-position-x: -400%;
+  }
+}

@@ -1,6 +1,5 @@
-import { useWindowSize } from '~/renderer/hooks/use-window-size'
-import { cn } from '~/renderer/lib/utils'
-
+import { useWindowSize } from '~/hooks/use-window-size'
+import { cn } from '~/lib/utils'
 import './paid-message.css'
 
 const DEFAULT_WIDTH_IN_PIXEL = 400

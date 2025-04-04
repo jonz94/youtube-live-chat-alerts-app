@@ -16,7 +16,7 @@ interface PresentOptions {
 }
 
 const ANIMATION_DURATION_IN_MS = 250
-const ENABLE_DEBUG_MODE = true
+const ENABLE_DEBUG_MODE = false
 
 function convertToDisplayName(id: string | null, lookupTable: { name: string; amount: string }) {
   if (id !== 'name' && id !== 'amount') {

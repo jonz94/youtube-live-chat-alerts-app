@@ -11,14 +11,21 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TestImport } from './routes/test'
+import { Route as ProgressBarImport } from './routes/progress-bar'
+import { Route as DonationListImport } from './routes/donation-list'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
-const TestRoute = TestImport.update({
-  id: '/test',
-  path: '/test',
+const ProgressBarRoute = ProgressBarImport.update({
+  id: '/progress-bar',
+  path: '/progress-bar',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DonationListRoute = DonationListImport.update({
+  id: '/donation-list',
+  path: '/donation-list',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +46,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestImport
+    '/donation-list': {
+      id: '/donation-list'
+      path: '/donation-list'
+      fullPath: '/donation-list'
+      preLoaderRoute: typeof DonationListImport
+      parentRoute: typeof rootRoute
+    }
+    '/progress-bar': {
+      id: '/progress-bar'
+      path: '/progress-bar'
+      fullPath: '/progress-bar'
+      preLoaderRoute: typeof ProgressBarImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/donation-list': typeof DonationListRoute
+  '/progress-bar': typeof ProgressBarRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/donation-list': typeof DonationListRoute
+  '/progress-bar': typeof ProgressBarRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/test': typeof TestRoute
+  '/donation-list': typeof DonationListRoute
+  '/progress-bar': typeof ProgressBarRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/test'
+  fullPaths: '/' | '/donation-list' | '/progress-bar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/test'
-  id: '__root__' | '/' | '/test'
+  to: '/' | '/donation-list' | '/progress-bar'
+  id: '__root__' | '/' | '/donation-list' | '/progress-bar'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TestRoute: typeof TestRoute
+  DonationListRoute: typeof DonationListRoute
+  ProgressBarRoute: typeof ProgressBarRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TestRoute: TestRoute,
+  DonationListRoute: DonationListRoute,
+  ProgressBarRoute: ProgressBarRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/test"
+        "/donation-list",
+        "/progress-bar"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/test": {
-      "filePath": "test.tsx"
+    "/donation-list": {
+      "filePath": "donation-list.tsx"
+    },
+    "/progress-bar": {
+      "filePath": "progress-bar.tsx"
     }
   }
 }

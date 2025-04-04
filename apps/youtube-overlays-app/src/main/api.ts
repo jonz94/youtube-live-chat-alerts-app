@@ -2,18 +2,24 @@ import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { YTNodes } from 'youtubei.js'
 import { z } from 'zod'
-import { getConnectionStatus, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
+import { getConnectionState, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
 import { getInnertubeClient } from './innertube'
 import { parsedPaymentUrlDataSchema, templateSchema, VideoInfo } from './schema'
 import {
+  addPaymentsSettings,
   getSettings,
   removeChannelInfoSetting,
+  removePaymentsSettings,
   resetImage,
   resetSoundEffect,
   updateAnimationTimeInMillisecondsSetting,
   updateChannelInfoSetting,
   updateImage,
   updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSetting,
+  updateProgressBarCurrentValueSetting,
+  updateProgressBarCurrentValueSettingViaDelta,
+  updateProgressBarTargetValueSetting,
+  updateProgressBarTextSetting,
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
@@ -142,8 +148,10 @@ export const router = t.router({
       return { error: null, data }
     }),
 
-  getConnectionStatus: t.procedure.query(() => {
-    return getConnectionStatus()
+  getConnectionState: t.procedure.query(() => {
+    console.log('api:', getConnectionState())
+
+    return getConnectionState()
   }),
 
   connectPaymentUrl: t.procedure.input(parsedPaymentUrlDataSchema).mutation(async ({ input }) => {
@@ -169,6 +177,8 @@ export const router = t.router({
 
     listen(input.id)
 
+    addPaymentsSettings(input)
+
     return { error: null }
   }),
 
@@ -176,6 +186,40 @@ export const router = t.router({
     await stopEcpayConnection()
 
     return { error: null }
+  }),
+
+  removePaymentSetting: t.procedure.input(parsedPaymentUrlDataSchema).mutation(async ({ input }) => {
+    await stopEcpayConnection()
+
+    removePaymentsSettings(input)
+
+    return { error: null }
+  }),
+
+  updateProgressBarTextSetting: t.procedure.input(z.object({ text: z.string() })).mutation(({ input }) => {
+    updateProgressBarTextSetting(input.text)
+
+    return { error: null, data: input.text }
+  }),
+
+  updateProgressBarCurrentValueSetting: t.procedure.input(z.object({ value: z.number() })).mutation(({ input }) => {
+    updateProgressBarCurrentValueSetting(input.value)
+
+    return { error: null, data: input.value }
+  }),
+
+  updateProgressBarCurrentValueSettingViaDelta: t.procedure
+    .input(z.object({ delta: z.number() }))
+    .mutation(({ input }) => {
+      updateProgressBarCurrentValueSettingViaDelta(input.delta)
+
+      return { error: null, data: input.delta }
+    }),
+
+  updateProgressBarTargetValueSetting: t.procedure.input(z.object({ value: z.number() })).mutation(({ input }) => {
+    updateProgressBarTargetValueSetting(input.value)
+
+    return { error: null, data: input.value }
   }),
 
   start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {

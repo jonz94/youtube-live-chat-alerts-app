@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import { Connection } from '~/renderer/components/connection'
 import { DonationList } from '~/renderer/components/donation-list'
 import { DonationProgressBar } from '~/renderer/components/donation-progress-bar'
+import { DonationProgressBarSettings } from '~/renderer/components/donation-progress-bar-settings'
 import { Launcher } from '~/renderer/components/launcher'
 import { ModeToggle } from '~/renderer/components/mode-toggle'
 import { Open } from '~/renderer/components/open'
@@ -10,7 +11,7 @@ import { PaymentConnection } from '~/renderer/components/payment-connection'
 import { Settings } from '~/renderer/components/settings'
 import { SoundEffect } from '~/renderer/components/sound-effect'
 import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/renderer/components/ui/tabs'
+import { Tabs, TabsList, TabsTrigger } from '~/renderer/components/ui/tabs'
 import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 
@@ -74,9 +75,11 @@ export default function App() {
             <ModeToggle></ModeToggle>
           </div>
         </TabsList>
+      </Tabs>
 
-        <TabsContent value="YOUTUBE_GIFTED_MEMBERSHIP">
-          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
+      <div className="max-w-[29rem] min-h-screen flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
+        <div className="flex flex-col gap-y-4 flex-1">
+          <section className={currentPage === 'YOUTUBE_GIFTED_MEMBERSHIP' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['YOUTUBE_GIFTED_MEMBERSHIP']}
               url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
@@ -86,30 +89,37 @@ export default function App() {
             <Open></Open>
 
             <AppWithSettings></AppWithSettings>
-          </div>
-        </TabsContent>
-        <TabsContent value="DONATION_LIST">
-          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
+          </section>
+
+          <section className={currentPage === 'DONATION_LIST' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['DONATION_LIST']}
-              url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
+              url={
+                data.isDev
+                  ? 'http://localhost:1337/overlays/donation-list'
+                  : 'http://localhost:21829/overlays/donation-list'
+              }
             ></Launcher>
 
             <PaymentConnection></PaymentConnection>
             <DonationList></DonationList>
-          </div>
-        </TabsContent>
-        <TabsContent value="PROGRESS_BAR">
-          <div className="max-w-[29rem] flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
+          </section>
+
+          <section className={currentPage === 'PROGRESS_BAR' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['PROGRESS_BAR']}
-              url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
+              url={
+                data.isDev
+                  ? 'http://localhost:1337/overlays/progress-bar'
+                  : 'http://localhost:21829/overlays/progress-bar'
+              }
             ></Launcher>
 
             <DonationProgressBar></DonationProgressBar>
-          </div>
-        </TabsContent>
-      </Tabs>
+            <DonationProgressBarSettings></DonationProgressBarSettings>
+          </section>
+        </div>
+      </div>
     </FullscreenScrollArea>
   )
 }
