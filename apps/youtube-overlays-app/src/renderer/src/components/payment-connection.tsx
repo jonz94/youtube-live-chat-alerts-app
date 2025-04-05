@@ -164,50 +164,52 @@ function PaymentConnectionCard({
         />
       </CardContent>
 
-      <CardFooter className="flex justify-end gap-x-4">
-        {connectionState === HubConnectionState.Connected ? (
-          <Button
-            variant="destructive"
-            onClick={() => {
-              const payment = settings.payments.at(0)
+      <CardFooter className="flex-col">
+        <div className="flex justify-end w-full">
+          {connectionState === HubConnectionState.Connected ? (
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const payment = settings.payments.at(0)
 
-              if (!payment) {
-                return
-              }
+                if (!payment) {
+                  return
+                }
 
-              removePaymentSetting.mutate(payment)
-            }}
-          >
-            刪除連線設定
-          </Button>
-        ) : (
-          <Button
-            onClick={() => {
-              const value = inputRef.current?.value
+                removePaymentSetting.mutate(payment)
+              }}
+            >
+              刪除連線設定
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                const value = inputRef.current?.value
 
-              if (!value) {
-                return
-              }
+                if (!value) {
+                  return
+                }
 
-              const { type, id } = parsePaymentUrl(value)
+                const { type, id } = parsePaymentUrl(value)
 
-              console.log({ type, id })
+                console.log({ type, id })
 
-              if (!id) {
-                return
-              }
+                if (!id) {
+                  return
+                }
 
-              connectPaymentUrl.mutate({ type, id })
-            }}
-          >
-            🚀 開始
-          </Button>
-        )}
+                connectPaymentUrl.mutate({ type, id })
+              }}
+            >
+              🚀 開始
+            </Button>
+          )}
+        </div>
+
+        <div className="relative top-3 text-muted-foreground w-full text-center">
+          連線狀態：{connectionState === null ? '未設定' : connectionStateName[connectionState]}
+        </div>
       </CardFooter>
-
-      <div className="text-muted-foreground w-full text-center">
-        連線狀態：{connectionState === null ? '未設定' : connectionStateName[connectionState]}
-      </div>
     </Card>
   )
 }
