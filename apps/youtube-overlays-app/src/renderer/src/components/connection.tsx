@@ -21,16 +21,18 @@ import { CircleHelpIcon } from '~/renderer/components/ui/circle-help'
 import { DataList, DataListItem, DataListLabel, DataListValue } from '~/renderer/components/ui/data-list'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '~/renderer/components/ui/hover-card'
 import { Input } from '~/renderer/components/ui/input'
-import { Label } from '~/renderer/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '~/renderer/components/ui/popover'
-import { Switch } from '~/renderer/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/renderer/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/renderer/components/ui/tooltip'
 import { format } from '~/renderer/lib/date-time-format'
 import { parseYoutubeUrl } from '~/renderer/lib/parse-youtube-url'
 import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
-import { connectionVideoInfoAtom, viewportRefAtom } from '~/renderer/store'
+import {
+  connectionVideoInfoAtom,
+  hasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnceAtom,
+  viewportRefAtom,
+} from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
 import { ChannelInfo, SettingsSchema, VideoInfo } from '../../../main/schema'
 
@@ -75,7 +77,6 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
   const [channelInfo, setChannelInfo] = useState<ChannelInfo | null>(settings.channelInfo)
   const [connectionVideoInfo, setConnectionVideoInfo] = useAtom(connectionVideoInfoAtom)
   const viewportRef = useAtomValue(viewportRefAtom)
-  const [enableAutoConnection, setEnableAutoConnection] = useState(false)
 
   const getChannelInfoAndThenUpdateChannelInfoSettings =
     trpcReact.getChannelInfoAndThenUpdateChannelInfoSettings.useMutation({
@@ -335,40 +336,6 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                     </div>
                   </div>
                 </div>
-
-                {/* TODO: wait until we are able to disconnect from live chat. hidden for now */}
-                <div
-                  className={cn(
-                    'relative flex w-full items-center gap-2 rounded-lg border border-input p-4 shadow-sm shadow-black/5',
-                    'hidden',
-                  )}
-                >
-                  <div className="grid grow gap-2">
-                    <Label>自動連線功能</Label>
-                    <p className="text-xs text-muted-foreground">開啟小程式時，自動連線至聊天室</p>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="enableAutoConntection" className="sr-only">
-                      Toggle Enable Auto Connection Feature
-                    </Label>
-
-                    <div
-                      className="group inline-flex items-center gap-2"
-                      data-state={enableAutoConnection ? 'checked' : 'unchecked'}
-                    >
-                      <Switch
-                        id="enableAutoConntection"
-                        checked={enableAutoConnection}
-                        onCheckedChange={(value) => {
-                          console.log(value)
-                          setEnableAutoConnection(value)
-                        }}
-                        aria-labelledby="switch-off-label switch-on-label"
-                      />
-                    </div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
 
@@ -521,6 +488,33 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
 function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
   const isInitialized = useRef(false)
   const [liveOrUpcomingStreams, setLiveOrUpcomingStreams] = useState<VideoInfo[]>([])
+  const setConnectionVideoInfo = useSetAtom(connectionVideoInfoAtom)
+  const viewportRef = useAtomValue(viewportRefAtom)
+  const [
+    hasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnce,
+    setHasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnce,
+  ] = useAtom(hasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnceAtom)
+
+  const startLivechat = trpcReact.startLivechat.useMutation({
+    onSuccess: ({ error, data }) => {
+      if (error) {
+        console.log('error', error)
+
+        return
+      }
+
+      console.log('success', data)
+
+      toast.success('成功與直播聊天室建立連線！')
+
+      setConnectionVideoInfo(data)
+
+      viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
 
   const getLiveOrUpcomingStreams = trpcReact.getLiveOrUpcomingStreams.useMutation({
     onSuccess: ({ error, data }) => {
@@ -538,6 +532,17 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
 
       if (data.length > 0) {
         toast.success('成功取得直播與待機室資料！')
+      }
+
+      if (!hasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnce) {
+        const firstData = data.at(0)
+
+        if (firstData) {
+          console.log('hi')
+          startLivechat.mutate({ videoId: firstData.id })
+        }
+
+        setHasAutoStartLivechatTriggeredToEnsureItOnlyTriggersOnce(true)
       }
     },
     onError: (error) => {
