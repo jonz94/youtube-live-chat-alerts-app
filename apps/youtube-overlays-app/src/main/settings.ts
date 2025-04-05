@@ -141,8 +141,6 @@ export function initializeSettings() {
   console.dir({ settings }, { depth: Infinity })
 
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
-
-  return settings
 }
 
 export function getSettings() {
@@ -241,7 +239,7 @@ export function updateLiveChatSponsorshipsGiftPurchaseAnnouncementTemplateSettin
 }
 
 export function addPaymentsSettings(payment: ParsedPaymentUrlData) {
-  settings.payments = [...settings.payments, payment]
+  settings.payments = [payment]
 
   const settingsPath = getSettingsPath()
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')

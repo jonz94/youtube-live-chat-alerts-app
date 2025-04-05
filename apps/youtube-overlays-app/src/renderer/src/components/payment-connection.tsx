@@ -1,7 +1,7 @@
 import { HubConnectionState } from '@microsoft/signalr'
 import { useAtomValue } from 'jotai'
 import { CircleCheck } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/renderer/components/ui/card'
@@ -78,7 +78,8 @@ function PaymentConnectionCard({
   settings: SettingsSchema
   initialConnectionState: HubConnectionState | null
 }) {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const isInitialized = useRef(false)
+  const [inputValue, setInputValue] = useState('')
   const viewportRef = useAtomValue(viewportRefAtom)
 
   const connectionState = initialConnectionState
@@ -93,13 +94,42 @@ function PaymentConnectionCard({
 
       console.log({ id, type })
 
-      toast.success('成功建立連線！')
+      toast.success('成功與綠界建立連線！')
 
-      if (inputRef.current) {
-        inputRef.current.value = ''
-      }
+      setInputValue('')
 
       viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  useEffect(() => {
+    if (!isInitialized.current) {
+      const payment = settings.payments.at(0)
+
+      if (payment) {
+        connectPaymentUrl.mutate(payment)
+      }
+    }
+
+    return () => {
+      isInitialized.current = true
+    }
+  }, [connectPaymentUrl, settings.payments])
+
+  const disconnectPaymentUrl = trpcReact.disconnectPaymentUrl.useMutation({
+    onSuccess: ({ error }) => {
+      if (error) {
+        console.log('error', error)
+
+        return
+      }
+
+      toast.success('成功與綠界中斷連線')
+
+      setInputValue('')
     },
     onError: (error) => {
       console.log('error', error)
@@ -116,9 +146,7 @@ function PaymentConnectionCard({
 
       toast.success('成功移除連線設定！')
 
-      if (inputRef.current) {
-        inputRef.current.value = ''
-      }
+      setInputValue('')
     },
     onError: (error) => {
       console.log('error', error)
@@ -155,7 +183,9 @@ function PaymentConnectionCard({
           </div>
         )}
 
-        <div className={connectionState === HubConnectionState.Connected ? 'hidden' : ''}>
+        <div
+          className={connectionState === HubConnectionState.Connected || settings.payments.length > 0 ? 'hidden' : ''}
+        >
           <p>目前還暫不支援短網址，請輸入完整的網址，例如：</p>
           <p className="break-all">
             https://payment-stage.ecpay.com.tw/Broadcaster/Donate/C1B8B9E32C2467466E4A8B4CE4A99378
@@ -163,16 +193,36 @@ function PaymentConnectionCard({
         </div>
 
         <Input
-          className={connectionState === HubConnectionState.Connected ? 'hidden' : ''}
-          ref={inputRef}
+          className={connectionState === HubConnectionState.Connected || settings.payments.length > 0 ? 'hidden' : ''}
           type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="請輸入綠界實況主收款網址"
         />
+
+        <div
+          className={connectionState !== HubConnectionState.Connected && settings.payments.length > 0 ? '' : 'hidden'}
+        >
+          <p>目前連線設定：</p>
+          <p className="break-all">
+            {settings.payments.at(0)?.type === 'ECPAY_STAGE'
+              ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
+              : settings.payments.at(0)?.type === 'ECPAY'
+                ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
+                : ''}
+          </p>
+        </div>
       </CardContent>
 
       <CardFooter className="flex-col">
-        <div className="flex justify-end w-full">
-          {connectionState === HubConnectionState.Connected ? (
+        {connectionState === HubConnectionState.Connected ? (
+          <div className="flex justify-end w-full">
+            <Button variant="destructive" onClick={() => disconnectPaymentUrl.mutate()}>
+              中斷連線
+            </Button>
+          </div>
+        ) : settings.payments.length > 0 ? (
+          <div className="flex justify-between w-full">
             <Button
               variant="destructive"
               onClick={() => {
@@ -187,16 +237,31 @@ function PaymentConnectionCard({
             >
               刪除連線設定
             </Button>
-          ) : (
+
             <Button
               onClick={() => {
-                const value = inputRef.current?.value
+                const payment = settings.payments.at(0)
 
-                if (!value) {
+                if (!payment) {
                   return
                 }
 
-                const { type, id } = parsePaymentUrl(value)
+                connectPaymentUrl.mutate(payment)
+              }}
+            >
+              🚀 開始
+            </Button>
+          </div>
+        ) : (
+          <div className="flex justify-end w-full">
+            <Button
+              disabled={inputValue === ''}
+              onClick={() => {
+                if (!inputValue) {
+                  return
+                }
+
+                const { type, id } = parsePaymentUrl(inputValue)
 
                 console.log({ type, id })
 
@@ -209,11 +274,14 @@ function PaymentConnectionCard({
             >
               🚀 開始
             </Button>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="relative top-3 text-muted-foreground w-full text-center">
-          連線狀態：{connectionState === null ? '未設定' : connectionStateName[connectionState]}
+          連線狀態：
+          {connectionState === null
+            ? `未設定 或 ${connectionStateName.Disconnected}`
+            : connectionStateName[connectionState]}
         </div>
       </CardFooter>
     </Card>

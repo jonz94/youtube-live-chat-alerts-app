@@ -4,7 +4,6 @@ import { join } from 'node:path'
 import { createIPCHandler } from 'trpc-electron/main'
 import icon from '../../resources/icon.png?asset'
 import { router } from './api'
-import { getToken, listen, startEcpayConnection } from './ecpay'
 import { getInnertubeClient } from './innertube'
 import { startWebServer } from './server'
 import { initializeSettings } from './settings'
@@ -75,22 +74,7 @@ void app.whenReady().then(() => {
   // NOTE: just for creating global innertube client
   void getInnertubeClient()
 
-  const settings = initializeSettings()
-
-  if (settings.payments.length > 0) {
-    const firstPayment = settings.payments.at(0)!
-    getToken(firstPayment.id, firstPayment.type === 'ECPAY_STAGE')
-      .then(({ token }) => {
-        if (!token) {
-          console.error({ error: '無法取得連線 token' })
-          return
-        }
-        return startEcpayConnection(token, firstPayment.type === 'ECPAY_STAGE').then(() => {
-          settings.payments.forEach((payment) => listen(payment.id))
-        })
-      })
-      .catch((error) => console.log(error))
-  }
+  initializeSettings()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
