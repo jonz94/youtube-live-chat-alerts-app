@@ -1,10 +1,15 @@
 # YouTube Live Chat Alerts Overlay
 
-An Electron app that displays customizable alerts from YouTube live chat during streams.
+A desktop app built with Electron that shows real-time alerts for YouTube membership gifts and ECPay donations during livestreams.
 
-> 🚧 Work in Progress
->
-> This project is in beta and currently under active development.
+## Features
+
+- 🎁 Membership Gift Alerts
+    - Instantly displays alerts and plays a sound effect when someone gifts a membership.
+- 💰 ECPay Donation List
+    - View a list of donations processed via ECPay in a clear and organized format.
+- 📊 Donation Progress Bar
+    - Track donation goals in real-time with a visual progress bar.
 
 ## Credits
 
