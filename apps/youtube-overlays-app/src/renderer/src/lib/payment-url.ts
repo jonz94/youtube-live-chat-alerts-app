@@ -33,3 +33,20 @@ export function parsePaymentUrl(originalUrl: string): ParsedPaymentUrlData {
       return { type: 'UNKNOWN', id: '' }
   }
 }
+
+export function generatePaymentUrl({ type, id }: ParsedPaymentUrlData) {
+  switch (type) {
+    case 'ECPAY':
+      return `https://payment.ecpay.com.tw/Broadcaster/Donate/${id}`
+
+    case 'ECPAY_STAGE':
+      return `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${id}`
+
+    case 'OPAY':
+      return `https://payment.opay.tw/Broadcaster/Donate/${id}`
+
+    case 'UNKNOWN':
+    default:
+      return null
+  }
+}

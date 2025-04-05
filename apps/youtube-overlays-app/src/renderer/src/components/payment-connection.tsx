@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/renderer/components/ui/card'
 import { Input } from '~/renderer/components/ui/input'
-import { parsePaymentUrl } from '~/renderer/lib/parse-payment-url'
+import { generatePaymentUrl, parsePaymentUrl } from '~/renderer/lib/payment-url'
 import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
 import { viewportRefAtom } from '~/renderer/store'
@@ -82,6 +82,7 @@ function PaymentConnectionCard({
   const [inputValue, setInputValue] = useState('')
   const viewportRef = useAtomValue(viewportRefAtom)
 
+  const currentPayment = settings.payments.at(0) ?? null
   const connectionState = initialConnectionState
 
   const connectPaymentUrl = trpcReact.connectPaymentUrl.useMutation({
@@ -172,13 +173,7 @@ function PaymentConnectionCard({
               </p>
 
               <p className="pt-4">連線網址:</p>
-              <p className="break-all">
-                {settings.payments.at(0)?.type === 'ECPAY_STAGE'
-                  ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-                  : settings.payments.at(0)?.type === 'ECPAY'
-                    ? `https://payment.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-                    : ''}
-              </p>
+              <p className="break-all">{currentPayment && generatePaymentUrl(currentPayment)}</p>
             </div>
           </div>
         )}
@@ -207,18 +202,12 @@ function PaymentConnectionCard({
             connectionState !== HubConnectionState.Connected && settings.payments.length > 0 ? '' : 'hidden',
           )}
         >
-          <div className="rounded-lg border-2 border-foreground px-4 py-3">
+          <div className="rounded-md border border-border px-4 py-3">
             <p>
               <span className="font-semibold tracking-tight">目前已設定綠界網址:</span>
             </p>
 
-            <p className="break-all pt-4">
-              {settings.payments.at(0)?.type === 'ECPAY_STAGE'
-                ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-                : settings.payments.at(0)?.type === 'ECPAY'
-                  ? `https://payment.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-                  : ''}
-            </p>
+            <p className="break-all pt-4">{currentPayment && generatePaymentUrl(currentPayment)}</p>
           </div>
         </div>
       </CardContent>
