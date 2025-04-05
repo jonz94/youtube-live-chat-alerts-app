@@ -64,18 +64,18 @@ export default function App() {
         onValueChange={(value) => setCurrentPage(value as Page)}
         className="sticky z-10 top-0 bg-background"
       >
-        <TabsList className="before:bg-border relative h-auto w-full gap-2 bg-transparent pt-6 pb-0 before:absolute before:inset-x-0 before:bottom-0 before:h-px">
+        <TabsList className="pt-6 h-auto justify-center">
           {pages.map((page) => (
             <TabsTrigger
               key={`tab-trigger-${page}`}
               value={page}
-              className="w-28 bg-muted overflow-hidden rounded-b-none border-x border-t py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
+              className="text-base text-muted-foreground/90 dark:text-muted-foreground/90 transition-colors duration-300 hover:text-foreground dark:hover:text-foreground"
             >
               {pageToPageName[page]}
             </TabsTrigger>
           ))}
 
-          <div className="absolute top-[10px] right-[10px]">
+          <div className="absolute top-3 right-3">
             <ModeToggle></ModeToggle>
           </div>
         </TabsList>
