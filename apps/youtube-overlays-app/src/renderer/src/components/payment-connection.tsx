@@ -288,9 +288,11 @@ function PaymentConnectionCard({
 
         <div className="relative top-3 text-muted-foreground w-full text-center">
           連線狀態：
-          {connectionState === null
-            ? `未設定 或 ${connectionStateName.Disconnected}`
-            : connectionStateName[connectionState]}
+          {connectionState !== null
+            ? connectionStateName[connectionState]
+            : settings.payments.length <= 0
+              ? '未設定綠界網址'
+              : connectionStateName.Disconnected}
         </div>
       </CardFooter>
     </Card>
