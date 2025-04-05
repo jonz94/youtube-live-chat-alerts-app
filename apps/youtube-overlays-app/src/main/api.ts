@@ -1,10 +1,9 @@
 import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
-import { YTNodes } from 'youtubei.js'
 import { z } from 'zod'
 import { getConnectionState, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
-import { getInnertubeClient } from './innertube'
-import { parsedPaymentUrlDataSchema, templateSchema, VideoInfo } from './schema'
+import { startLivechat, stopLivechat } from './innertube'
+import { parsedPaymentUrlDataSchema, templateSchema } from './schema'
 import {
   addPaymentsSettings,
   getSettings,
@@ -24,7 +23,7 @@ import {
   updateSoundEffect,
   updateVolumeSetting,
 } from './settings'
-import { getChannel, getLiveOrUpcomingStreams, parseAddChatItemActionItem } from './utils'
+import { getChannel, getLiveOrUpcomingStreams } from './utils'
 import { io } from './websocket'
 
 const t = initTRPC.create({ isServer: true })
@@ -227,69 +226,18 @@ export const router = t.router({
     return { error: null, data: input.value }
   }),
 
-  start: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
+  startLivechat: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {
     const { videoId } = input
 
-    const youtube = await getInnertubeClient()
-
-    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`
-
-    const video = await youtube.getInfo(videoId)
-
-    const { basic_info: basicInfo } = await youtube.getInfo(videoId)
-
-    const videoInfo: VideoInfo = {
-      id: videoId,
-      isLive: !!basicInfo.is_live,
-      isUpcoming: !!basicInfo.is_upcoming,
-      title: basicInfo.title ?? '',
-      startTimestamp: basicInfo.start_timestamp?.valueOf() ?? 0,
-    }
-
-    console.log(`🚀 start observing live chat data from the video: (${videoUrl})`)
-    console.log(JSON.stringify(videoInfo, null, 2))
-    console.log()
-
-    if (!videoInfo.isLive && !videoInfo.isUpcoming) {
-      console.log(`🚧 only ongoing/upcoming live streams need this feature...`)
-
-      // return { error: 'only ongoing/upcoming live streams need this feature...', data: null }
-    }
-
-    const livechat = video.getLiveChat()
-
-    livechat.on('error', (error) => {
-      console.log('Live chat error:', error)
-    })
-
-    livechat.on('end', () => {
-      console.log('This live stream has ended.')
-      livechat.stop()
-    })
-
-    livechat.on('chat-update', (chatAction) => {
-      if (!io) {
-        return
-      }
-
-      // io.emit('live-chat-debug', chatAction)
-
-      if (chatAction.is(YTNodes.ReplayChatItemAction)) {
-        for (const action of chatAction.actions) {
-          if (action.is(YTNodes.AddChatItemAction)) {
-            parseAddChatItemActionItem(io, action.item)
-          }
-        }
-      }
-
-      if (chatAction.is(YTNodes.AddChatItemAction)) {
-        parseAddChatItemActionItem(io, chatAction.item)
-      }
-    })
-
-    livechat.start()
+    const videoInfo = await startLivechat(videoId)
 
     return { error: null, data: videoInfo }
+  }),
+
+  stopLivechat: t.procedure.mutation(() => {
+    stopLivechat()
+
+    return { error: null }
   }),
 })
 

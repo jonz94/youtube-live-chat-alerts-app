@@ -120,7 +120,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
     },
   })
 
-  const start = trpcReact.start.useMutation({
+  const startLivechat = trpcReact.startLivechat.useMutation({
     onSuccess: ({ error, data }) => {
       if (error) {
         console.log('error', error)
@@ -133,6 +133,31 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
       toast.success('成功與直播聊天室建立連線！')
 
       setConnectionVideoInfo(data)
+
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
+
+      viewportRef?.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  const stopLivechat = trpcReact.stopLivechat.useMutation({
+    onSuccess: ({ error }) => {
+      if (error) {
+        console.log('error', error)
+
+        return
+      }
+
+      console.log('success')
+
+      toast.success('成功與直播聊天室中斷連線')
+
+      setConnectionVideoInfo(null)
 
       if (inputRef.current) {
         inputRef.current.value = ''
@@ -444,6 +469,12 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                 </PopoverContent>
               </Popover>
             </div>
+
+            <div className="flex w-full justify-end">
+              <Button variant="destructive" onClick={() => stopLivechat.mutate()}>
+                中斷連線
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>
@@ -477,7 +508,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
 
             console.log(type, id)
 
-            start.mutate({ videoId: id })
+            startLivechat.mutate({ videoId: id })
           }}
         >
           🚀 開始
@@ -580,7 +611,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
   const viewportRef = useAtomValue(viewportRefAtom)
   const setConnectionVideoInfo = useSetAtom(connectionVideoInfoAtom)
 
-  const start = trpcReact.start.useMutation({
+  const start = trpcReact.startLivechat.useMutation({
     onSuccess: ({ error, data }) => {
       if (error) {
         console.log('error', error)
