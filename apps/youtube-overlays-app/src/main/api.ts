@@ -2,7 +2,7 @@ import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { z } from 'zod'
 import { getConnectionState, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
-import { startLivechat, stopLivechat } from './innertube'
+import { getCurrentLivechatState, startLivechat, stopLivechat } from './innertube'
 import { parsedPaymentUrlDataSchema, templateSchema } from './schema'
 import {
   addPaymentsSettings,
@@ -226,6 +226,10 @@ export const router = t.router({
     updateProgressBarTargetValueSetting(input.value)
 
     return { error: null, data: input.value }
+  }),
+
+  getCurrentLivechatState: t.procedure.mutation(() => {
+    return getCurrentLivechatState()
   }),
 
   startLivechat: t.procedure.input(z.object({ videoId: z.string() })).mutation(async ({ input }) => {

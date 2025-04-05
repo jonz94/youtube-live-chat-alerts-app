@@ -171,6 +171,37 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
     },
   })
 
+  const getCurrentLivechatState = trpcReact.getCurrentLivechatState.useMutation({
+    onSuccess: (state) => {
+      console.log('success')
+
+      if (state === 'Disconnected') {
+        toast.warning('已和 YT 聊天室中斷連線，可能是該直播已經結束、或者是目前網路連線不穩定造成')
+
+        setConnectionVideoInfo(null)
+
+        if (inputRef.current) {
+          inputRef.current.value = ''
+        }
+      }
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
+
+  useEffect(() => {
+    function onLivechatConnectionStateUpdated() {
+      getCurrentLivechatState.mutate()
+    }
+
+    socket.on('youtube-livechat-connection-state-updated', onLivechatConnectionStateUpdated)
+
+    return () => {
+      socket.off('youtube-livechat-connection-state-updated', onLivechatConnectionStateUpdated)
+    }
+  }, [getCurrentLivechatState])
+
   return (
     <Card>
       <CardHeader>

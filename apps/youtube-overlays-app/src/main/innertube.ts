@@ -18,6 +18,10 @@ export async function getInnertubeClient() {
   return client
 }
 
+export function getCurrentLivechatState() {
+  return currentLivechat === null ? 'Disconnected' : 'Connected'
+}
+
 export async function startLivechat(videoId: string) {
   const youtube = await getInnertubeClient()
 
@@ -56,6 +60,8 @@ export async function startLivechat(videoId: string) {
     livechat.stop()
 
     currentLivechat = null
+
+    io?.emit('youtube-livechat-connection-state-updated')
   })
 
   livechat.on('chat-update', (chatAction) => {
