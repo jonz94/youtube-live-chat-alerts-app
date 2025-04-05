@@ -171,12 +171,12 @@ function PaymentConnectionCard({
                 <span className="font-semibold tracking-tight">成功與綠界建立連線！</span>
               </p>
 
-              <p className="break-all pt-4">
-                連線網址:{' '}
+              <p className="pt-4">連線網址:</p>
+              <p className="break-all">
                 {settings.payments.at(0)?.type === 'ECPAY_STAGE'
                   ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
                   : settings.payments.at(0)?.type === 'ECPAY'
-                    ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
+                    ? `https://payment.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
                     : ''}
               </p>
             </div>
@@ -209,14 +209,14 @@ function PaymentConnectionCard({
         >
           <div className="rounded-lg border-2 border-foreground px-4 py-3">
             <p>
-              <span className="font-semibold tracking-tight">目前已設定綠界網址</span>
+              <span className="font-semibold tracking-tight">目前已設定綠界網址:</span>
             </p>
 
             <p className="break-all pt-4">
               {settings.payments.at(0)?.type === 'ECPAY_STAGE'
                 ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
                 : settings.payments.at(0)?.type === 'ECPAY'
-                  ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
+                  ? `https://payment.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
                   : ''}
             </p>
           </div>
