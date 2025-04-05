@@ -22,7 +22,12 @@ const connectionStateName: Record<HubConnectionState, string> = {
 }
 
 export function PaymentConnection() {
-  const { data: settings, error: settingsError, isLoading: isSettingsLoading } = trpcReact.settings.useQuery()
+  const {
+    data: settings,
+    error: settingsError,
+    isLoading: isSettingsLoading,
+    refetch: refetchSettings,
+  } = trpcReact.settings.useQuery()
 
   const {
     data: connectionState,
@@ -32,8 +37,9 @@ export function PaymentConnection() {
   } = trpcReact.getConnectionState.useQuery()
 
   useEffect(() => {
-    function onEcpayConnectionStatusChanged(state: HubConnectionState) {
-      console.log('ecpay-connection-state-changed', state)
+    function onEcpayConnectionStatusChanged() {
+      console.log('ecpay-connection-state-changed')
+      void refetchSettings()
       void refetchConnectionState()
     }
 
@@ -42,7 +48,7 @@ export function PaymentConnection() {
     return () => {
       socket.off('ecpay-connection-state-changed', onEcpayConnectionStatusChanged)
     }
-  }, [refetchConnectionState])
+  }, [refetchConnectionState, refetchSettings])
 
   if (isSettingsLoading || isConnectionLoading) {
     return <p>載入中...</p>

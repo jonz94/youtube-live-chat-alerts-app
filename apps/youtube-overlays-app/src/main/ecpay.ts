@@ -57,28 +57,24 @@ export async function startEcpayConnection(token: string, isStage = false) {
     console.log(state)
     console.error(error)
     hubConnection = null
-    io?.emit('ecpay-connection-state-changed', state)
+    io?.emit('ecpay-connection-state-changed')
   })
   connection.onreconnected(() => {
     const state = connection.state
     console.log('on reconnected.')
     console.log(state)
-    io?.emit('ecpay-connection-state-changed', state)
+    io?.emit('ecpay-connection-state-changed')
   })
   connection.onreconnecting(() => {
     const state = connection.state
     console.log('on reconnecting.')
     console.log(state)
-    io?.emit('ecpay-connection-state-changed', state)
+    io?.emit('ecpay-connection-state-changed')
   })
-
-  console.log(connection.state)
 
   await connection.start()
 
-  console.log(connection.state)
-
-  io?.emit('ecpay-connection-state-changed', connection.state)
+  io?.emit('ecpay-connection-state-changed')
 
   hubConnection = connection
 
@@ -143,4 +139,6 @@ export async function stopEcpayConnection() {
   await hubConnection.stop()
 
   hubConnection = null
+
+  io?.emit('ecpay-connection-state-changed')
 }

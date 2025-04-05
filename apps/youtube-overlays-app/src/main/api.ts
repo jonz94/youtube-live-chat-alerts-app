@@ -197,6 +197,8 @@ export const router = t.router({
 
     removePaymentsSettings(input)
 
+    io?.emit('ecpay-connection-state-changed')
+
     return { error: null }
   }),
 
