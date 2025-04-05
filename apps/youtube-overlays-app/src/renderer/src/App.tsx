@@ -75,7 +75,7 @@ export default function App() {
             </TabsTrigger>
           ))}
 
-          <div className="absolute top-0 left-2 text-muted-foreground">v1.0-beta.1</div>
+          <div className="absolute top-0 left-2 text-muted-foreground">v1.0.0-beta.1</div>
 
           <div className="absolute top-3 right-3">
             <ModeToggle></ModeToggle>
