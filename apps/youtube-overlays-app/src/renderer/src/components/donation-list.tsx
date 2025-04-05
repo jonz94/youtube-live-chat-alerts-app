@@ -1,9 +1,9 @@
 import { X } from 'lucide-react'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 import { PaidMessage, priceToVariant } from '~/renderer/components/paid-message/paid-message'
 import { Button } from '~/renderer/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/renderer/components/ui/card'
-import { cn } from '~/renderer/lib/utils'
 import { socket } from '~/renderer/socket'
 import { trpcReact } from '~/renderer/trpc'
 import { SettingsSchema } from '../../../main/schema'
@@ -44,11 +44,29 @@ export function DonationList() {
 }
 
 function DonationListCard({ settings }: { settings: SettingsSchema }) {
-  const donations = settings.tempDonations
+  const donations = settings.tempDonations.filter(
+    (donation) => priceToVariant(donation.price).name !== 'unknown' && donation.hide !== true,
+  )
 
   const uniqueDonations = donations.filter(
     (item, index) => donations.findIndex((donation) => donation.uniqueId === item.uniqueId) === index,
   )
+
+  const hideDonation = trpcReact.hideDonation.useMutation({
+    onSuccess: (output) => {
+      if (output.error) {
+        toast.error(output.error)
+        return
+      }
+
+      console.log('success')
+
+      toast.success(`儲存成功：已經成功隱藏該斗內訊息`)
+    },
+    onError: (error) => {
+      console.log('error', error)
+    },
+  })
 
   return (
     <>
@@ -58,30 +76,32 @@ function DonationListCard({ settings }: { settings: SettingsSchema }) {
           <CardDescription>目前只會顯示最新的 100 筆斗內紀錄</CardDescription>
         </CardHeader>
 
-        <CardContent className="py-4 bg-white">
-          <div className="w-full flex flex-col items-center justify-center gap-2 font-pixel">
-            {uniqueDonations
-              .reverse()
-              .slice(0, 100)
-              .map((donation) => (
-                <div
-                  key={donation.uniqueId}
-                  className={cn('relative', priceToVariant(donation.price).name === 'unknown' && 'hidden')}
-                >
-                  <PaidMessage {...donation} />
+        {uniqueDonations.length <= 0 ? (
+          <CardContent className="py-4 bg-white">
+            <p className="text-black font-pixel">目前還沒有斗內訊息～</p>
+          </CardContent>
+        ) : (
+          <CardContent className="py-4 bg-white">
+            <div className="w-full flex flex-col items-center justify-center gap-2 font-pixel">
+              {uniqueDonations
+                .reverse()
+                .slice(0, 100)
+                .map((donation) => (
+                  <div key={donation.uniqueId} className="relative">
+                    <PaidMessage {...donation} />
 
-                  {/* TODO: click to hide donation */}
-                  <Button
-                    className="hidden absolute top-0 right-0 text-black hover:bg-transparent size-12"
-                    variant="ghost"
-                    onClick={() => console.log(donation.uniqueId)}
-                  >
-                    <X></X>
-                  </Button>
-                </div>
-              ))}
-          </div>
-        </CardContent>
+                    <Button
+                      className="absolute top-0 right-0 text-black hover:bg-transparent size-12"
+                      variant="ghost"
+                      onClick={() => hideDonation.mutate({ id: donation.uniqueId })}
+                    >
+                      <X></X>
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        )}
       </Card>
 
       <Card>

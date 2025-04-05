@@ -62,7 +62,11 @@ function DonationList({ settings }: { settings: SettingsSchema }) {
         .map((donation) => (
           <div
             key={donation.uniqueId}
-            className={cn('relative', priceToVariant(donation.price).name === 'unknown' && 'hidden')}
+            className={cn(
+              'relative',
+              donation.hide && 'hidden',
+              priceToVariant(donation.price).name === 'unknown' && 'hidden',
+            )}
           >
             <PaidMessage {...donation} />
           </div>

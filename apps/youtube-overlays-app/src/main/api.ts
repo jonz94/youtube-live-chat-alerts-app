@@ -8,6 +8,7 @@ import { parsedPaymentUrlDataSchema, templateSchema, VideoInfo } from './schema'
 import {
   addPaymentsSettings,
   getSettings,
+  hideTempDonation,
   removeChannelInfoSetting,
   removePaymentsSettings,
   resetImage,
@@ -182,6 +183,12 @@ export const router = t.router({
 
   disconnectPaymentUrl: t.procedure.mutation(async () => {
     await stopEcpayConnection()
+
+    return { error: null }
+  }),
+
+  hideDonation: t.procedure.input(z.object({ id: z.string() })).mutation(({ input }) => {
+    hideTempDonation(input.id)
 
     return { error: null }
   }),

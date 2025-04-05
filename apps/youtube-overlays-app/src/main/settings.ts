@@ -281,6 +281,21 @@ export function addTempDonation(donation: TempDonation) {
   io?.emit('donation-list-updated')
 }
 
+export function hideTempDonation(id: TempDonation['uniqueId']) {
+  const index = settings.tempDonations.findIndex((donation) => donation.uniqueId === id)
+
+  if (index < 0) {
+    return
+  }
+
+  settings.tempDonations[index].hide = true
+
+  const settingsPath = getSettingsPath()
+  writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8')
+
+  io?.emit('donation-list-updated')
+}
+
 export function updateProgressBarTextSetting(text: string) {
   settings.progressBarText = text
 
