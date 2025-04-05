@@ -106,7 +106,7 @@ function PaymentConnectionCard({
   })
 
   useEffect(() => {
-    if (!isInitialized.current) {
+    if (!isInitialized.current && initialConnectionState !== HubConnectionState.Connected) {
       const payment = settings.payments.at(0)
 
       if (payment) {
@@ -117,7 +117,7 @@ function PaymentConnectionCard({
     return () => {
       isInitialized.current = true
     }
-  }, [connectPaymentUrl, settings.payments])
+  }, [connectPaymentUrl, initialConnectionState, settings.payments])
 
   const disconnectPaymentUrl = trpcReact.disconnectPaymentUrl.useMutation({
     onSuccess: ({ error }) => {
@@ -201,16 +201,25 @@ function PaymentConnectionCard({
         />
 
         <div
-          className={connectionState !== HubConnectionState.Connected && settings.payments.length > 0 ? '' : 'hidden'}
+          className={cn(
+            'flex flex-col gap-y-2',
+
+            connectionState !== HubConnectionState.Connected && settings.payments.length > 0 ? '' : 'hidden',
+          )}
         >
-          <p>目前連線設定：</p>
-          <p className="break-all">
-            {settings.payments.at(0)?.type === 'ECPAY_STAGE'
-              ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-              : settings.payments.at(0)?.type === 'ECPAY'
+          <div className="rounded-lg border-2 border-foreground px-4 py-3">
+            <p>
+              <span className="font-semibold tracking-tight">目前已設定綠界網址</span>
+            </p>
+
+            <p className="break-all pt-4">
+              {settings.payments.at(0)?.type === 'ECPAY_STAGE'
                 ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
-                : ''}
-          </p>
+                : settings.payments.at(0)?.type === 'ECPAY'
+                  ? `https://payment-stage.ecpay.com.tw/Broadcaster/Donate/${settings.payments.at(0)?.id}`
+                  : ''}
+            </p>
+          </div>
         </div>
       </CardContent>
 
