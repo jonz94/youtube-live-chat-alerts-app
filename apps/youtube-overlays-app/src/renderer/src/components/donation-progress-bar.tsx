@@ -3,6 +3,7 @@ import { Card, CardContent } from '~/renderer/components/ui/card'
 import { Progress } from '~/renderer/components/ui/progress'
 import { socket } from '~/renderer/socket'
 import { trpcReact } from '~/renderer/trpc'
+import { PORT } from '../../../main/const'
 import { SettingsSchema } from '../../../main/schema'
 
 const PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL = 4
@@ -104,7 +105,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             {/* FIXME: use settings.json to load this image */}
             <img
               className="-translate-x-1/2 -translate-y-1/2"
-              src="http://localhost:21829/assets/progress.gif"
+              src={`http://localhost:${PORT}/assets/progress.gif`}
               alt=""
               style={{
                 height: 'auto',

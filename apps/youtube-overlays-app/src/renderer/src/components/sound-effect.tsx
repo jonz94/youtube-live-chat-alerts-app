@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useRef } from 'react'
 import { socket } from '~/renderer/socket'
 import { cacheTimestampAtom } from '~/renderer/store'
+import { PORT } from '../../../main/const'
 
 interface PresentOptions {
   name: string
@@ -71,11 +72,11 @@ export function SoundEffect({ volume }: { volume: number }) {
 
   return (
     <>
-      <audio ref={audio1Ref} src={`http://localhost:21829/assets/sound1.mp3?t=${cacheTimestamp}`}></audio>
-      <audio ref={audio5Ref} src={`http://localhost:21829/assets/sound5.mp3?t=${cacheTimestamp}`}></audio>
-      <audio ref={audio10Ref} src={`http://localhost:21829/assets/sound10.mp3?t=${cacheTimestamp}`}></audio>
-      <audio ref={audio20Ref} src={`http://localhost:21829/assets/sound20.mp3?t=${cacheTimestamp}`}></audio>
-      <audio ref={audio50Ref} src={`http://localhost:21829/assets/sound50.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audio1Ref} src={`http://localhost:${PORT}/assets/sound1.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audio5Ref} src={`http://localhost:${PORT}/assets/sound5.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audio10Ref} src={`http://localhost:${PORT}/assets/sound10.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audio20Ref} src={`http://localhost:${PORT}/assets/sound20.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audio50Ref} src={`http://localhost:${PORT}/assets/sound50.mp3?t=${cacheTimestamp}`}></audio>
     </>
   )
 }

@@ -7,10 +7,11 @@ import { cors } from 'hono/cors'
 import { existsSync } from 'node:fs'
 import { type Server as HttpServer } from 'node:http'
 import { join, relative, resolve } from 'node:path'
+import { PORT } from './const'
 import { getSettings, getSettingsDir } from './settings'
 import { startWebsocket } from './websocket'
 
-export function startWebServer(port = 21829) {
+export function startWebServer(port = PORT) {
   const app = new Hono()
 
   app.use('/*', cors())

@@ -14,6 +14,7 @@ import { FullscreenScrollArea } from '~/renderer/components/ui/scroll-area'
 import { Tabs, TabsList, TabsTrigger } from '~/renderer/components/ui/tabs'
 import { viewportRefAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
+import { PORT } from '../../main/const'
 
 type Page = 'YOUTUBE_GIFTED_MEMBERSHIP' | 'DONATION_LIST' | 'PROGRESS_BAR'
 
@@ -88,7 +89,7 @@ export default function App() {
           <section className={currentPage === 'YOUTUBE_GIFTED_MEMBERSHIP' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['YOUTUBE_GIFTED_MEMBERSHIP']}
-              url={data.isDev ? 'http://localhost:1337/overlays' : 'http://localhost:21829/overlays'}
+              url={data.isDev ? 'http://localhost:1337/overlays' : `http://localhost:${PORT}/overlays`}
             ></Launcher>
             <Connection></Connection>
             <Settings></Settings>
@@ -103,7 +104,7 @@ export default function App() {
               url={
                 data.isDev
                   ? 'http://localhost:1337/overlays/donation-list'
-                  : 'http://localhost:21829/overlays/donation-list'
+                  : `http://localhost:${PORT}/overlays/donation-list`
               }
             ></Launcher>
 
@@ -117,7 +118,7 @@ export default function App() {
               url={
                 data.isDev
                   ? 'http://localhost:1337/overlays/progress-bar'
-                  : 'http://localhost:21829/overlays/progress-bar'
+                  : `http://localhost:${PORT}/overlays/progress-bar`
               }
             ></Launcher>
 

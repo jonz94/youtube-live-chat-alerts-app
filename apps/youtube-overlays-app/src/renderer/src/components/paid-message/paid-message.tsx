@@ -1,5 +1,6 @@
 import { useWindowSize } from '~/renderer/hooks/use-window-size'
 import { cn } from '~/renderer/lib/utils'
+import { PORT } from '../../../../main/const'
 
 import './paid-message.css'
 
@@ -156,7 +157,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
           className="overflow-hidden rounded-full bg-white"
           style={{ zIndex: 1000, width: IMAGE_SIZE_IN_PIXEL, height: IMAGE_SIZE_IN_PIXEL }}
         >
-          <img src="http://localhost:21829/assets/avatar.gif" alt="" className="max-h-full max-w-full scale-75" />
+          <img src={`http://localhost:${PORT}/assets/avatar.gif`} alt="" className="max-h-full max-w-full scale-75" />
         </div>
 
         <div className="min-h-4" style={{ zIndex: 1000 }}>

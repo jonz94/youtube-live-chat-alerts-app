@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { Progress } from '~/components/ui/progress'
+import { PORT } from '~/lib/port'
 import type { SettingsSchema } from '~/lib/schema'
 import { fetchSettings } from '~/query'
 import { socket } from '~/socket'
@@ -90,7 +91,7 @@ function ProgressBar({ settings }: { settings: SettingsSchema }) {
           {/* FIXME: use settings.json to load this image */}
           <img
             className="-translate-x-1/2 -translate-y-1/2"
-            src="http://localhost:21829/assets/progress.gif"
+            src={`http://localhost:${PORT}/assets/progress.gif`}
             alt=""
             style={{
               height: 'auto',

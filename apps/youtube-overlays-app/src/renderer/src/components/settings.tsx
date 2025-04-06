@@ -28,6 +28,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/rend
 import { cn } from '~/renderer/lib/utils'
 import { cacheTimestampAtom } from '~/renderer/store'
 import { trpcReact } from '~/renderer/trpc'
+import { PORT } from '../../../main/const'
 import { SettingsSchema, Template, templateSchema } from '../../../main/schema'
 
 export function Settings() {
@@ -159,7 +160,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
         <hr className="-mx-6" />
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
-          <audio ref={audioRef} src={`http://localhost:21829/assets/sound1.mp3?t=${cacheTimestamp}`}></audio>
+          <audio ref={audioRef} src={`http://localhost:${PORT}/assets/sound1.mp3?t=${cacheTimestamp}`}></audio>
 
           <div className="min-h-16 flex items-center">
             <div className="w-full">
@@ -412,7 +413,7 @@ function AudioPlay({ amount, volume }: { amount: number; volume: number }) {
 
   return (
     <>
-      <audio ref={audioRef} src={`http://localhost:21829/assets/sound${amount}.mp3?t=${cacheTimestamp}`}></audio>
+      <audio ref={audioRef} src={`http://localhost:${PORT}/assets/sound${amount}.mp3?t=${cacheTimestamp}`}></audio>
 
       <TooltipProvider delayDuration={250}>
         <Tooltip>
@@ -510,7 +511,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
                     <div className="rounded-md overflow-hidden flex justify-center">
                       <img
                         className="h-auto w-[400px]"
-                        src={`http://localhost:21829/assets/image${item.amount}.gif?t=${cacheTimestamp}`}
+                        src={`http://localhost:${PORT}/assets/image${item.amount}.gif?t=${cacheTimestamp}`}
                         alt=""
                       />
                     </div>

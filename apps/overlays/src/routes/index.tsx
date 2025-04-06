@@ -5,6 +5,7 @@ import { motion } from 'motion/react'
 import { Fragment, useEffect, useState } from 'react'
 import { TextEffect } from '~/components/text-effect'
 import { Button } from '~/components/ui/button'
+import { PORT } from '~/lib/port'
 import { cn } from '~/lib/utils'
 import { fetchSettings } from '~/query'
 import { socket } from '../socket'
@@ -174,7 +175,7 @@ function App() {
           <div className="flex flex-col justify-center items-center">
             <img
               className="h-auto w-[400px]"
-              src={`http://localhost:21829/assets/image${amount === '87' ? '1' : amount}.gif?t=${cacheTimestamp}`}
+              src={`http://localhost:${PORT}/assets/image${amount === '87' ? '1' : amount}.gif?t=${cacheTimestamp}`}
               alt=""
             />
 
