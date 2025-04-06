@@ -1,4 +1,4 @@
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'node:path'
 import { createIPCHandler } from 'trpc-electron/main'
@@ -9,7 +9,7 @@ import { startWebServer } from './server'
 import { initializeSettings } from './settings'
 
 function createWindow() {
-  const { width, height } = is.dev
+  const { width, height } = import.meta.env.DEV
     ? {
         width: 1600,
         height: 900,
@@ -46,7 +46,7 @@ function createWindow() {
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+  if (import.meta.env.DEV && process.env['ELECTRON_RENDERER_URL']) {
     void mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
     void mainWindow.loadFile(join(__dirname, '../renderer/index.html'))

@@ -89,7 +89,7 @@ export default function App() {
           <section className={currentPage === 'YOUTUBE_GIFTED_MEMBERSHIP' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['YOUTUBE_GIFTED_MEMBERSHIP']}
-              url={data.isDev ? 'http://localhost:1337/overlays' : `http://localhost:${PORT}/overlays`}
+              url={import.meta.env.DEV ? 'http://localhost:1337/overlays' : `http://localhost:${PORT}/overlays`}
             ></Launcher>
             <Connection></Connection>
             <Settings></Settings>
@@ -102,7 +102,7 @@ export default function App() {
             <Launcher
               name={pageToPageName['DONATION_LIST']}
               url={
-                data.isDev
+                import.meta.env.DEV
                   ? 'http://localhost:1337/overlays/donation-list'
                   : `http://localhost:${PORT}/overlays/donation-list`
               }
@@ -116,7 +116,7 @@ export default function App() {
             <Launcher
               name={pageToPageName['PROGRESS_BAR']}
               url={
-                data.isDev
+                import.meta.env.DEV
                   ? 'http://localhost:1337/overlays/progress-bar'
                   : `http://localhost:${PORT}/overlays/progress-bar`
               }

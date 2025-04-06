@@ -1,4 +1,3 @@
-import { is } from '@electron-toolkit/utils'
 import { app } from 'electron'
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -32,28 +31,28 @@ let settings: SettingsSchema = {
   tempDonations: DEFAULT_TEMP_DONATIONS,
 }
 
-const DEFAULT_SOUND_EFFECT_PATH = is.dev
+const DEFAULT_SOUND_EFFECT_PATH = import.meta.env.DEV
   ? resolve(import.meta.dirname, '..', '..', 'resources', 'sound.m4a')
   : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'sound.m4a')
 
-const DEFAULT_IMAGE_PATH = is.dev
+const DEFAULT_IMAGE_PATH = import.meta.env.DEV
   ? resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png')
   : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png')
 
 // FIXME: remove this after allowing user to set avatar for paid message
-const DEFAULT_AVATAR_PATH = is.dev
+const DEFAULT_AVATAR_PATH = import.meta.env.DEV
   ? resolve(import.meta.dirname, '..', '..', 'resources', 'icon.png')
   : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'icon.png')
 
 // FIXME: remove this after allowing user to set progress bar image
-const DEFAULT_PROGRESS_IMAGE_PATH = is.dev
+const DEFAULT_PROGRESS_IMAGE_PATH = import.meta.env.DEV
   ? resolve(import.meta.dirname, '..', '..', 'resources', 'progress.gif')
   : resolve(app.getAppPath(), '..', '..', 'resources', 'app.asar.unpacked', 'resources', 'progress.gif')
 
 const AMOUNT = ['1', '5', '10', '20', '50'] as const
 
 export function getSettingsDir() {
-  if (is.dev) {
+  if (import.meta.env.DEV) {
     const monorepoProjectRoot = resolve(import.meta.dirname, '..', '..', '..', '..')
 
     return resolve(monorepoProjectRoot, 'tmp')

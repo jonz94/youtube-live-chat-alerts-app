@@ -1,4 +1,3 @@
-import { is } from '@electron-toolkit/utils'
 import { initTRPC } from '@trpc/server'
 import { z } from 'zod'
 import { getConnectionState, getToken, listen, startEcpayConnection, stopEcpayConnection } from './ecpay'
@@ -30,7 +29,7 @@ const t = initTRPC.create({ isServer: true })
 
 export const router = t.router({
   initial: t.procedure.query(() => {
-    return { isDev: is.dev }
+    return { isDev: import.meta.env.DEV }
   }),
 
   open: t.procedure.input(z.object({ amount: z.string() })).mutation(({ input }) => {

@@ -1,4 +1,3 @@
-import { is } from '@electron-toolkit/utils'
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { app as electronApp } from 'electron'
@@ -16,7 +15,7 @@ export function startWebServer(port = PORT) {
 
   app.use('/*', cors())
 
-  if (!is.dev) {
+  if (!import.meta.env.DEV) {
     const appInstallDir = resolve(electronApp.getAppPath(), '..', '..')
     const root = relative(process.cwd(), appInstallDir)
 
