@@ -8,7 +8,7 @@ const config = {
 
   overrides: [
     {
-      files: 'tsconfig*.json',
+      files: ['tsconfig*.json', '.vscode/**.json'],
       options: {
         parser: 'jsonc',
       },
