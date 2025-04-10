@@ -55,7 +55,7 @@ function DonationList({ settings }: { settings: SettingsSchema }) {
   )
 
   return (
-    <div className="w-full flex flex-col justify-center gap-2 font-pixel">
+    <div className="flex w-full flex-col justify-center gap-2 font-pixel">
       {uniqueDonations
         .reverse()
         .slice(0, 100)

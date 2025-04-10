@@ -75,7 +75,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
 
   return (
     <Card
-      className="bg-white border-none"
+      className="border-none bg-white"
       style={{
         paddingBottom: RESERVED_TOP_SPACING_IN_PIXELS,
       }}
@@ -83,7 +83,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
       <CardContent className="px-8">
         <div className="relative isolate">
           <p
-            className="absolute font-pixel text-2xl text-shadow text-white whitespace-pre"
+            className="absolute whitespace-pre font-pixel text-2xl text-white text-shadow"
             style={{
               zIndex: 10,
               top: -2 + RESERVED_TOP_SPACING_IN_PIXELS,
@@ -94,7 +94,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
           </p>
 
           <div
-            className="absolute transition-transform duration-1000 w-full"
+            className="absolute w-full transition-transform duration-1000"
             style={{
               zIndex: 20,
               left: 0,
@@ -145,7 +145,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             ></div>
             {/* top left corner pixel */}
             <div
-              className="absolute bg-black top-0 left-0"
+              className="absolute left-0 top-0 bg-black"
               style={{
                 height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
                 width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -153,7 +153,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             ></div>
             {/* top right corner pixel */}
             <div
-              className="absolute bg-black top-0 right-0"
+              className="absolute right-0 top-0 bg-black"
               style={{
                 height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
                 width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -161,7 +161,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
             ></div>
             {/* bottom left corner pixel */}
             <div
-              className="absolute bg-black bottom-0 left-0"
+              className="absolute bottom-0 left-0 bg-black"
               style={{
                 height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
                 width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -170,7 +170,7 @@ export function DonationProgressBarCard({ settings }: { settings: SettingsSchema
 
             {/* bottom right corner pixel */}
             <div
-              className="absolute bg-black bottom-0 right-0"
+              className="absolute bottom-0 right-0 bg-black"
               style={{
                 height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
                 width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,

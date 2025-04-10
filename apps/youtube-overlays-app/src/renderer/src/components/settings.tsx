@@ -117,11 +117,11 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
         </div>
 
         <form
-          className="grid w-full max-w-sm items-center grid-cols-1 xs:grid-cols-2 gap-4"
+          className="grid w-full max-w-sm grid-cols-1 items-center gap-4 xs:grid-cols-2"
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="flex items-center gap-x-2">
-            <Label htmlFor="animationTimeInSeconds" className="min-w-fit inline-flex items-center gap-x-1">
+            <Label htmlFor="animationTimeInSeconds" className="inline-flex min-w-fit items-center gap-x-1">
               <Timer />
               持續時間
             </Label>
@@ -137,7 +137,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
             <span className="min-w-fit">秒</span>
           </div>
 
-          <div className="w-full flex">
+          <div className="flex w-full">
             <Button
               type="submit"
               className="w-full"
@@ -162,7 +162,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <audio ref={audioRef} src={`http://localhost:${PORT}/assets/sound1.mp3?t=${cacheTimestamp}`}></audio>
 
-          <div className="min-h-16 flex items-center">
+          <div className="flex min-h-16 items-center">
             <div className="w-full">
               <ElasticSlider volume={volume} setVolume={setVolume}></ElasticSlider>
             </div>
@@ -206,7 +206,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
             自訂通知訊息文字
           </label>
 
-          <p className="text-xl font-bold text-[#d48e26] text-shadow min-h-7 max-w-sm break-all">
+          <p className="min-h-7 max-w-sm break-all text-xl font-bold text-[#d48e26] text-shadow">
             {editor &&
               templateSchema.safeParse(editor.getJSON().content!.at(0)!.content)?.data?.map((item, index) => {
                 if (item.type === 'text') {
@@ -214,7 +214,7 @@ function SettingsCard({ settings }: { settings: SettingsSchema }) {
                 }
 
                 return (
-                  <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
+                  <span key={`block-${index}`} className="inline-flex px-2 text-[#32c3a6]">
                     <TextEffect animate="bounce">{convertToDisplayName(item.attrs.id) ?? 'null'}</TextEffect>
                   </span>
                 )
@@ -474,18 +474,18 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
 
   return (
     <Table className="border-separate border-spacing-0 text-center">
-      <TableHeader className="sticky top-[60px] bottom-8 bg-background">
+      <TableHeader className="sticky bottom-8 top-[60px] bg-background">
         <TableRow>
-          <TableHead className="border-y text-foreground text-center">贈訂數量</TableHead>
-          <TableHead className="border-y text-foreground text-center">自訂圖片或動圖</TableHead>
-          <TableHead className="border-y text-foreground text-center">自訂音效</TableHead>
+          <TableHead className="border-y text-center text-foreground">贈訂數量</TableHead>
+          <TableHead className="border-y text-center text-foreground">自訂圖片或動圖</TableHead>
+          <TableHead className="border-y text-center text-foreground">自訂音效</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {items.map((item) => (
           <TableRow key={item.amount}>
-            <TableCell className="border-b font-medium text-lg">{item.amount}</TableCell>
+            <TableCell className="border-b text-lg font-medium">{item.amount}</TableCell>
 
             <TableCell className="border-b">
               <div className="flex gap-2">
@@ -508,7 +508,7 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
                   </TooltipProvider>
 
                   <PopoverContent className="w-min">
-                    <div className="rounded-md overflow-hidden flex justify-center">
+                    <div className="flex justify-center overflow-hidden rounded-md">
                       <img
                         className="h-auto w-[400px]"
                         src={`http://localhost:${PORT}/assets/image${item.amount}.gif?t=${cacheTimestamp}`}
@@ -517,14 +517,14 @@ function EffectSettingsTable({ settings }: { settings: SettingsSchema }) {
                     </div>
 
                     <div>
-                      <p className="text-xl font-bold text-[#d48e26] text-shadow min-h-7 min-w-80 break-all">
+                      <p className="min-h-7 min-w-80 break-all text-xl font-bold text-[#d48e26] text-shadow">
                         {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((templateItem, index) => {
                           if (templateItem.type === 'text') {
                             return <Fragment key={`block-${index}`}>{templateItem.text}</Fragment>
                           }
 
                           return (
-                            <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
+                            <span key={`block-${index}`} className="inline-flex px-2 text-[#32c3a6]">
                               <TextEffect animate="bounce">
                                 {templateItem.attrs.id === 'name' ? '測試贊助者' : `${item.amount}`}
                               </TextEffect>

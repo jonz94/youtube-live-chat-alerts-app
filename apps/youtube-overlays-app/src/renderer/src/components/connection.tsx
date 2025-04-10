@@ -216,14 +216,14 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
           <>
             <Card className="rounded-md">
               <CardHeader>
-                <CardTitle className="flex gap-x-2 items-center">
+                <CardTitle className="flex items-center gap-x-2">
                   <span>已設定 YouTube 頻道</span>
 
                   <TooltipProvider delayDuration={250}>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div>
-                          <CircleHelpIcon className="p-0 mt-1 size-6 hover:bg-inherit cursor-help" />
+                          <CircleHelpIcon className="mt-1 size-6 cursor-help p-0 hover:bg-inherit" />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent asChild>
@@ -249,9 +249,9 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                           </AvatarFallback>
                         </Avatar>
                         <div className="space-y-0.5">
-                          <p className="text-sm font-medium truncate max-w-[10rem]">{channelInfo.name}</p>
+                          <p className="max-w-[10rem] truncate text-sm font-medium">{channelInfo.name}</p>
                           {channelInfo?.handle && (
-                            <p className="text-xs text-muted-foreground truncate max-w-[10rem]">{channelInfo.handle}</p>
+                            <p className="max-w-[10rem] truncate text-xs text-muted-foreground">{channelInfo.handle}</p>
                           )}
                         </div>
                       </div>
@@ -407,13 +407,13 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
               </p>
             </div>
 
-            <div className="flex font-medium text-lg max-w-sm">
+            <div className="flex max-w-sm text-lg font-medium">
               <Popover>
                 <TooltipProvider delayDuration={250}>
                   <Tooltip>
                     <PopoverTrigger asChild>
                       <TooltipTrigger asChild>
-                        <p className="line-clamp-2 cursor-pointer hover:bg-muted py-1 px-2 rounded-md">
+                        <p className="line-clamp-2 cursor-pointer rounded-md px-2 py-1 hover:bg-muted">
                           {connectionVideoInfo.title}
                         </p>
                       </TooltipTrigger>
@@ -422,7 +422,7 @@ function ConnectionCard({ settings }: { settings: SettingsSchema }) {
                   </Tooltip>
                 </TooltipProvider>
 
-                <PopoverContent className="flex flex-col gap-2 w-[432px]">
+                <PopoverContent className="flex w-[432px] flex-col gap-2">
                   <div className="flex">
                     <img
                       className="h-auto w-[400px]"
@@ -592,8 +592,8 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
   }, [channelInfo.id, getLiveOrUpcomingStreams])
 
   return (
-    <div className="flex flex-col max-w-sm">
-      <div className="flex justify-between items-center">
+    <div className="flex max-w-sm flex-col">
+      <div className="flex items-center justify-between">
         <CardTitle>直播與待機室列表</CardTitle>
 
         <TooltipProvider delayDuration={250}>
@@ -626,7 +626,7 @@ function LiveOrUpcomingStreams({ channelInfo }: { channelInfo: ChannelInfo }) {
           <p className="inline">
             <span>可以嘗試按一下</span>
             <span
-              className="inline-flex items-center cursor-pointer border-b border-muted-foreground"
+              className="inline-flex cursor-pointer items-center border-b border-muted-foreground"
               onClick={() => {
                 getLiveOrUpcomingStreams.mutate({ channelIdOrHandle: channelInfo.id })
               }}
@@ -670,12 +670,12 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
 
   return (
     <Table className="border-separate border-spacing-0">
-      <TableHeader className="sticky top-[60px] bottom-8 bg-background">
+      <TableHeader className="sticky bottom-8 top-[60px] bg-background">
         <TableRow>
           <TableHead className="border-y text-foreground">
             <p className="pl-4">直播或待機室標題</p>
           </TableHead>
-          <TableHead className="border-y text-foreground text-center">建立連線</TableHead>
+          <TableHead className="border-y text-center text-foreground">建立連線</TableHead>
         </TableRow>
 
         {/* <div className="absolute w-full h-px bg-border bottom-0"></div> */}
@@ -685,13 +685,13 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
         {liveOrUpcomingStreams.map((liveOrUpcomingStream) => (
           <TableRow key={liveOrUpcomingStream.id}>
             <TableCell className="border-b">
-              <div className="flex font-medium text-lg max-w-[19rem]">
+              <div className="flex max-w-[19rem] text-lg font-medium">
                 <Popover>
                   <TooltipProvider delayDuration={250}>
                     <Tooltip>
                       <PopoverTrigger asChild>
                         <TooltipTrigger asChild>
-                          <p className="line-clamp-2 cursor-pointer hover:bg-muted py-1 px-2 rounded-md">
+                          <p className="line-clamp-2 cursor-pointer rounded-md px-2 py-1 hover:bg-muted">
                             {liveOrUpcomingStream.title}
                           </p>
                         </TooltipTrigger>
@@ -700,7 +700,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
                     </Tooltip>
                   </TooltipProvider>
 
-                  <PopoverContent className="flex flex-col gap-2 w-[432px]">
+                  <PopoverContent className="flex w-[432px] flex-col gap-2">
                     <div className="flex">
                       <img
                         className="h-auto w-[400px]"
@@ -748,7 +748,7 @@ function ListTable({ liveOrUpcomingStreams }: { liveOrUpcomingStreams: VideoInfo
             </TableCell>
 
             <TableCell className="border-b">
-              <div className="flex gap-2 justify-center">
+              <div className="flex justify-center gap-2">
                 <TooltipProvider delayDuration={250}>
                   <Tooltip>
                     <TooltipTrigger asChild>

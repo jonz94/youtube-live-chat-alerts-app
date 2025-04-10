@@ -214,13 +214,13 @@ function PaymentConnectionCard({
 
       <CardFooter className="flex-col">
         {connectionState === HubConnectionState.Connected ? (
-          <div className="flex justify-end w-full">
+          <div className="flex w-full justify-end">
             <Button variant="destructive" onClick={() => disconnectPaymentUrl.mutate()}>
               中斷連線
             </Button>
           </div>
         ) : settings.payments.length > 0 ? (
-          <div className="flex justify-between w-full">
+          <div className="flex w-full justify-between">
             <Button
               variant="destructive"
               onClick={() => {
@@ -251,7 +251,7 @@ function PaymentConnectionCard({
             </Button>
           </div>
         ) : (
-          <div className="flex justify-end w-full">
+          <div className="flex w-full justify-end">
             <Button
               disabled={inputValue === ''}
               onClick={() => {
@@ -275,7 +275,7 @@ function PaymentConnectionCard({
           </div>
         )}
 
-        <div className="relative top-3 text-muted-foreground w-full text-center">
+        <div className="relative top-3 w-full text-center text-muted-foreground">
           連線狀態：
           {connectionState !== null
             ? connectionStateName[connectionState]

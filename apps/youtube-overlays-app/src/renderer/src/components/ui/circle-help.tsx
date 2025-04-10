@@ -12,7 +12,7 @@ const CircleHelpIcon = ({ className }: { className: string }) => {
   return (
     <div
       className={cn(
-        'cursor-pointer select-none p-2 hover:bg-accent rounded-md transition-colors duration-200 flex items-center justify-center',
+        'flex cursor-pointer select-none items-center justify-center rounded-md p-2 transition-colors duration-200 hover:bg-accent',
         className,
       )}
       onMouseEnter={() => void controls.start('animate')}

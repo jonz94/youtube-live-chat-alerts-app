@@ -35,7 +35,7 @@ export function ModeToggle() {
           </TooltipTrigger>
 
           <TooltipContent side="bottom" align="end">
-            <div className="flex flex-col justify-center items-center gap-y-1">
+            <div className="flex flex-col items-center justify-center gap-y-1">
               <p>切換淺色模式 / 深色模式</p>
               <p>目前設定：{THEME_DISPLAY_NAME_LOOKUP_TABLE[currentTheme]}</p>
             </div>

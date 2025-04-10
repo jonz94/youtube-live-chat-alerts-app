@@ -77,12 +77,12 @@ function DonationListCard({ settings }: { settings: SettingsSchema }) {
         </CardHeader>
 
         {uniqueDonations.length <= 0 ? (
-          <CardContent className="py-4 bg-white">
-            <p className="text-black font-pixel">目前還沒有斗內訊息～</p>
+          <CardContent className="bg-white py-4">
+            <p className="font-pixel text-black">目前還沒有斗內訊息～</p>
           </CardContent>
         ) : (
-          <CardContent className="py-4 bg-white">
-            <div className="w-full flex flex-col items-center justify-center gap-2 font-pixel">
+          <CardContent className="bg-white py-4">
+            <div className="flex w-full flex-col items-center justify-center gap-2 font-pixel">
               {uniqueDonations
                 .reverse()
                 .slice(0, 100)
@@ -91,7 +91,7 @@ function DonationListCard({ settings }: { settings: SettingsSchema }) {
                     <PaidMessage {...donation} />
 
                     <Button
-                      className="absolute top-0 right-0 text-black hover:bg-transparent size-12"
+                      className="absolute right-0 top-0 size-12 text-black hover:bg-transparent"
                       variant="ghost"
                       onClick={() => hideDonation.mutate({ id: donation.uniqueId })}
                     >

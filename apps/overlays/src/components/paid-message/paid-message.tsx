@@ -127,7 +127,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
   return (
     <div
-      className="overflow-hidden flex flex-col isolate"
+      className="isolate flex flex-col overflow-hidden"
       style={{
         width,
         borderRadius: 4,
@@ -135,7 +135,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
     >
       <div
         className={cn(
-          'font-normal text-[15px] leading-[normal] py-2 min-h-[20px] grid items-center',
+          'grid min-h-[20px] items-center py-2 text-[15px] font-normal leading-[normal]',
           // for pixel art
           'relative',
           variant.effectClassName,
@@ -160,7 +160,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
         </div>
 
         <div className="min-h-4" style={{ zIndex: 1000 }}>
-          <div className="truncate w-full block">{nickname}</div>
+          <div className="block w-full truncate">{nickname}</div>
           <div>
             $
             {new Intl.NumberFormat('zh-TW', {
@@ -183,7 +183,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
         {/* top left corner pixel */}
         <div
-          className="absolute bg-black top-0 left-0"
+          className="absolute left-0 top-0 bg-black"
           style={{
             height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
             width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -192,7 +192,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
         {/* top right corner pixel */}
         <div
-          className="absolute bg-black top-0 right-0"
+          className="absolute right-0 top-0 bg-black"
           style={{
             height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
             width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -236,7 +236,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
       <div
         aria-label="content"
         className={cn(
-          'font-normal text-base py-2 min-h-10',
+          'min-h-10 py-2 text-base font-normal',
           // for pixel art
           'relative',
           variant.effectClassName,
@@ -273,7 +273,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
         {/* bottom left corner pixel */}
         <div
-          className="absolute bg-black bottom-0 left-0"
+          className="absolute bottom-0 left-0 bg-black"
           style={{
             height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
             width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
@@ -282,7 +282,7 @@ export function PaidMessage({ nickname, price, message, fill = false }: PaidMess
 
         {/* bottom right corner pixel */}
         <div
-          className="absolute bg-black bottom-0 right-0"
+          className="absolute bottom-0 right-0 bg-black"
           style={{
             height: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,
             width: PIXEL_SIZE_FOR_PIXEL_ART_IN_PIXEL,

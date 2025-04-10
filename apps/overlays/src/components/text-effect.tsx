@@ -21,7 +21,7 @@ export function Bounce({
   return (
     <b
       className={cn(
-        'inline-block whitespace-pre animate-bounce duration-1000 repeat-infinite relative top-1',
+        'relative top-1 inline-block animate-bounce whitespace-pre duration-1000 repeat-infinite',
         className,
       )}
       style={{

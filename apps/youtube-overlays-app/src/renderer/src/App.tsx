@@ -63,29 +63,29 @@ export default function App() {
       <Tabs
         value={currentPage}
         onValueChange={(value) => setCurrentPage(value as Page)}
-        className="sticky z-10 top-0 bg-background"
+        className="sticky top-0 z-10 bg-background"
       >
-        <TabsList className="pt-6 h-auto justify-center">
+        <TabsList className="h-auto justify-center pt-6">
           {pages.map((page) => (
             <TabsTrigger
               key={`tab-trigger-${page}`}
               value={page}
-              className="text-base text-muted-foreground/90 dark:text-muted-foreground/90 transition-colors duration-300 hover:text-foreground dark:hover:text-foreground"
+              className="text-base text-muted-foreground/90 transition-colors duration-300 hover:text-foreground dark:text-muted-foreground/90 dark:hover:text-foreground"
             >
               {pageToPageName[page]}
             </TabsTrigger>
           ))}
 
-          <div className="absolute top-0 left-2 text-muted-foreground">v1.0.0-beta.1</div>
+          <div className="absolute left-2 top-0 text-muted-foreground">v1.0.0-beta.1</div>
 
-          <div className="absolute top-3 right-3">
+          <div className="absolute right-3 top-3">
             <ModeToggle></ModeToggle>
           </div>
         </TabsList>
       </Tabs>
 
-      <div className="max-w-[29rem] min-h-screen flex flex-col gap-y-4 py-8 px-4 justify-center mx-auto">
-        <div className="flex flex-col gap-y-4 flex-1">
+      <div className="mx-auto flex min-h-screen max-w-[29rem] flex-col justify-center gap-y-4 px-4 py-8">
+        <div className="flex flex-1 flex-col gap-y-4">
           <section className={currentPage === 'YOUTUBE_GIFTED_MEMBERSHIP' ? 'contents' : 'hidden'}>
             <Launcher
               name={pageToPageName['YOUTUBE_GIFTED_MEMBERSHIP']}

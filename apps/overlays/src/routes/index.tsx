@@ -140,20 +140,20 @@ function App() {
     <div className="min-h-screen">
       <div
         className={cn(
-          'fixed flex flex-col gap-y-2 top-4 right-4 justify-center items-center border shadow p-4 rounded-md',
+          'fixed right-4 top-4 flex flex-col items-center justify-center gap-y-2 rounded-md border p-4 shadow',
           debug ? '' : 'hidden',
         )}
       >
-        <div className="absolute -top-1.5 -right-1.5">
+        <div className="absolute -right-1.5 -top-1.5">
           <span className="relative flex h-3 w-3">
             <span
               className={cn(
-                'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
+                'absolute inline-flex h-full w-full animate-ping rounded-full opacity-75',
                 isConnected ? 'bg-green-400' : 'bg-red-400',
               )}
             ></span>
             <span
-              className={cn('relative inline-flex rounded-full h-3 w-3', isConnected ? 'bg-green-500' : 'bg-red-500')}
+              className={cn('relative inline-flex h-3 w-3 rounded-full', isConnected ? 'bg-green-500' : 'bg-red-500')}
             ></span>
           </span>
         </div>
@@ -165,14 +165,14 @@ function App() {
         <Button onClick={() => setIsOpen(!isOpen)}>DEBUG: {isOpen ? '已經顯示' : '點此顯示'}</Button>
       </div>
 
-      <div className="flex flex-col justify-center items-center p-4">
+      <div className="flex flex-col items-center justify-center p-4">
         <motion.div
           initial={{ height: 0 }}
           animate={isOpen ? { height: 'auto' } : { height: 0 }}
           transition={{ duration: ANIMATION_DURATION_IN_MS / 1000, ease: 'easeInOut' }}
           style={{ overflow: 'hidden' }}
         >
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center justify-center">
             <img
               className="h-auto w-[400px]"
               src={`http://localhost:${PORT}/assets/image${amount === '87' ? '1' : amount}.gif?t=${cacheTimestamp}`}
@@ -184,14 +184,14 @@ function App() {
               allowing CSS animations to reset properly by removing it from the DOM when closed
             */}
             {isOpen && (
-              <p className="p-4 text-4xl font-bold text-[#d48e26] text-shadow break-all">
+              <p className="break-all p-4 text-4xl font-bold text-[#d48e26] text-shadow">
                 {settings.liveChatSponsorshipsGiftPurchaseAnnouncementTemplate.map((item, index) => {
                   if (item.type === 'text') {
                     return <Fragment key={`block-${index}`}>{item.text}</Fragment>
                   }
 
                   return (
-                    <span key={`block-${index}`} className="text-[#32c3a6] inline-flex px-2">
+                    <span key={`block-${index}`} className="inline-flex px-2 text-[#32c3a6]">
                       <TextEffect animate="bounce">
                         {convertToDisplayName(item.attrs.id, { name, amount }) ?? 'null'}
                       </TextEffect>

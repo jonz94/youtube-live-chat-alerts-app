@@ -1,25 +1,25 @@
 {
   // tanstack router
   "files.watcherExclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
   },
   "search.exclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
   },
   "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
   },
 
   // tailwindcss
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
   },
   "tailwindCSS.classFunctions": ["cva"],
 
   // eslint
   "eslint.format.enable": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
   },
-  "eslint.validate": ["typescript", "typescriptreact", "html"]
+  "eslint.validate": ["typescript", "typescriptreact", "html"],
 }
