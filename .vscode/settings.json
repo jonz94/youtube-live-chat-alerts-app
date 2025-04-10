@@ -11,11 +11,10 @@
   },
 
   // tailwindcss
-  "css.lint.unknownAtRules": "ignore",
-  "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.classFunctions": ["cva"],
 
   // eslint
   "eslint.format.enable": true,
